@@ -1,0 +1,141 @@
+.scrollproducts {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.slider-container {
+    position: relative;
+    padding: 0 50px; /* Add padding to make space for buttons */
+}
+
+.product-slider {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    overflow-x: auto;
+    width: 100%;
+    position: relative;
+}
+.product-slider::-webkit-scrollbar {
+    display: none;
+}
+
+.product-slider > div {
+    scroll-snap-align: start;
+    flex: 0 0 auto;
+    width: 12.5rem; /* 200px */
+}
+
+/* Gradient overlays to indicate more content */
+.slider-gradient-left {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 60px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+    z-index: 5;
+    pointer-events: none; /* Allow clicks to pass through */
+}
+
+.slider-gradient-right {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 60px;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+    z-index: 5;
+    pointer-events: none; /* Allow clicks to pass through */
+}
+
+/* Navigation buttons */
+.slider-control-prev,
+.slider-control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    opacity: 0.9;
+    transition: all 0.2s ease;
+}
+
+.slider-control-prev {
+    left: 10px;
+}
+
+.slider-control-next {
+    right: 10px;
+}
+
+.slider-control-prev:hover,
+.slider-control-next:hover {
+    opacity: 1;
+    background-color: white;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.slider-control-prev:focus,
+.slider-control-next:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+@media (min-width: 576px) {
+    .product-slider > div {
+        width: 13.75rem; /* 220px */
+    }
+    .product-slider {
+        justify-content: flex-start;
+    }
+}
+
+@media (min-width: 768px) {
+    .product-slider > div {
+        width: 15rem; /* 240px */
+    }
+    .slider-container {
+        padding: 0 60px; /* More space for buttons on larger screens */
+    }
+}
+
+@media (min-width: 992px) {
+    .product-slider > div {
+        width: 16.25rem; /* 260px */
+    }
+}
+
+@media (min-width: 1200px) {
+    .product-slider > div {
+        width: 17.5rem; /* 280px */
+    }
+}
+
+/* Hide control buttons on touch devices but keep the padding */
+@media (hover: none) {
+    .slider-control-prev,
+    .slider-control-next,
+    .slider-gradient-left,
+    .slider-gradient-right {
+        display: none !important;
+    }
+
+    .slider-container {
+        padding: 0; /* Remove padding on touch devices */
+    }
+}

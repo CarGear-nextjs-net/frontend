@@ -1,0 +1,8 @@
+.lazy-wrapper {
+    opacity: 0;
+    transition: opacity 1s ease-in-out; /* Hiệu ứng fade-in với thời gian 1 giây */
+}
+
+.lazy-wrapper.fade-in {
+    opacity: 1;
+}
