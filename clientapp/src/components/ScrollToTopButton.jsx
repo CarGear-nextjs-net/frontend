@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import {ArrowUp } from "lucide-react"
-import {Button} from "react-bootstrap";
+import {Button} from "@/components/ui/button";
 const ScrollToTopButton = () => {
-    const [isVisible, setIsVisible] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
 
     // Kiểm tra vị trí cuộn
     useEffect(() => {
@@ -28,21 +28,14 @@ const ScrollToTopButton = () => {
 
     return (
         isVisible && (
-            <Button
+            <button
                 onClick={scrollToTop}
-                style={{
-                    padding: "10px 15px",
-                    fontSize: "20px",
-                    backgroundColor: "#333",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "50%",
-                    cursor: "pointer",
-                    boxShadow: "0 4px 6px rgba(0,0,0,0.3)"
-                }}
+                className="rounded-full w-12 h-12 flex bg-gray-900 items-center justify-center text-white shadow-lg hover:scale-105 transition-transform duration-200"
+                aria-label="Scroll to top"
             >
-                <ArrowUp size={20}/>
-            </Button>
+                <ArrowUp size={20} />
+            </button>
+
         )
     );
 };

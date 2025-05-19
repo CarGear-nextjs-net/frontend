@@ -4,9 +4,10 @@ import MobileHeader from "@/components/header/MobileHeader"
 import DesktopHeader from "@/components/header/DesktopHeader"
 import { useEffect, useRef, useState } from "react"
 import { usePathname } from "next/navigation"
+import Modal from "@/components/modal/Modal";
 
 export default function Header({ data }) {
-    const groups = data.groups
+    const categories = data.categories;
     const headerRef = useRef(null)
     const [headerHeight, setHeaderHeight] = useState(0)
     const [isSticky, setIsSticky] = useState(false)
@@ -14,11 +15,11 @@ export default function Header({ data }) {
     const [lastScrollY, setLastScrollY] = useState(0)
     const isMobile = useMediaQuery("(max-width: 767px)")
     const pathname = usePathname()
-
+    const [openLogin, setOpenLogin] = useState(false)
     const visitedUrls = [
         { title: "Trang chủ", url: "/" },
         { title: "Giới thiệu", url: "/about" },
-        { title: "Tin tức", url: "/news" },
+        { title: "Tin tức", url: "/blogs" },
         { title: "Sản phẩm", url: "/products" },
     ]
 
@@ -46,7 +47,15 @@ export default function Header({ data }) {
         }
         setLastScrollY(currentScrollY)
     }
+    useEffect(() => {
+        // Reset state khi pathname thay đổi (chuyển trang)
+        setIsSticky(false);
+        setIsVisible(true);
+        setLastScrollY(0);
 
+        // Scroll lên đầu trang nếu cần
+        window.scrollTo(0, 0);
+    }, [pathname]);
     useEffect(() => {
         if (isStickyEnabled) {
             window.addEventListener("scroll", handleScroll)
@@ -62,9 +71,9 @@ export default function Header({ data }) {
                 ${isVisible ? "top-0" : "-translate-y-full"}`}
         >
             {!isMobile ? (
-                <DesktopHeader groups={groups} visitedUrls={visitedUrls} />
+                <DesktopHeader categories={categories} visitedUrls={visitedUrls} />
             ) : (
-                <MobileHeader groups={groups} visitedUrls={visitedUrls} />
+                <MobileHeader categories={categories} visitedUrls={visitedUrls} />
             )}
         </div>
     )
