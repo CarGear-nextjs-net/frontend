@@ -1,18 +1,18 @@
 'use client'
 import {Menu, Phone, Search, ShoppingCart, User} from "lucide-react";
-import CategoryMenu from "@/components/header/CategoryMenu";
+import CategoryMenu from "@/components/categories/CategoryMenu";
 import Link from "next/link";
 import { useState} from "react";
 import {Button} from "@/components/ui/button.jsx"
 import {usePathname} from "next/navigation";
+import AuthModal from "@/components/AuthModal";
 
-export default function DesktopHeader({groups=[],visitedUrls = { visitedUrls }}) {
-    const [showMenu, setShowMenu] = useState(false);
+export default function DesktopHeader({categories=[],visitedUrls = []}) {
     const pathname = usePathname();
     return (
         <header className={`w-full `}>
             {/*<div className="bg-red-600 text-white py-2 px-4">*/}
-            {/*    <div className="container-fluid mx-auto flex flex-col md:flex-row justify-between items-center">*/}
+            {/*    <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">*/}
             {/*        <div className="flex items-center mb-2 md:mb-0">*/}
             {/*            <span className="text-yellow-300 font-bold mr-2">Mua online VƯỢT TRỘI</span>*/}
             {/*            <span className="text-white">DỊCH VỤ</span>*/}
@@ -28,27 +28,19 @@ export default function DesktopHeader({groups=[],visitedUrls = { visitedUrls }})
 
             {/* Main navigation  */}
             <div className="bg-red-600 text-white py-3 px-4 border-t border-red-500 sticky">
-                <div className="container-fluid mx-auto flex flex-col md:flex-row items-center justify-between">
+                <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
                     <div className="flex items-center mb-3 md:mb-0">
                         <div className="bg-white rounded-full h-10 w-10 flex items-center justify-center mr-2">
-                            <span className="text-xs text-gray-600">Logo</span>
+                            <img
+                                src="/logo.png"
+                                alt="Logo"
+                                className="object-contain text-xs rounded-3xl text-gray-600"
+                            />
                         </div>
                         <span className="text-yellow-300 text-xl font-bold">CarGear</span>
-                        <Button className="ml-4 flex items-center" variant={"outline-none"}
-                                onMouseMove={() => setShowMenu(true)}
-                                onClick={() => setShowMenu(!showMenu)}>
-                            <Menu className="h-6 w-6 mr-1" />
-                            <span className="font-medium">Danh mục</span>
-                        </Button>
-                        {showMenu && (
-                            <div
-                                onMouseLeave={() => setShowMenu(!showMenu)}
-                                className="absolute top-16 left-0 bg-white shadow-lg w-[800px] flex border z-[9999]">
-                                <CategoryMenu groups={groups} />
-                            </div>
-                        )}
-                    </div>
 
+                    </div>
+                    <CategoryMenu categories={categories} />
                     {/* Search bar */}
                     <div className="relative flex-1 max-w-xl mx-4 w-full mb-3 md:mb-0">
                         <input type="text" placeholder="Bạn tìm gì..." className="w-full py-2 px-4 rounded-full text-black bg-white" />
@@ -66,8 +58,7 @@ export default function DesktopHeader({groups=[],visitedUrls = { visitedUrls }})
                             <span>0974841508</span>
                         </div>
                         <div className="flex items-center">
-                            <User className="h-5 w-5 mr-1" />
-                            <span>Đăng nhập</span>
+                            <AuthModal/>
                         </div>
                         <div className="flex items-center">
                             <ShoppingCart className="h-5 w-5 mr-1" />
@@ -79,8 +70,8 @@ export default function DesktopHeader({groups=[],visitedUrls = { visitedUrls }})
 
             {/* Secondary navigation */}
             <nav className="bg-white text-black shadow-md overflow-x-auto">
-                <div className="container-fluid mx-auto flex justify-center items-center">
-                    {visitedUrls.map(({ title, url }, index) => (
+                <div className="container mx-auto flex justify-center items-center">
+                    {visitedUrls && visitedUrls.map(({ title, url }, index) => (
                         <Link
                             key={index}
                             href={url}

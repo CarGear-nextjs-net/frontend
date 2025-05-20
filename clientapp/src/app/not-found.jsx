@@ -1,7 +1,11 @@
+// app/not-found.jsx
+"use client"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 
 export default function NotFound() {
+    const prevUrl = '/'
     return (
         <div className="min-h-screen w-full flex items-center justify-center p-4 bg-gray-50">
             <div className="max-w-7xl w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
@@ -11,10 +15,10 @@ export default function NotFound() {
                         <h2 className="text-3xl md:text-4xl font-bold text-gray-800">Page not found</h2>
                     </div>
                     <p className="text-gray-600 max-w-md">
-                        A massa, interdum pretium, ut sit est nec. Convallis fames proin lacus cras.
+                        Trang bạn đang tìm kiếm không tồn tại. Quay lại trang trước nhé!
                     </p>
                     <Link
-                        href="/"
+                        href={prevUrl || "/public"}
                         className="inline-flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white font-medium py-3 px-8 rounded-full transition-colors"
                     >
                         Go Back

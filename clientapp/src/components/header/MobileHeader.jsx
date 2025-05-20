@@ -6,7 +6,7 @@ import Link from "next/link"
 import { Menu as HeadlessMenu, Transition } from '@headlessui/react'
 import {usePathname} from "next/navigation";
 
-export default function MobileHeader({ groups = [],visitedUrls=[] }) {
+export default function MobileHeader({ categories = [],visitedUrls=[] }) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const [categoryOpen, setCategoryOpen] = useState(true)
     const pathname = usePathname();
@@ -145,9 +145,9 @@ export default function MobileHeader({ groups = [],visitedUrls=[] }) {
 
                                     {categoryOpen && (
                                         <div className="pb-2">
-                                            {groups && groups.length > 0 && groups.map((group, i) => (
-                                                <Link key={i} href="/#" className="flex items-center justify-between px-6 py-3">
-                                                    <span className="text-gray-800">{group.name}</span>
+                                            {categories && categories.length > 0 && categories.map(({id,name}) => (
+                                                <Link key={id} href="/#" className="flex items-center justify-between px-6 py-3">
+                                                    <span className="text-gray-800">{name}</span>
                                                     <ChevronRight className="h-5 w-5 text-gray-400" />
                                                 </Link>
                                             ))}

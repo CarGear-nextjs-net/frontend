@@ -1,10 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { Button, Stack } from "react-bootstrap"
 import { MessageCircle, Phone, ChevronDown } from "lucide-react"
-import "./FloatingContactWidget.css"
-import ScrollToTopButton from "../ScrollToTopButton";
+import ScrollToTopButton from "../ScrollToTopButton"
+
 export default function FloatingContactWidget() {
     const [isCollapsed, setIsCollapsed] = useState(false)
 
@@ -20,9 +19,7 @@ export default function FloatingContactWidget() {
             id: "zalo",
             name: "Zalo",
             icon: (
-                <span className="fw-bold" style={{ fontSize: "0.875rem" }}>
-          Zalo
-        </span>
+                <span className="font-bold text-sm leading-none">Zalo</span>
             ),
             color: "#0068FF",
             link: "https://zalo.me/yourphonenumber",
@@ -37,43 +34,35 @@ export default function FloatingContactWidget() {
     ]
 
     return (
-        <div className="floating-contact-widget">
-            <div className={"mb-2"}>
+        <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-2">
+            <div>
                 <ScrollToTopButton />
             </div>
-            <Stack gap={3} className="mb-2">
-                {!isCollapsed &&
-                    contactOptions.map((option) => (
-                        <a
-                            key={option.id}
-                            href={option.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="contact-button"
-                            style={{ backgroundColor: option.color }}
-                            aria-label={option.name}
-                        >
-                            {option.icon}
-                        </a>
-                    ))}
 
+            {!isCollapsed &&
+                contactOptions.map((option) => (
+                    <a
+                        key={option.id}
+                        href={option.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={option.name}
+                        className="rounded-full w-12 h-12 flex items-center justify-center text-white shadow-lg hover:scale-105 transition-transform duration-200"
+                        style={{ backgroundColor: option.color }}
+                    >
+                        {option.icon}
+                    </a>
+                ))}
 
-            </Stack>
-
-            <Button
-                className={` ${!isCollapsed?"toggle-button":"contact-button"}  border-0`}
-                style={{
-                    backgroundColor: isCollapsed ? "#25D366" : "transparent",
-                    color: isCollapsed ? "white" : "#25D366",
-                    boxShadow: "0 0 6px rgba(0,0,0,0.15)", // optional cho đẹp
-                }}
+            <button
                 onClick={() => setIsCollapsed(!isCollapsed)}
                 aria-label={isCollapsed ? "Expand contact options" : "Collapse contact options"}
+                className={`w-12 h-12 flex items-center justify-center rounded-full shadow-md border-0 transition-all duration-200 ${
+                    isCollapsed ? "bg-green-500 text-white" : "bg-white text-green-500"
+                }`}
             >
                 {isCollapsed ? <Phone size={16} /> : <ChevronDown size={16} />}
-            </Button>
-
-
+            </button>
         </div>
     )
 }
