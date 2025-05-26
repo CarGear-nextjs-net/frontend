@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import { formatPrice } from "@/utils/format"
 
 export default function Blogs({ title = "Tin tức", blogs }) {
     const containerRef = useRef(null)
@@ -99,7 +98,7 @@ export default function Blogs({ title = "Tin tức", blogs }) {
                             style={{ width: `${itemWidth}px` }}
                             className="flex-shrink-0 border border-gray-200 rounded-md overflow-hidden bg-white"
                         >
-                            <Link href={`/news/${slug}}`} className="block">
+                            <Link href={`/news/${slug}`} className="block">
                                 <div className="relative h-[200px] w-full bg-gray-100">
                                     <Image
                                         src={image || "/placeholder.svg"}
