@@ -12,16 +12,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import RelatedArticles from "@/components/news/related-articles"
 import RecommendedArticles from "@/components/news/recommended-articles"
-import TableOfContents from "@/components/news/table-of-contents"
-import ArticleComments from "@/components/news/article-comments"
-import NewsletterSignup from "@/components/news/newsletter-signup"
 import ReadingProgressBar from "@/components/news/reading-progress-bar"
-import ArticleReactions from "@/components/news/article-reactions"
-import ShareButtons from "@/components/news/share-buttons"
 
-// Giả lập dữ liệu bài viết
 async function getArticle(slug) {
-    // Trong thực tế, bạn sẽ gọi API để lấy dữ liệu bài viết
     return {
         id: "1",
         title: "Việt Nam đạt thỏa thuận hợp tác công nghệ với các đối tác quốc tế",
@@ -63,13 +56,6 @@ async function getArticle(slug) {
         commentCount: 28,
         likeCount: 156,
         shareCount: 42,
-        author: {
-            id: "author-1",
-            name: "Nguyễn Minh Tuấn",
-            avatar: "/placeholder.svg?height=100&width=100",
-            role: "Biên tập viên Công nghệ",
-            bio: "Nguyễn Minh Tuấn là biên tập viên kỳ cựu với hơn 10 năm kinh nghiệm trong lĩnh vực báo chí công nghệ. Anh đã có nhiều bài viết chuyên sâu về xu hướng công nghệ và chuyển đổi số tại Việt Nam.",
-        },
         category: {
             id: "cat-1",
             name: "Công nghệ",
@@ -232,28 +218,7 @@ export default async function ArticlePage({ params }) {
                             {article.subtitle && (
                                 <p className="text-xl text-gray-600 mb-6">{article.subtitle}</p>
                             )}
-
                             <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
-                                {/* Author and Date */}
-                                <div className="flex items-center">
-                                    <Avatar className="h-10 w-10 mr-3">
-                                        <AvatarImage src={article.author.avatar || "/placeholder.svg"} alt={article.author.name} />
-                                        <AvatarFallback>{article.author.name.charAt(0)}</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <Link href={`/author/${article.author.id}`} className="font-medium hover:text-red-600">
-                                            {article.author.name}
-                                        </Link>
-                                        <div className="flex items-center text-sm text-gray-500">
-                                            <Calendar className="h-4 w-4 mr-1" />
-                                            <time dateTime={article.publishedAt}>{formattedDate}</time>
-                                            <span className="mx-2">•</span>
-                                            <Clock className="h-4 w-4 mr-1" />
-                                            <span>{article.readingTime} phút đọc</span>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 {/* Article Stats */}
                                 <div className="flex items-center space-x-4 text-sm text-gray-500">
                                     <div className="flex items-center">
@@ -297,16 +262,16 @@ export default async function ArticlePage({ params }) {
                                     <div dangerouslySetInnerHTML={{ __html: article.content }} />
                                 </article>
 
-                                {/* Tags */}
-                                <div className="flex flex-wrap gap-2 mb-8">
-                                    {article.tags.map(tag => (
-                                        <Link key={tag.id} href={`/tag/${tag.slug}`}>
-                                            <Badge variant="secondary" className="hover:bg-gray-200">
-                                                #{tag.name}
-                                            </Badge>
-                                        </Link>
-                                    ))}
-                                </div>
+                                {/*/!* Tags *!/*/}
+                                {/*<div className="flex flex-wrap gap-2 mb-8">*/}
+                                {/*    {article.tags.map(tag => (*/}
+                                {/*        <Link key={tag.id} href={`/tag/${tag.slug}`}>*/}
+                                {/*            <Badge variant="secondary" className="hover:bg-gray-200">*/}
+                                {/*                #{tag.name}*/}
+                                {/*            </Badge>*/}
+                                {/*        </Link>*/}
+                                {/*    ))}*/}
+                                {/*</div>*/}
 
                                 {/* Article Reactions */}
                                 {/*<ArticleReactions articleId={article.id} />*/}
