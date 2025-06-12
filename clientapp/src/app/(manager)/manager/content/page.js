@@ -1,7 +1,7 @@
-export default function ContentPage(){
-    return (
-        <div className="w-full">
-            content
-        </div>
+import ContentController from "@/components/manager/content";
+
+export default async function ContentsPage(){
+    return(
+        <ContentController/>
     )
 }

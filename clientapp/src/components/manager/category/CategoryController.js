@@ -58,7 +58,7 @@ export default function CategoryController() {
                 </div>
                 <div>
                     <h2 className="text-xl font-semibold mb-4">Danh mục con</h2>
-                    <CategoryList categories={selectedCategory.children||[]} />
+                    <CategoryList categories={selectedCategory.children || []} />
                 </div>
             </div>
         </div>

@@ -8,6 +8,6 @@ export default async function LogoutPage(){
     }catch(e){
 
     }finally {
-        redirect("/auth/login");
+        redirect("/login");
     }
 }

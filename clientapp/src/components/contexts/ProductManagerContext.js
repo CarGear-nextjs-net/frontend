@@ -18,7 +18,7 @@ export const ProductManagerProvider = ({ children }) => {
     const triggerRefreshList = () => setRefreshList(prev => prev + 1);
     const triggerRefreshUpdate = () => setRefreshUpdateProduct(prev => prev - 1);
     return (
-        <ProductManagerContext.Provider value={{ refreshList, triggerRefreshList,refreshUpdateProduct,triggerRefreshUpdate }}>
+        <ProductManagerContext.Provider value={{ refreshList, triggerRefreshList , refreshUpdateProduct , triggerRefreshUpdate }}>
             {children}
         </ProductManagerContext.Provider>
     );

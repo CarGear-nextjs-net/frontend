@@ -15,7 +15,6 @@ export default function Header({ data }) {
     const [lastScrollY, setLastScrollY] = useState(0)
     const isMobile = useMediaQuery("(max-width: 767px)")
     const pathname = usePathname()
-    const [openLogin, setOpenLogin] = useState(false)
     const visitedUrls = [
         { title: "Trang chủ", url: "/" },
         { title: "Giới thiệu", url: "/about" },

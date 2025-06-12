@@ -29,7 +29,7 @@ export default function CategoryMenu({ categories = [] }) {
             {/* Nút hiển thị menu */}
             <Button
                 variant="outlined"
-                className={`py-2 border-none transition bg-transparent text-white  ${
+                className={`py-2 border-none transition bg-transparent text-white cursor-pointer ${
                     visible ? "text-gray-900 bg-white " : ""
                 }`}
             >
