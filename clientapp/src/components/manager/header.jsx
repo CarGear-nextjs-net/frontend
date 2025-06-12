@@ -59,6 +59,8 @@ export default function Header({user}) {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                             onClick={async ()=>{
+                                localStorage.removeItem("user-profile");
+                                localStorage.removeItem("accessToken");
                                 router.push("/auth/logout")
                             }}
                             className="text-red-600"

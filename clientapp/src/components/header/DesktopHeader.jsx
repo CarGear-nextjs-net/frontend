@@ -30,7 +30,7 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
       return JSON.parse(localStorage.getItem("user-profile"));
     }
     return null;
-  }, []);
+  }, [localStorage.getItem("user-profile")]);
   return (
     <header className={`w-full `}>
       {/* Main navigation  */}
