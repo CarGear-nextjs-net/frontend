@@ -6,7 +6,7 @@ import { LoginForm } from "@/components/login/LoginForm"
 import { RegisterForm } from "@/components/login/RegisterFrom"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-export function AuthTabs() {
+export function AuthTabs({setOpen}) {
     const [activeTab, setActiveTab] = useState("login")
 
     const handleTabChange = (value) => {
@@ -30,7 +30,7 @@ export function AuthTabs() {
                         <TabsTrigger value="register">Đăng ký</TabsTrigger>
                     </TabsList>
                     <TabsContent value="login">
-                        <LoginForm />
+                        <LoginForm setOpen={setOpen}/>
                     </TabsContent>
                     <TabsContent value="register">
                         <RegisterForm />

@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 
 export async function POST(request) {
-    const { token } = await request.json();
+    const { token, userRole } = await request.json();
 
     const response = NextResponse.json({ success: true });
 
@@ -15,8 +15,18 @@ export async function POST(request) {
         maxAge: 60 * 60 * 24, // 1 day
     });
 
+    // Set user role cookie
+    response.cookies.set('user_role', userRole, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        path: '/',
+        maxAge: 60 * 60 * 24, // 1 day
+    });
+
     return response;
 }
+
 export async function DELETE() {
     const response = NextResponse.json({ success: true, message: 'Logged out' });
 
@@ -25,10 +35,18 @@ export async function DELETE() {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
-        path: '/', // Đảm bảo đường dẫn phù hợp
+        path: '/',
         maxAge: 0,  // Đặt maxAge = 0 để cookie bị xóa
     });
 
+    // Xóa user_role
+    response.cookies.set('user_role', '', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        path: '/',
+        maxAge: 0,  // Đặt maxAge = 0 để cookie bị xóa
+    });
 
     return response;
 }
