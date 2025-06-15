@@ -29,20 +29,21 @@ export default async function ProductsPage({searchParams, }) {
     })
 
     return (
-        <ProductListingPage
-            categories={categories}
-            brands={brands}
-            products={products}
-            totalProducts={totalProducts}
-            initialFilters={{
-                categoryId,
-                brandIds,
-                sort,
-                page,
-                minPrice,
-                maxPrice,
-                search,
-            }}
-        />
+        // <ProductListingPage
+        //     categories={categories}
+        //     brands={brands}
+        //     products={products}
+        //     totalProducts={totalProducts}
+        //     initialFilters={{
+        //         categoryId,
+        //         brandIds,
+        //         sort,
+        //         page,
+        //         minPrice,
+        //         maxPrice,
+        //         search,
+        //     }}
+        // />
+        <></>
     )
 }

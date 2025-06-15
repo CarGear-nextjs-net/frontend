@@ -5,9 +5,11 @@ import { Star, ShoppingCart, TrendingUp, ChevronRight, Award, Eye } from 'lucide
 import Image from "next/image"
 import Link from "next/link"
 import {formatPrice} from "@/utils/format";
+import { useAuth } from "@/context/AuthContext"
 
 export default function TopSellingProductsController(props) {
     const products = props.products;
+    const {setOpen} = useAuth();
     const [hoveredProduct, setHoveredProduct] = useState(null)
     return (
         <div className={`py-12 px-4 bg-gray-50 `}>
@@ -44,12 +46,12 @@ export default function TopSellingProductsController(props) {
                         </div>
                         <div className="flex flex-col md:flex-row h-full">
                             <div className="relative w-full md:w-1/2 h-64 md:h-auto group">
-                                <Image
+                                {/* <Image
                                     src={products[0].image || "/placeholder.svg"}
                                     alt={products[0].name}
                                     fill
                                     className="object-cover"
-                                />
+                                /> */}
                                 <Link href={`/${products[0].slug}`}>
                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
                                     {/* Nút xem chi tiết */}
@@ -94,7 +96,14 @@ export default function TopSellingProductsController(props) {
                                             {formatPrice(products[0].originalPrice)}
                                         </span>
                                     </div>
-                                    <button className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center">
+                                    <button className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center cursor-pointer" onClick={() => {
+                                        const userData = JSON.parse(localStorage.getItem("user-profile"));
+                                        if (userData) {
+                                            console.log("add to cart");
+                                        } else {
+                                            setOpen(true)
+                                        }
+                                    }}>
                                         <ShoppingCart className="h-5 w-5 mr-2" />
                                         Thêm vào giỏ hàng
                                     </button>
@@ -120,12 +129,12 @@ export default function TopSellingProductsController(props) {
                                 </div>
                                 <div className="relative h-48 group cursor-pointer overflow-hidden">
                                     {/* Ảnh */}
-                                    <Image
+                                    {/* <Image
                                         src={product.image || "/placeholder.svg"}
                                         alt={product.name}
                                         fill
                                         className="object-cover transition-transform duration-300 group-hover:scale-105"
-                                    />
+                                    /> */}
                                     <Link href={`/${product.slug}`}>
                                     {/* Lớp phủ nền mờ */}
                                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
@@ -192,12 +201,12 @@ export default function TopSellingProductsController(props) {
                             </div>
                             <div className="relative h-48 group cursor-pointer overflow-hidden">
                                 {/* Ảnh */}
-                                <Image
+                                {/* <Image
                                     src={product.image || "/placeholder.svg"}
                                     alt={product.name}
                                     fill
                                     className="object-cover transition-transform duration-300 group-hover:scale-105"
-                                />
+                                /> */}
 
                                 {/* Lớp phủ nền mờ */}
                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">

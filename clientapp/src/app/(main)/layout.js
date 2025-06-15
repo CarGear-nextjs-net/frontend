@@ -1,22 +1,33 @@
-
-import {fetchCategories} from "@/lib/api";
+"use client";
+import { fetchCategories } from "@/lib/api";
 import Header from "@/components/header/Header";
-import {Footer} from "@/components/footer/Footer";
+import { Footer } from "@/components/footer/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import FloatingContactWidget from "@/components/contact/FloatingContactWidget";
+import { AuthProvider } from "@/context/AuthContext";
+import AuthDialog from "@/components/auth/AuthDialog";
+import { useEffect, useState } from "react";
 
-export default async function MainLayout({ children }) {
+export default function MainLayout({ children }) {
+  const [data, setData] = useState({});
+
+  useEffect(async () => {
     const categories = await fetchCategories();
-    const data = {
-        categories: categories,
-    }
-    return (
-        <div>
-            <ScrollToTop />
-            <Header data={data} />
-            <main>{children}</main>
-            <Footer />
-            <FloatingContactWidget />
-        </div>
-    );
+    setData({
+      categories: categories,
+    });
+  }, []);
+
+  return (
+    <AuthProvider>
+      <div>
+        <ScrollToTop />
+        <Header data={data} />
+        <main>{children}</main>
+        <Footer />
+        <FloatingContactWidget />
+        <AuthDialog />
+      </div>
+    </AuthProvider>
+  );
 }

@@ -7,7 +7,6 @@ export default function BannerController({ blogs = [] }) {
     const featuredBlogs = blogs.filter((b) => b.isFeatured)
     const [currentIndex, setCurrentIndex] = useState(0)
 
-    // Auto-rotate carousel
     useEffect(() => {
         if (featuredBlogs.length <= 1) return
 
@@ -35,13 +34,13 @@ export default function BannerController({ blogs = [] }) {
             <div className=" relative w-full aspect-[2/1] md:aspect-[4/1]">
                 {featuredBlogs.map((blog, index) => (
                     <div
-                        key={blog.id}
+                        key={blog.articleId}
                         className={`absolute top-0 left-0 w-full h-full transition-opacity duration-500 ease-in-out ${
                             index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
                         }`}
                     >
                         {/* Image */}
-                        <Image src={blog.image || "/placeholder.svg"} fill alt={blog.title} className="object-cover w-full h-full" />
+                        {/* <Image src={blog.image || "/placeholder.svg"} fill alt={blog.title} className="object-cover w-full h-full" /> */}
 
                         {/* Caption */}
                         <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8 bg-gradient-to-t from-black/70 to-transparent text-white">
