@@ -11,6 +11,7 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals"),
+  ...compat.extends("prettier"),
   {
     rules: {
       "no-unused-vars": "error",
@@ -19,7 +20,18 @@ const eslintConfig = [
       "import/no-unused-modules": "error",
       "react/jsx-no-unused-vars": "error",
       "react-hooks/exhaustive-deps": "warn",
-      "prettier/prettier": "error"
+      "prettier/prettier": "error",
+      "import/order": [
+        "error",
+        {
+          "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+          "newlines-between": "always",
+          "alphabetize": {
+            "order": "asc",
+            "caseInsensitive": true
+          }
+        }
+      ]
     },
     settings: {
       next: {
