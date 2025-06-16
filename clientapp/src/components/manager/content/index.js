@@ -31,8 +31,10 @@ export default function ContentController() {
         category: categoryFilter
       };
       const res = await fetchContentsManager(params);
-      setContents(res.data);
-      setTotalPages(res.totalPages);
+      if (res.data) {
+        setContents(res.data);
+        setTotalPages(res.totalPages);
+      }
     };
     loadData();
   }, [page, categoryFilter, search]);

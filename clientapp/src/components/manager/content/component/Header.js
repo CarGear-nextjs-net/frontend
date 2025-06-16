@@ -31,7 +31,7 @@ export default function ContentHeader({
           ))}
         </select>
       </div>
-      <Link href="/manager/contents/create">
+      <Link href="/manager/content/create">
         <Button className="bg-green-600 text-white hover:bg-green-700">
           + Tạo bài viết
         </Button>

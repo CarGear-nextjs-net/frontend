@@ -1,11 +1,6 @@
-import {
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-} from "@/components/ui/pagination";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
-export const Pagination = ({ page, setPage, totalPages }) => {
+export const PaginationComponent = ({ page, setPage, totalPages }) => {
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setPage(newPage);
@@ -13,7 +8,7 @@ export const Pagination = ({ page, setPage, totalPages }) => {
   };
   return (
     <div className="p-4">
-      {totalPages > 1 && (
+      {totalPages >= 1 && (
         <Pagination>
           <PaginationContent>
             {page > 1 && (

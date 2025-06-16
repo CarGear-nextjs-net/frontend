@@ -13,11 +13,11 @@ export default async function Home() {
         return (
             <div className="container-fliud bg-white">
                 <ReadingProgressBar/>
-                <BannerController blogs={data.blogInBanner} />
-                <TopSellingProductController products={data.topSaleProducts} />
-                {categoryWithProducts.map(({id,name,products}) => (
+                {/* <BannerController blogs={data.blogInBanner} /> */}
+                {/* <TopSellingProductController products={data.topSaleProducts} /> */}
+                {/* {categoryWithProducts.map(({id,name,products}) => (
                     <ProductByCategoryController key={id} title={name} products={products} />
-                ))}
+                ))} */}
                 <Blogs blogs={data.blogInBanner} />
             </div>
         );

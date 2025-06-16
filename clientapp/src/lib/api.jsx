@@ -328,11 +328,12 @@ export const deleteProductImage = async (id) => {
 
 export const fetchContentsManager = async ({ params }) => {
   try {
-    const res = await axios.get(`${API_BASE_URL}/api/productmanager/products`, {
+    const res = await axios.get(`${API_BASE_URL}/api/ArticleManager/articles`, {
       params: params,
     });
+
     return {
-      data: res.data.products,
+      data: res.data.articles,
       totalItem: res.data.totalItem,
       totalPages: res.data.totalPages,
       page: res.data.page,

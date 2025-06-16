@@ -100,12 +100,12 @@ export default function Blogs({ title = "Tin tức", blogs }) {
                         >
                             <Link href={`/news/${slug}`} className="block">
                                 <div className="relative h-[200px] w-full bg-gray-100">
-                                    <Image
+                                    {/* <Image
                                         src={image || "/placeholder.svg"}
                                         alt={title || "new"}
                                         fill
                                         className="object-cover"
-                                    />
+                                    /> */}
                                 </div>
                                 <div className="p-4">
                                     <h3 className="text-center font-medium text-sm mb-3 min-h-[40px] line-clamp-2">

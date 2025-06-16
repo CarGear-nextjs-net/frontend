@@ -9,6 +9,36 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [...compat.extends("next/core-web-vitals")];
+const eslintConfig = [
+  ...compat.extends("next/core-web-vitals"),
+  ...compat.extends("prettier"),
+  {
+    rules: {
+      "no-unused-vars": "error",
+      "no-unused-expressions": "error",
+      "@typescript-eslint/no-unused-vars": "error",
+      "import/no-unused-modules": "error",
+      "react/jsx-no-unused-vars": "error",
+      "react-hooks/exhaustive-deps": "warn",
+      "prettier/prettier": "error",
+      "import/order": [
+        "error",
+        {
+          "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+          "newlines-between": "always",
+          "alphabetize": {
+            "order": "asc",
+            "caseInsensitive": true
+          }
+        }
+      ]
+    },
+    settings: {
+      next: {
+        rootDir: __dirname
+      }
+    }
+  }
+];
 
 export default eslintConfig;
