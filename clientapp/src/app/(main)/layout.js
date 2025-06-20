@@ -1,11 +1,11 @@
 "use client";
-import { fetchCategories } from "@/lib/api";
-import Header from "@/components/header/Header";
-import { Footer } from "@/components/footer/Footer";
-import ScrollToTop from "@/components/ScrollToTop";
 import FloatingContactWidget from "@/components/contact/FloatingContactWidget";
+import Header from "@/components/header/Header";
+import ScrollToTop from "@/components/organisms/ScrollToTop";
+import AuthDialog from "@/components/templates/Auth/AuthDialog";
+import { Footer } from "@/components/templates/Layout/footer/Footer";
 import { AuthProvider } from "@/context/AuthContext";
-import AuthDialog from "@/components/auth/AuthDialog";
+import { fetchCategories } from "@/lib/api";
 import { useEffect, useState } from "react";
 
 export default function MainLayout({ children }) {

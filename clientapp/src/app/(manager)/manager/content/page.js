@@ -1,7 +1,5 @@
-import ContentController from "@/components/manager/content";
+import ContentController from "@/components/templates/manager/content";
 
-export default async function ContentsPage(){
-    return(
-        <ContentController/>
-    )
+export default async function ContentsPage() {
+  return <ContentController />;
 }
