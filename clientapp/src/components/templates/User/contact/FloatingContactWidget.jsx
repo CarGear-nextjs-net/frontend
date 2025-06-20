@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { MessageCircle, Phone, ChevronDown } from "lucide-react"
-import ScrollToTopButton from "../ScrollToTopButton"
+import ScrollToTopButton from "@/components/organisms/ScrollToTop"
 
 export default function FloatingContactWidget() {
     const [isCollapsed, setIsCollapsed] = useState(false)

@@ -2,8 +2,8 @@
 
 import { useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { LoginForm } from "@/components/login/LoginForm"
-import { RegisterForm } from "@/components/login/RegisterFrom"
+import { LoginForm } from "@/components/templates/Auth/login/LoginForm"
+import { RegisterForm } from "@/components/templates/Auth/login/RegisterFrom"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export function AuthTabs({setOpen}) {

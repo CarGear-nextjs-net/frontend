@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { AuthTabs } from "@/components/login/AuthTabs"
+import { AuthTabs } from "@/components/templates/Auth/login/AuthTabs"
 import { Button } from "@/components/ui/button"
 import {User} from "lucide-react";
 

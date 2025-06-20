@@ -1,9 +1,9 @@
 "use client";
-import FloatingContactWidget from "@/components/contact/FloatingContactWidget";
-import Header from "@/components/header/Header";
 import ScrollToTop from "@/components/organisms/ScrollToTop";
 import AuthDialog from "@/components/templates/Auth/AuthDialog";
 import { Footer } from "@/components/templates/Layout/footer/Footer";
+import Header from "@/components/templates/Layout/header/Header";
+import FloatingContactWidget from "@/components/templates/User/contact/FloatingContactWidget";
 import { AuthProvider } from "@/context/AuthContext";
 import { fetchCategories } from "@/lib/api";
 import { useEffect, useState } from "react";

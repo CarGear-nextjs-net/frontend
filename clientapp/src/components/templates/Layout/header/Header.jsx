@@ -1,6 +1,6 @@
 "use client";
-import DesktopHeader from "@/components/header/DesktopHeader";
-import MobileHeader from "@/components/header/MobileHeader";
+import DesktopHeader from "@/components/templates/Layout/header/DesktopHeader";
+import MobileHeader from "@/components/templates/Layout/header/MobileHeader";
 import useMediaQuery from "@/hooks/useMediaQuery";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
