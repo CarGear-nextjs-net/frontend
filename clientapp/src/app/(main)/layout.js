@@ -11,11 +11,17 @@ import { useEffect, useState } from "react";
 export default function MainLayout({ children }) {
   const [data, setData] = useState({});
 
-  useEffect(async () => {
-    const categories = await fetchCategories();
-    setData({
-      categories: categories,
-    });
+  useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const categories = await fetchCategories();
+        setData({ categories });
+      } catch (err) {
+        console.error("Failed to fetch categories", err);
+      }
+    };
+  
+    getCategories();
   }, []);
 
   return (

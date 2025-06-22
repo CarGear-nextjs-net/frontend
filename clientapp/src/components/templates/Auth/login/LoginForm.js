@@ -5,6 +5,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useUserProfileStore } from "@/stores";
 import API_BASE_URL from "@/utils/config";
 import axios from "axios";
 import { AlertCircle, Lock, Mail } from "lucide-react";
@@ -16,6 +17,8 @@ export function LoginForm({ setOpen }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { setUserStore, userStore } = useUserProfileStore();
+  console.log("🚀 ~ LoginForm ~ userStore:", userStore)
   const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,7 +43,7 @@ export function LoginForm({ setOpen }) {
           username: res.data?.username,
           roleId: res.data?.roleId,
         };
-        localStorage.setItem("user-profile", JSON.stringify(userData));
+        setUserStore(userData);
         await fetch("/api/session", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -49,8 +52,6 @@ export function LoginForm({ setOpen }) {
             userRole: res.data?.roleId || "2",
           }),
         });
-        router.refresh();
-        window.location.reload();
       } else {
         setError("Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.");
       }

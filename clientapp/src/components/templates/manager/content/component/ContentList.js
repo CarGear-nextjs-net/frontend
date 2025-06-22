@@ -4,13 +4,14 @@ import DialogConfirmDelete from "@/components/templates/Common/DialogConfirmDele
 import { PaginationComponent } from "@/components/templates/Common/Pagination";
 import { deleteContentApi } from "@/lib/apis/contents-api";
 import { Settings, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
 export default function ContentList({ contents = [], page, setPage, totalPages }) {
-  console.log("🚀 ~ totalPages:", totalPages);
   const [idSelected, setIdSelected] = useState(null);
   const [openModalDelete, setOpenModalDelete] = useState(false);
+  const router = useRouter()
   const handleDelete = async () => {
     if (!idSelected) {
       toast.error("Vui lòng chọn bài viết để xóa");
@@ -51,7 +52,9 @@ export default function ContentList({ contents = [], page, setPage, totalPages }
                 <td className="p-3">{content.views}</td>
                 <td className="p-3">{content.isPublic ? "Công khai" : "Riêng tư"}</td>
                 <td className="p-3 flex items-center gap-2">
-                  <Settings className="w-4 h-4 cursor-pointer" />
+                  <Settings className="w-4 h-4 cursor-pointer" onClick={() => {
+                      router.push(`/manager/content/${content.articleId}/edit`)
+                    }}/>
                   <Trash2
                     className="w-4 h-4 cursor-pointer"
                     onClick={() => {

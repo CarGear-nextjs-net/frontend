@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button.jsx";
 import { Phone, Search, ShoppingCart, User2Icon } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useMemo } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,16 +13,28 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useUserProfileStore } from "@/stores";
 
 export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
   const router = useRouter();
   const pathname = usePathname();
-  const userData = useMemo(() => {
-    if (typeof window != undefined) {
-      return JSON.parse(localStorage.getItem("user-profile"));
+  const { userStore, reset } = useUserProfileStore();
+
+  const handleLogout = async () => {
+    try {
+      // Xóa user profile từ store (sẽ tự động xóa localStorage)
+      reset();
+      // Xóa accessToken nếu có
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem("accessToken");
+      }
+      // Redirect đến trang logout
+      router.push("/auth/logout");
+    } catch (error) {
+      console.error('Error during logout:', error);
     }
-    return null;
-  }, [localStorage.getItem("user-profile")]);
+  };
+
   return (
     <header className={`w-full `}>
       {/* Main navigation  */}
@@ -65,19 +76,19 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
               <span>0974841508</span>
             </div>
             <div className="flex items-center">
-              {userData?.id ? (
+              {userStore.id ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="flex gap-2 cursor-pointer">
                       <User2Icon />
-                      <div>{userData?.username}</div>
+                      <div>{userStore.username}</div>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="z-[99999]">
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem className="cursor-pointer">Profile</DropdownMenuItem>
-                    {userData?.roleId === 1 && (
+                    {userStore.roleId === 1 && (
                       <DropdownMenuItem
                         onClick={() => {
                           router.push("/manager");
@@ -90,11 +101,7 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
                     <DropdownMenuItem className="cursor-pointer">Settings</DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
-                      onClick={async () => {
-                        localStorage.removeItem("user-profile");
-                        localStorage.removeItem("accessToken");
-                        router.push("/auth/logout");
-                      }}
+                      onClick={handleLogout}
                       className="text-red-600 cursor-pointer"
                     >
                       Logout

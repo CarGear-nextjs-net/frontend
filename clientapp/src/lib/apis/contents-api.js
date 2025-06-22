@@ -15,3 +15,11 @@ export const deleteContentApi = async ({ id }) => {
   );
   return res;
 };
+
+export const getDetailContentApi = async (id) => {
+  console.log("🚀 ~ getDetailContentApi ~ id:", id)
+  const res = await axios.get(
+    `${API_BASE_URL}/api/ArticleManager/articles/${id}`
+  );
+  return res;
+};

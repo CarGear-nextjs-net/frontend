@@ -17,4 +17,4 @@ class I18n {
   }
 }
 
-export { defaultLocale, I18n, Locale };
+export { defaultLocale, I18n };

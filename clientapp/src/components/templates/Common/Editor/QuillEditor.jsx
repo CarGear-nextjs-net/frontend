@@ -1,5 +1,4 @@
 "use client";
-import { useTranslations } from "next-intl";
 import Quill from "quill";
 import "quill/dist/quill.bubble.css";
 import "quill/dist/quill.snow.css";
@@ -67,12 +66,11 @@ const QuillEditor = forwardRef(
     },
     ref
   ) => {
-    const containerRef = useRef < HTMLDivElement > null;
+    const containerRef = useRef(null) ;
     const defaultValueRef = useRef(defaultValue);
     const onTextChangeRef = useRef(onTextChange);
     const onSelectionChangeRef = useRef(onSelectionChange);
     const onChangeRef = useRef(onChange);
-    const t = useTranslations();
 
     useLayoutEffect(() => {
       onTextChangeRef.current = onTextChange;
@@ -133,15 +131,6 @@ const QuillEditor = forwardRef(
                   quill?.history.undo();
                 },
               },
-            },
-            pdfUploader: {
-              t: t,
-            },
-            videoUploader: {
-              t: t,
-            },
-            image: {
-              t: t,
             },
             resize: {
               locale: {},

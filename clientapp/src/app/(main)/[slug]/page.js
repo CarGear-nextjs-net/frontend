@@ -1,7 +1,6 @@
-import ProductDetailController from "@/components/product/ProductDetailController";
-import ProductRelate from "@/components/product/ProductRelates";
 import { fetchProductBySlug } from "@/lib/api";
 import NotFound from "@/app/not-found";
+import ProductDetailController from "@/components/templates/manager/product/ProductDetailController";
 
 export async function generateMetadata({ params }) {
     const { slug } = params;
