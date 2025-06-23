@@ -7,3 +7,19 @@ export function format(str, ...values) {
     }
   });
 }
+
+function removeVietnameseTones(str) {
+  return str
+    .normalize("NFD") 
+    .replace(/[\u0300-\u036f]/g, "") 
+    .replace(/đ/g, "d") 
+    .replace(/Đ/g, "D");
+}
+export function generateSlug(name) {
+  return removeVietnameseTones(name)
+  .toLowerCase()
+  .trim()
+  .replace(/\s+/g, "-") 
+  .replace(/[^a-z0-9-]/g, "") 
+  .replace(/-+/g, "-"); 
+}
