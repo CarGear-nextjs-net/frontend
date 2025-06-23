@@ -29,7 +29,7 @@ const Editor = forwardRef(
     },
     ref
   ) => {
-    console.log("🚀 ~ defaultValue:", defaultValue)
+   
     return (
       <FormField
         control={control}

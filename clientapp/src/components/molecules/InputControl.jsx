@@ -29,13 +29,12 @@ const InputControl = React.forwardRef(
       prefixIconClassName,
       autoFocus = false,
       onBlur,
-      variant = false,
       ...props
     },
     ref
   ) => {
     const classOverride = cn(
-      'rounded-[0.5rem] py-[0.75rem] pl-4 border-solid bg-transparent border-[#D8D8D8] text-[#1F1F1F] placeholder:text-placeholder-input placeholder:text-sm h-[3rem] placeholder:text-[#858585]',
+      'rounded-[0.5rem] py-[0.75rem] pl-4 border-solid bg-transparent border-[#D8D8D8] text-[#1F1F1F] placeholder:text-placeholder-input placeholder:text-sm h-[2.5rem] placeholder:text-[#858585]',
       suffixIcon && 'pr-[2.5rem]',
       prefixIcon && 'pl-[2.5rem]',
       disabled && 'bg-mute text-[#B8B8B8] bg-[#F7F7F7]',
@@ -96,7 +95,6 @@ const InputControl = React.forwardRef(
                   classOverride,
                   className,
                   disabled && 'bg-[#1018280D] border-[#C7C7C7] placeholder:text-[#B8B8B8]',
-                  variant && 'placeholder:!text-[#666666] placeholder:font-normal '
                 )}
                 type={type}
                 step={step}
@@ -104,7 +102,6 @@ const InputControl = React.forwardRef(
                 {...props}
                 {...field}
                 ref={ref}
-                variant={variant}
                 onChange={(e) => handleChangeInput(e, field)}
                 onBlur={(e) => {
                   if (isTrimText && e.target.value) {
