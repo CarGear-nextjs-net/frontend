@@ -1,5 +1,7 @@
+import BannerController from "@/components/templates/User/banner/BannerController";
 import Blogs from "@/components/templates/User/blog/Blogs";
 import ReadingProgressBar from "@/components/templates/User/news/reading-progress-bar";
+import TopSellingProductsController from "@/components/templates/User/product/TopSellingProductsController";
 import { fetchHomeData } from "@/lib/api";
 import { redirect } from "next/navigation";
 
@@ -10,8 +12,8 @@ export default async function Home() {
     return (
       <div className="container-fliud bg-white">
         <ReadingProgressBar />
-        {/* <BannerController blogs={data.blogInBanner} /> */}
-        {/* <TopSellingProductController products={data.topSaleProducts} /> */}
+        <BannerController blogs={data.blogInBanner} />
+        <TopSellingProductsController products={data.topSaleProducts} />
         {/* {categoryWithProducts.map(({id,name,products}) => (
                     <ProductByCategoryController key={id} title={name} products={products} />
                 ))} */}

@@ -40,7 +40,7 @@ export default function BannerController({ blogs = [] }) {
                         }`}
                     >
                         {/* Image */}
-                        {/* <Image src={blog.image || "/placeholder.svg"} fill alt={blog.title} className="object-cover w-full h-full" /> */}
+                        <Image src={blog.image || "/placeholder.svg"} fill alt={blog.title} className="object-cover w-full h-full" />
 
                         {/* Caption */}
                         <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8 bg-gradient-to-t from-black/70 to-transparent text-white">

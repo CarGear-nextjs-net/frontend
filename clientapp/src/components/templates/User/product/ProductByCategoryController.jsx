@@ -1,12 +1,9 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import Image from "next/image"
+import { useRef, useState, useEffect } from "react"
 import Link from "next/link"
-import {ChevronLeft, ChevronRight, ShoppingBag, ShoppingCart} from "lucide-react"
-import { formatPrice } from "@/utils/format"
-import {Button} from "@/components/ui/button";
-import ProductCard from "@/components/product/product-card";
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import ProductCard from "./product-card";
 
 export default function ProductByCategoryController({ title = "Category", products=[] }) {
     const containerRef = useRef(null)

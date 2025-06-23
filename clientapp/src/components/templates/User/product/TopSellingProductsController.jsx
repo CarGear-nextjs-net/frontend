@@ -6,10 +6,12 @@ import Image from "next/image"
 import Link from "next/link"
 import {formatPrice} from "@/utils/format";
 import { useAuth } from "@/context/AuthContext"
+import { useUserProfileStore } from "@/stores"
 
 export default function TopSellingProductsController(props) {
     const products = props.products;
     const {setOpen} = useAuth();
+    const { userStore } = useUserProfileStore();
     const [hoveredProduct, setHoveredProduct] = useState(null)
     return (
         <div className={`py-12 px-4 bg-gray-50 `}>
@@ -97,8 +99,8 @@ export default function TopSellingProductsController(props) {
                                         </span>
                                     </div>
                                     <button className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center cursor-pointer" onClick={() => {
-                                        const userData = JSON.parse(localStorage.getItem("user-profile"));
-                                        if (userData) {
+                                        
+                                        if (userStore?.id) {
                                             console.log("add to cart");
                                         } else {
                                             setOpen(true)
