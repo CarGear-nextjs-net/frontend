@@ -168,7 +168,7 @@ export const fetchProductManager = async (
 export const createProduct = async (data) => {
   try {
     const response = await axios.post(
-      "/api/productmanager/create-product",
+      `${API_BASE_URL}/api/productmanager/create-product`,
       data,
       {
         headers: {
@@ -326,7 +326,7 @@ export const deleteProductImage = async (id) => {
   }
 };
 
-export const fetchContentsManager = async ({ params }) => {
+export const fetchContentsManager = async (params) => {
   try {
     const res = await axios.get(`${API_BASE_URL}/api/ArticleManager/articles`, {
       params: params,

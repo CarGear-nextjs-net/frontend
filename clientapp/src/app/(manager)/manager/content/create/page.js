@@ -1,7 +1,5 @@
-import AddEditContent from "@/components/manager/content/component/AddEdit";
+import AddEditContent from "@/components/templates/manager/content/component/AddEdit";
 
-export default async function CreateContentPage(){
-    return(
-        <AddEditContent/>
-    )
+export default async function CreateContentPage() {
+  return <AddEditContent />;
 }

@@ -1,7 +1,5 @@
-export default function CustomersPage(){
-    return (
-        <div className="w-full bg-white h-screen">
-            customer
-        </div>
-    )
+import CustomerController from "@/components/templates/manager/customer";
+
+export default async function CustomersPage() {
+  return <CustomerController />;
 }

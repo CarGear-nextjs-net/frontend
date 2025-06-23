@@ -1,13 +1,26 @@
 'use client'
-import {redirect} from "next/navigation";
+import { redirect } from "next/navigation";
 import axios from "axios";
+import { useEffect } from "react";
 
-export default async function LogoutPage(){
-    try{
+export default function LogoutPage() {
+  useEffect(() => {
+    const handleLogout = async () => {
+      try {
+        // Chỉ xóa session từ server
         await axios.delete('/api/session');
-    }catch(e){
+      } catch (e) {
+        console.error('Error deleting session:', e);
+      } finally {
+        // Redirect về trang login
+        redirect("/");
+      }
+    };
 
-    }finally {
-        redirect("/login");
-    }
+    handleLogout();
+  }, []);
+
+  return (
+    <></>
+  );
 }
