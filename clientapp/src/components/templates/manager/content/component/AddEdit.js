@@ -7,22 +7,27 @@ import { Label } from "@/components/ui/label";
 import Editor from "@/components/templates/Common/Editor";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
 import { Controller, useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
-import { createProduct } from "@/lib/api";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { useParams } from "next/navigation";
-import { getDetailContentApi } from "@/lib/apis/contents-api";
+import {  useParams, useRouter } from "next/navigation";
+import { createContentApi, getDetailContentApi, updateContentApi } from "@/lib/apis/contents-api";
 import InputControl from "@/components/molecules/InputControl";
 import TextareaControl from "@/components/molecules/TextareaControl";
+import { getCategoryApi } from "@/lib/apis/categories-api";
+import { useUserProfileStore } from "@/stores";
+import SelectControl from "@/components/molecules/SelectControl";
+import { generateSlug } from "@/utils/functions";
 
 export default function AddEditContent() {
   const { id } = useParams();
   const [preview, setPreview] = useState(null);
   const [content, setContent] = useState(null);
-  const userProfile = JSON.parse(localStorage.getItem("user-profile"));
+  const router = useRouter();
+  const [categories, setCategories] = useState(null);
+  const { userStore } = useUserProfileStore();
+  const [image, setImage] = useState(null);
   const fileInputRef = useRef(null);
   const form = useForm({
     defaultValues: {
@@ -34,6 +39,7 @@ export default function AddEditContent() {
       seoTitle: "",
       seoDescription: "",
       autoSeo: true,
+      categoryId: "",
     },
   });
 
@@ -44,19 +50,31 @@ export default function AddEditContent() {
     formData.append("summary", data.summary);
     formData.append("content", data.content);
     formData.append("isPublic", data.isPublic);
-    formData.append("seoTitle", data.autoSeo ? data.title : data.seoTitle);
-    formData.append("seoDescription", data.autoSeo ? data.summary : data.seoDescription);
     formData.append("image", image);
-    formData.append("userId", userProfile.id);
-
-    const res = await createProduct(formData);
-    if (res.status === 200) {
-      toast.success("Tạo sản phẩm thành công");
-      router.push("/manager/content/");
+    formData.append("AuthorId", userStore.id);
+    formData.append("categoryId", data.categoryId);
+    if (id) {
+      const res = await updateContentApi({ id, data: formData });
+      if (res.status === 200) {
+        toast.success("Cập nhật bài viết thành công");
+        router.push("/manager/content");
+      } else {
+        toast.error(res.message);
+      } 
     } else {
-      toast.error(res.message);
+      const res = await createContentApi({ data: formData });
+      if (res.status === 200) {
+        toast.success("Tạo sản phẩm thành công");
+        router.push("/manager/content");
+      } else {
+        toast.error(res.message);
+      }
     }
+   
   };
+
+  const name = form.watch("title");
+
 
   useEffect(() => {
     async function getDetailContent(id) {
@@ -67,13 +85,12 @@ export default function AddEditContent() {
           summary: res.data?.summary || "",
           slug: res.data?.slug || "",
           content: res.data?.content || "",
-          // isPublic: res.data?.isPublic,
-          // image: res.data?.image,
-          // seoTitle: res.data?.seoTitle,
-          // seoDescription: res.data?.seoDescription,
-          // autoSeo: res.data?.autoSeo,
+          isPublic: res.data?.isPublic,
+          autoSeo: res.data?.autoSeo,
+          categoryId: `${res.data?.categoryId}`,
         };
         form.reset(data);
+        setPreview(res.data?.image);
         setContent(res.data?.content || "");
       } else {
         toast.error(res.message);
@@ -84,6 +101,17 @@ export default function AddEditContent() {
     }
   }, [id]);
 
+  useEffect(() => {
+    async function getCategory() {
+      try {
+        const res = await getCategoryApi();
+        setCategories(res);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getCategory();
+  }, []);
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
@@ -102,22 +130,38 @@ export default function AddEditContent() {
                   control={form.control}
                   name="title"
                   label="Tên bài viết:"
+                  placeholder="Nhập tên bài viết"
                   required
                   rules={{ required: "Tên bài viết là bắt buộc" }}
+                  onBlur={() => {
+                    form.setValue("slug", generateSlug(name));
+                  }}
                 />
                 <InputControl
                   control={form.control}
                   name="slug"
                   label="Slug (URL thân thiện):"
+                  placeholder="Nhập slug"
                   required
                   rules={{ required: "Slug là bắt buộc" }}
+                />
+                <SelectControl
+                  control={form.control}
+                  placeholder="Chọn danh mục"
+                  required
+                  rules={{ required: "Danh mục là bắt buộc" }}
+                  name="categoryId"
+                  label="Danh mục:"
+                  options={categories?.map((item) => ({
+                    value: `${item.id}`,
+                    label: item.name,
+                  })) || []}
                 />
                 <TextareaControl
                   control={form.control}
                   name="summary"
                   label="Mô tả bài viết:"
-                  required
-                  rules={{ required: "Mô tả bài viết là bắt buộc" }}
+                  placeholder="Nhập mô tả bài viết"
                 />
                 <div className="grid grid-cols-3 gap-4 mb-3">
                   <Label className="text-right pt-2 self-start  ">Ảnh bài viết:</Label>
@@ -145,6 +189,7 @@ export default function AddEditContent() {
                               if (file) {
                                 const imageURL = URL.createObjectURL(file);
                                 setPreview(imageURL);
+                                setImage(file);
                               }
                             }}
                           />
@@ -160,7 +205,7 @@ export default function AddEditContent() {
                                 onClick={() => {
                                   setPreview(null);
                                   if (fileInputRef.current) fileInputRef.current.value = "";
-                                  field.onChange(null);
+                                  setImage(null);
                                 }}
                                 className="absolute top-0 right-0 bg-black bg-opacity-50 text-white px-2 py-1 text-xs"
                               >

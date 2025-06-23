@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export default function ContentList({ contents = [], page, setPage, totalPages }) {
+export default function ContentList({ contents = [], page, setPage, totalPages, categories }) {
   const [idSelected, setIdSelected] = useState(null);
   const [openModalDelete, setOpenModalDelete] = useState(false);
   const router = useRouter()
@@ -38,6 +38,7 @@ export default function ContentList({ contents = [], page, setPage, totalPages }
               <th className="p-3">#</th>
               <th className="p-3">Tên bài viết</th>
               <th className="p-3">Mô tả</th>
+              <th className="p-3">Danh mục</th>
               <th className="p-3">Lượt xem</th>
               <th className="p-3">Trạng thái</th>
               <th className="p-3"></th>
@@ -48,7 +49,8 @@ export default function ContentList({ contents = [], page, setPage, totalPages }
               <tr key={content.articleId} className="border-t hover:bg-gray-50">
                 <td className="p-3">{index + 1}</td>
                 <td className="p-3 font-medium">{content.title}</td>
-                <td className="p-3 text-red-600">{content.summary}₫</td>
+                <td className="p-3">{content.summary}₫</td>
+                <td className="p-3">{categories.find((category) => category.id === content.categoryId)?.name}</td>
                 <td className="p-3">{content.views}</td>
                 <td className="p-3">{content.isPublic ? "Công khai" : "Riêng tư"}</td>
                 <td className="p-3 flex items-center gap-2">
@@ -67,6 +69,11 @@ export default function ContentList({ contents = [], page, setPage, totalPages }
             ))}
           </tbody>
         </table>
+        {contents.length === 0 && (
+          <div className="flex justify-center items-center h-32">
+            <p className="text-gray-500 items-center">Không có dữ liệu</p>
+          </div>
+        )}
       </div>
       <PaginationComponent page={page} setPage={setPage} totalPages={totalPages} />
       <DialogConfirmDelete
