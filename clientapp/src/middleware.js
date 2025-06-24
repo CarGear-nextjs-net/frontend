@@ -5,6 +5,7 @@ export function middleware(request) {
   const token = request.cookies.get("session_token")?.value;
   const userRole = request.cookies.get("user_role")?.value;
   
+    
   // Lấy đường dẫn hiện tại
   const { pathname } = request.nextUrl;
 
@@ -16,7 +17,7 @@ export function middleware(request) {
   // Chỉ kiểm tra token và role cho các URL trong /manager/*
   if (pathname.startsWith("/manager")) {
     // Nếu không có token hoặc không phải admin, chuyển về trang login
-    if (!token || userRole !== "1") {
+    if (userRole !== "1") {
       return NextResponse.redirect(new URL("/login", request.url));
     }
   }

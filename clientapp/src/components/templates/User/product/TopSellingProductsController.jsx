@@ -7,11 +7,13 @@ import Link from "next/link"
 import {formatPrice} from "@/utils/format";
 import { useAuth } from "@/context/AuthContext"
 import { useUserProfileStore } from "@/stores"
+import { useOrder } from "@/context/OrderContext"
 
 export default function TopSellingProductsController(props) {
     const products = props.products;
     const {setOpen} = useAuth();
     const { userStore } = useUserProfileStore();
+    const { setProducts, setOpen: setOpenOrder } = useOrder();
     const [hoveredProduct, setHoveredProduct] = useState(null)
     return (
         <div className={`py-12 px-4 bg-gray-50 `}>
@@ -36,7 +38,7 @@ export default function TopSellingProductsController(props) {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 cursor-pointer ">
                     <div
                         className="relative overflow-hidden bg-white rounded-xl shadow-lg transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl"
-                        onMouseEnter={() => setHoveredProduct(products[0].id)}
+                        onMouseEnter={() => setHoveredProduct(products?.[0]?.id)}
                         onMouseLeave={() => setHoveredProduct(null)}
                     >
                         <div className="absolute top-4 left-4 z-10 bg-red-600 text-white font-bold py-2 px-4 rounded-full shadow-md flex items-center">
@@ -44,17 +46,17 @@ export default function TopSellingProductsController(props) {
                             <span>TOP 1</span>
                         </div>
                         <div className="absolute top-4 right-4 z-10 bg-red-500 text-white font-medium py-1 px-3 rounded-full text-sm">
-                            -{Math.round(((products[0].originalPrice - products[0].price) / products[0].originalPrice) * 100)}%
+                            -{Math.round(((products?.[0]?.originalPrice - products?.[0]?.price) / products?.[0]?.originalPrice) * 100)}%
                         </div>
                         <div className="flex flex-col md:flex-row h-full">
                             <div className="relative w-full md:w-1/2 h-64 md:h-auto group">
-                                {/* <Image
-                                    src={products[0].image || "/placeholder.svg"}
-                                    alt={products[0].name}
+                                <Image
+                                    src={products?.[0]?.image || "/placeholder.svg"}
+                                    alt={products?.[0]?.name || "product"}
                                     fill
                                     className="object-cover"
-                                /> */}
-                                <Link href={`/${products[0].slug}`}>
+                                />
+                                <Link href={`/${products?.[0]?.slug}`}>
                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
                                     {/* Nút xem chi tiết */}
                                     <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-auto">
@@ -68,40 +70,40 @@ export default function TopSellingProductsController(props) {
 
                             <div className="w-full md:w-1/2 p-6 flex flex-col justify-between">
                                 <div>
-                                    <Link href={`${products[0].slug}`}>
-                                        <h3 className="text-xl font-bold text-gray-800 mb-2">{products[0].name}</h3>
+                                    <Link href={`${products?.[0]?.slug}`}>
+                                        <h3 className="text-xl font-bold text-gray-800 mb-2">{products?.[0]?.name}</h3>
                                     </Link>
                                     <div className="flex items-center mb-3">
                                         <div className="flex items-center mr-2">
                                             {[...Array(5)].map((_, i) => (
                                                 <Star
                                                     key={i}
-                                                    className={`h-4 w-4 ${i < Math.floor(products[0].rating) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
+                                                    className={`h-4 w-4 ${i < Math.floor(products?.[0]?.rating) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
                                                 />
                                             ))}
                                         </div>
                                         <span className="text-sm text-gray-600">
-                                            {products[0].rating} ({products[0].reviewCount} đánh giá)
+                                            {products?.[0]?.rating} ({products?.[0]?.reviewCount} đánh giá)
                                         </span>
                                     </div>
                                     <div className="flex items-center mb-4">
                                         <TrendingUp className="h-4 w-4 text-red-600 mr-1" />
-                                        <span className="text-sm text-gray-600">Đã bán {products[0].sold} sản phẩm</span>
+                                        <span className="text-sm text-gray-600">Đã bán {products?.[0]?.sold} sản phẩm</span>
                                     </div>
                                 </div>
                                 <div>
                                     <div className="flex items-center mb-4">
                                         <span className="text-2xl font-bold text-red-600 mr-2">
-                                            {formatPrice(products[0].price)}
+                                                {formatPrice(products?.[0]?.price)}
                                         </span>
                                         <span className="text-sm text-gray-500 line-through">
-                                            {formatPrice(products[0].originalPrice)}
+                                            {formatPrice(products?.[0]?.originalPrice)}
                                         </span>
                                     </div>
                                     <button className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center cursor-pointer" onClick={() => {
-                                        
                                         if (userStore?.id) {
-                                            console.log("add to cart");
+                                            setProducts(products?.[0])
+                                            setOpenOrder(true)
                                         } else {
                                             setOpen(true)
                                         }
@@ -131,12 +133,12 @@ export default function TopSellingProductsController(props) {
                                 </div>
                                 <div className="relative h-48 group cursor-pointer overflow-hidden">
                                     {/* Ảnh */}
-                                    {/* <Image
+                                    <Image
                                         src={product.image || "/placeholder.svg"}
                                         alt={product.name}
                                         fill
                                         className="object-cover transition-transform duration-300 group-hover:scale-105"
-                                    /> */}
+                                    />
                                     <Link href={`/${product.slug}`}>
                                     {/* Lớp phủ nền mờ */}
                                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
@@ -203,12 +205,12 @@ export default function TopSellingProductsController(props) {
                             </div>
                             <div className="relative h-48 group cursor-pointer overflow-hidden">
                                 {/* Ảnh */}
-                                {/* <Image
+                                <Image
                                     src={product.image || "/placeholder.svg"}
                                     alt={product.name}
                                     fill
                                     className="object-cover transition-transform duration-300 group-hover:scale-105"
-                                /> */}
+                                />
 
                                 {/* Lớp phủ nền mờ */}
                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
