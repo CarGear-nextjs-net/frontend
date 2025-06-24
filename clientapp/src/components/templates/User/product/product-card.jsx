@@ -15,12 +15,12 @@ export default function ProductCard({ product ,className="",width=300}) {
             {/* Product image */}
             <div className="relative h-36 cursor-pointer">
                 <Link href={`/product/${product.slug}`}>
-                    {/* <Image
+                    <Image
                         src={product.image || "/placeholder.svg"}
                         alt={product.name}
                         fill
                         className="object-cover transition-transform hover:scale-105"
-                    /> */}
+                    />
                 </Link>
             </div>
 

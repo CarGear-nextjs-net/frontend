@@ -1,9 +1,9 @@
 "use client";
-import { fetchContentsManager } from "@/lib/api";
 import { PAGES, PAGESIZE } from "@/utils/constants";
 import { useEffect, useState } from "react";
 import CustomerHeader from "./component/CustomerHeader";
 import CustomerList from "./component/CustomerList";
+import { fetchUsersManager } from "@/lib/apis/customers-api";
 
 export default function CustomerController() {
   const [customers, setCustomers] = useState([]);
@@ -15,22 +15,17 @@ export default function CustomerController() {
   const [totalPages, setTotalPages] = useState(0);
   useEffect(() => {
     const loadData = async () => {
-      const params = {
-        page,
-        pageSize: PAGESIZE,
-        name,
-        email,
-        phone,
-        address,
-      };
-      const res = await fetchContentsManager(params);
+      
+      const res = await fetchUsersManager({
+        roleId:1
+      });
       if (res.data) {
         setCustomers(res.data);
         setTotalPages(res.totalPages);
       }
     };
     loadData();
-  }, [page, name, email, phone, address]);
+  }, []);
 
   return (
     <div className="p-4">

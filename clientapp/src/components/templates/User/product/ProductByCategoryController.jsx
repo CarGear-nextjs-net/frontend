@@ -86,7 +86,7 @@ export default function ProductByCategoryController({ title = "Category", produc
             <div className="relative" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                 <button
                     onClick={() => scroll("left")}
-                    className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-red-400 text-white flex items-center justify-center shadow-md transition-opacity duration-300 ${
+                    className={`absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer z-10 w-10 h-10 rounded-full bg-red-400 text-white flex items-center justify-center shadow-md transition-opacity duration-300 ${
                         !canScrollLeft ? "cursor-not-allowed" : "hover:bg-red-500"
                     } ${isHovering ? "opacity-100" : "opacity-0"}`}
                     disabled={!canScrollLeft}
@@ -106,7 +106,7 @@ export default function ProductByCategoryController({ title = "Category", produc
 
                 <button
                     onClick={() => scroll("right")}
-                    className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-red-400 text-white flex items-center justify-center shadow-md transition-opacity duration-300 ${
+                    className={`absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer z-10 w-10 h-10 rounded-full bg-red-400 text-white flex items-center justify-center shadow-md transition-opacity duration-300 ${
                         !canScrollRight ? "cursor-not-allowed" : "hover:bg-red-500"
                     } ${isHovering ? "opacity-100" : "opacity-0"}`}
                     disabled={!canScrollRight}

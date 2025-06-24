@@ -58,7 +58,7 @@ export default function BannerController({ blogs = [] }) {
                 <>
                     <button
                         onClick={goToPrevious}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-colors"
+                        className="absolute cursor-pointer left-4 top-1/2 -translate-y-1/2 z-20 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-colors"
                         aria-label="Previous slide"
                     >
                         <ChevronLeft className="h-6 w-6" />
@@ -66,7 +66,7 @@ export default function BannerController({ blogs = [] }) {
 
                     <button
                         onClick={goToNext}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-colors"
+                        className="absolute cursor-pointer right-4 top-1/2 -translate-y-1/2 z-20 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-colors"
                         aria-label="Next slide"
                     >
                         <ChevronRight className="h-6 w-6" />
