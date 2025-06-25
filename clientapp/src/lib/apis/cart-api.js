@@ -1,16 +1,16 @@
 import API_BASE_URL from "@/utils/config";
 import axios from "axios";
 
-export const addToCart = async (productId, quantity, userId) => {
+export const addToCartApi = async (items, userId) => {
   const response = await axios.post(`${API_BASE_URL}/api/cart/add-to-cart`, {
-    productId,
-    quantity,
-    userId,
+    items,
+    customerId: userId,
+    status: 0,
   });
-  return response.data;
+  return response;
 };
 
 export const getCart = async () => {
-  const response = await axios.get(`/api/cart`);
+  const response = await axios.get(`${API_BASE_URL}/api/cart`);
   return response.data;
 };

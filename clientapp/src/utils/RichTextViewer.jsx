@@ -22,7 +22,7 @@ const RichTextViewer = ({ content, limit = false, maxHeight = 400 }) => {
         <div className="relative">
             <div
                 ref={contentRef}
-                className={`overflow-hidden transition-all duration-300 ease-in-out max-w-none text-gray-800 text-base leading-relaxed`}
+                className={`overflow-hidden transition-all duration-300 ease-in-out max-w-none text-black text-lg leading-relaxed`}
                 style={{
                     maxHeight: limit && !expanded ? `${maxHeight}px` : "none",
                     ...(limit && !expanded ? fadeStyle : {}),

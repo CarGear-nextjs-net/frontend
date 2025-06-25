@@ -144,7 +144,7 @@ const navItems = [
                 href: "/manager/products/create",
             },
             {
-                title: "categories",
+                title: "Categories",
                 href: "/manager/categories",
             },
         ],

@@ -18,7 +18,7 @@ export function LoginForm({ setOpen }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { setUserStore, userStore } = useUserProfileStore();
+  const { setUserStore } = useUserProfileStore();
   const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,6 +42,7 @@ export function LoginForm({ setOpen }) {
           id: res.data?.userId,
           username: res.data?.username,
           roleId: res.data?.roleId,
+          customerId: res.data?.customerId,
         };
         setUserStore(userData);
         await fetch("/api/session", {

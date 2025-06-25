@@ -30,7 +30,7 @@ import { formatPriceToRawNumber, formatPriceWithoutSymbol } from "@/utils/format
  */
 export default function ProductDetailController({ product, categories, brands }) {
   // Find main product image
-  const mainImage = product.images.find((i) => i.isMain);
+  const mainImage = product?.images?.find((i) => i.isMain);
 
   // State management
   const [productImage, setProductImage] = useState(mainImage.url);

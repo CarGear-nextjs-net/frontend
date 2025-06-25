@@ -11,7 +11,6 @@ import { useState } from "react";
 
 export default function TopSellingProductsController(props) {
   const products = props.products;
-  console.log("🚀 ~ TopSellingProductsController ~ products:", products);
   const { setOpen } = useAuth();
   const { userStore } = useUserProfileStore();
   const { setProducts, setOpen: setOpenOrder } = useOrder();

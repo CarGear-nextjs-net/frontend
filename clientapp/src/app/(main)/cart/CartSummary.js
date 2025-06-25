@@ -1,7 +1,11 @@
+"use client"
+
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import {formatPrice} from "@/utils/format";
 
 export function CartSummary({ subtotal }) {
+    const router = useRouter()
     const shipping = subtotal > 0 ? 30000 : 0
     const total = subtotal + shipping
 
@@ -23,7 +27,7 @@ export function CartSummary({ subtotal }) {
                         <span>{formatPrice(total)}</span>
                     </div>
                     <Button className="w-full">Tiến hành thanh toán</Button>
-                    <Button variant="outline" className="w-full">
+                    <Button variant="outline" className="w-full" onClick={() => router.push("/")}>
                         Tiếp tục mua sắm
                     </Button>
                 </div>

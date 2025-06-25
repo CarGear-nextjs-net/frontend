@@ -10,13 +10,26 @@ import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Input } from "../ui/input";
+import { addToCartApi } from "@/lib/apis/cart-api";
 export default function OrderModal() {
   const { products, open, setOpen } = useOrder();
   const [quantity, setQuantity] = useState(1);
   const { userStore } = useUserProfileStore();
   async function addToCart() {
-    const res = await addToCart(products?.id, quantity, userStore?.id);
-    if (res.success) {
+    const res = await addToCartApi(
+      [
+        {
+          productId: products?.id,
+          quantity: quantity,
+          price: products?.price,
+          productName: products?.name,
+          productPrice: products?.price * quantity,
+        },
+      ],
+      userStore?.customerId
+    );
+    if (res.status === 200) {
+      await fetch(`/api/cart/sync?userID=${userStore?.customerId}`);
       toast.success("Thêm sản phẩm vào giỏ hàng thành công");
     } else {
       toast.error("Thêm sản phẩm vào giỏ hàng thất bại");
