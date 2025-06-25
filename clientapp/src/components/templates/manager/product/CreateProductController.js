@@ -22,7 +22,7 @@ export default function CreateProductController({ categories, brands, sku }) {
     const [autoSeo, setAutoSeo] = useState(true)
     const [product, setProduct] = useState({
         name: "",
-        sku: sku,
+        sku: "",
         slug: "",
         category: 0,
         brand: 0,
@@ -155,7 +155,7 @@ export default function CreateProductController({ categories, brands, sku }) {
                             <Label className="text-right pt-2">Mã sản phẩm:</Label>
                             <div className="col-span-2">
                                 <span className="text-red-500 ">* (Hệ thống tự tạo)</span>
-                                <Input type="text" name={"sku"} value={product.sku} readOnly />
+                                <Input type="text" name={"sku"} value={product.sku} onChange={(e) => handleChange(e)} />
                                 {errors.sku && <p className="text-red-500 text-sm mt-1">{errors.sku}</p>}
                             </div>
                         </div>
