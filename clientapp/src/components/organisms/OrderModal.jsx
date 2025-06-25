@@ -11,10 +11,12 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Input } from "../ui/input";
 import { addToCartApi } from "@/lib/apis/cart-api";
+import { useRouter } from "next/navigation";
 export default function OrderModal() {
   const { products, open, setOpen } = useOrder();
   const [quantity, setQuantity] = useState(1);
   const { userStore } = useUserProfileStore();
+  const router = useRouter();
   async function addToCart() {
     const res = await addToCartApi(
       [
@@ -31,6 +33,7 @@ export default function OrderModal() {
     if (res.status === 200) {
       await fetch(`/api/cart/sync?userID=${userStore?.customerId}`);
       toast.success("Thêm sản phẩm vào giỏ hàng thành công");
+      setOpen(false);
     } else {
       toast.error("Thêm sản phẩm vào giỏ hàng thất bại");
     }
@@ -91,18 +94,18 @@ export default function OrderModal() {
             <Button
               type="button"
               variant="outline"
-              // onClick={() => {
-              //   setOpen(false);
-              //   redirect("/login");
-              // }}
+              onClick={() => {
+                handleAddToCart();
+                router.push("/cart");
+              }}
             >
               <div className="flex items-center ">
                 <span className="text-xl font-bold text-red-600 mr-2">
                   {formatPrice(products?.price * quantity)}
                 </span>
-                <span className="text-sm text-gray-500 line-through">
-                  {formatPrice(products?.originalPrice)}
-                </span>
+                {!!products?.originalPrice && <span className="text-sm text-gray-500 line-through">
+                  {formatPrice(products?.originalPrice * quantity)}
+                </span>}
               </div>
             </Button>
           </CardFooter>

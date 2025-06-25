@@ -6,8 +6,16 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { formatPrice } from "@/utils/format"
+import { useUserProfileStore } from "@/stores"
+import { useState } from "react"
+import { useOrder } from "@/context/OrderContext"
+import { useAuth } from "@/context/AuthContext"
 
 export default function ProductCard({ product ,className="",width=300}) {
+    const { userStore } = useUserProfileStore();
+    const { setOpen } = useAuth();
+    const { setProducts, setOpen: setOpenOrder } = useOrder();
+
     return (
         <Card
             style={{width:`${width}px`}}
@@ -52,7 +60,14 @@ export default function ProductCard({ product ,className="",width=300}) {
 
                 <div className="flex items-center justify-between">
                     <span className="text-sm font-bold text-red-600">{formatPrice(product.price)}</span>
-                    <Button size="sm" className="bg-red-600 hover:bg-red-700 h-8 px-2">
+                    <Button size="sm" className="bg-red-600 hover:bg-red-700 h-8 px-2" onClick={() => {
+                        if (userStore?.id) {
+                            setProducts(product);
+                            setOpenOrder(true);
+                        } else {
+                            setOpen(true);
+                        }
+                    }}>
                         <ShoppingCart className="h-3 w-3" />
                     </Button>
                 </div>

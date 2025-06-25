@@ -77,7 +77,7 @@ export default function ProductByCategoryController({ title = "Category", produc
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-800">{title}</h2>
                 </div>
                 <Link
-                    href="/san-pham-ban-chay"
+                    href="#"
                     className="hidden md:flex items-center text-red-600 hover:text-red-700 font-medium"
                 >
                     Xem tất cả <ChevronRight className="h-4 w-4 ml-1" />
