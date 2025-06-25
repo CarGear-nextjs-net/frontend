@@ -1,6 +1,6 @@
 import { fetchProductBySlug } from "@/lib/api";
 import NotFound from "@/app/not-found";
-import ProductDetailController from "@/components/templates/manager/product/ProductDetailController";
+import ProductDetailController from "@/components/templates/User/product/ProductDetailController";
 
 export async function generateMetadata({ params }) {
     const { slug } = params;
@@ -39,7 +39,6 @@ export default async function ProductPage({ params }) {
         return (
             <div className="bg-white">
                 <ProductDetailController data={data} />
-                {/* Related Products Section */}
 
             </div>
         );
