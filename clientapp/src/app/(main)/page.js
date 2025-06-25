@@ -15,9 +15,9 @@ export default async function Home() {
         <ReadingProgressBar />
         <BannerController blogs={data.blogInBanner} />
         <TopSellingProductsController products={data.topSaleProducts} />
-        {categoryWithProducts.map(({id,name,products}) => (
-                    <ProductByCategoryController key={id} title={name} products={products} />
-                ))}
+        {categoryWithProducts.map(({ id, name, products }) => (
+          <ProductByCategoryController key={id} title={name} products={products} />
+        ))}
         <Blogs blogs={data.blogInBanner} />
       </div>
     );

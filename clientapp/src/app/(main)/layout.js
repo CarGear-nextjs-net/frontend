@@ -9,6 +9,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { OrderProvider } from "@/context/OrderContext";
 import { fetchCategories } from "@/lib/api";
 import { useEffect, useState } from "react";
+import { Toaster } from "sonner";
 
 export default function MainLayout({ children }) {
   const [data, setData] = useState({});
@@ -37,6 +38,7 @@ export default function MainLayout({ children }) {
           <FloatingContactWidget />
           <AuthDialog />
           <OrderModal />
+          <Toaster richColors position="top-right" />
         </div>
       </OrderProvider>
     </AuthProvider>

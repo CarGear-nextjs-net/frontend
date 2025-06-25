@@ -11,6 +11,7 @@ import axios from "axios";
 import { AlertCircle, Lock, Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export function LoginForm({ setOpen }) {
   const [email, setEmail] = useState("");
@@ -18,7 +19,6 @@ export function LoginForm({ setOpen }) {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const { setUserStore, userStore } = useUserProfileStore();
-  console.log("🚀 ~ LoginForm ~ userStore:", userStore)
   const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,6 +52,7 @@ export function LoginForm({ setOpen }) {
             userRole: res.data?.roleId || "2",
           }),
         });
+        toast.success("Đăng nhập thành công");
       } else {
         setError("Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.");
       }
