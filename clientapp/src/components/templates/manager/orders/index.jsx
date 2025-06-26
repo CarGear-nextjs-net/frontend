@@ -36,6 +36,7 @@ export default function OrderController() {
         search={search}
         setStatusFilter={setStatusFilter}
         statusFilter={statusFilter}
+        orders={orders}
       />
       <OrderList orders={orders} page={page} setPage={setPage} totalPages={totalPages} />
     </div>
