@@ -1,90 +1,36 @@
 "use client";
 
-import DialogConfirmDelete from "@/components/templates/Common/DialogConfirmDelete";
-import { PaginationComponent } from "@/components/templates/Common/Pagination";
-import { deleteContentApi } from "@/lib/apis/contents-api";
-import { Settings, Trash2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { debounce } from "lodash";
 
-export default function OrderHeader({ orders = [], page, setPage, totalPages }) {
-  const [idSelected, setIdSelected] = useState(null);
-  const [openModalDelete, setOpenModalDelete] = useState(false);
-  const router = useRouter()
-  const handleDelete = async () => {
-    if (!idSelected) {
-      toast.error("Vui lòng chọn bài viết để xóa");
-      return;
-    }
-    try {
-      const res = await deleteContentApi({ id: idSelected });
-      if (res.status === 200) {
-        toast.success("Xóa bài viết thành công");
-        setIdSelected(null);
-        setOpenModalDelete(false);
-        setPage(1);
-      }
-    } catch (e) {
-      toast.error("Xóa bài viết thất bại");
-    }
-  };
+export default function OrderHeader({ search, statusFilter, setSearch, setStatusFilter }) {
   return (
-    <>
-      <div className="overflow-x-auto">
-        <table className="min-w-full border border-gray-200 shadow-md overflow-hidden">
-          <thead className="bg-gray-100 text-gray-700 text-left">
-            <tr>
-              <th className="p-3">#</th>
-              <th className="p-3">Tên bài viết</th>
-              <th className="p-3">Mô tả</th>
-              <th className="p-3">Danh mục</th>
-              <th className="p-3">Lượt xem</th>
-              <th className="p-3">Trạng thái</th>
-              <th className="p-3"></th>
-            </tr>
-          </thead>
-          <tbody className="text-sm text-gray-800">
-            {contents.map((content, index) => (
-              <tr key={content.articleId} className="border-t hover:bg-gray-50">
-                <td className="p-3">{index + 1}</td>
-                <td className="p-3 font-medium">{content.title}</td>
-                <td className="p-3">{content.summary}₫</td>
-                <td className="p-3">{categories.find((category) => category.id === content.categoryId)?.name}</td>
-                <td className="p-3">{content.views}</td>
-                <td className="p-3">{content.isPublic ? "Công khai" : "Riêng tư"}</td>
-                <td className="p-3 flex items-center gap-2">
-                  <Settings className="w-4 h-4 cursor-pointer" onClick={() => {
-                      router.push(`/manager/content/${content.articleId}/edit`)
-                    }}/>
-                  <Trash2
-                    className="w-4 h-4 cursor-pointer"
-                    onClick={() => {
-                      setIdSelected(content.articleId);
-                      setOpenModalDelete(true);
-                    }}
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {contents.length === 0 && (
-          <div className="flex justify-center items-center h-32">
-            <p className="text-gray-500 items-center">Không có dữ liệu</p>
-          </div>
-        )}
+    <div className="flex flex-col md:flex-row justify-between items-center gap-2 mb-4">
+      <div className="flex gap-2 w-full md:w-auto">
+        <input
+          type="text"
+          placeholder="Tìm kiếm đơn hàng..."
+          className="border px-3 py-2 rounded-md w-full md:w-64"
+          onChange={debounce((e) => {
+            setSearch(e.target.value);
+          }, 500)}
+        />
+        <select
+          className="border px-3 py-2 rounded-md"
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+        >
+          <option value="">Tất cả trạng thái</option>
+          <option value="0">Chờ xác nhận</option>
+          <option value="1">Đã xác nhận</option>
+          <option value="2">Đang giao hàng</option>
+          <option value="3">Đã giao hàng</option>
+          <option value="4">Đã hủy</option>
+        </select>
       </div>
-      <PaginationComponent page={page} setPage={setPage} totalPages={totalPages} />
-      <DialogConfirmDelete
-        open={openModalDelete}
-        setOpen={setOpenModalDelete}
-        onConfirm={handleDelete}
-        onCancel={() => {
-          setIdSelected(null);
-          setOpenModalDelete(false);
-        }}
-      />
-    </>
+      <div className="flex gap-2">
+        <Button className="bg-blue-600 text-white hover:bg-blue-700">📊 Xuất báo cáo</Button>
+      </div>
+    </div>
   );
 }

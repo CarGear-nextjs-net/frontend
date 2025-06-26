@@ -56,8 +56,9 @@ const MenuActions = ({ category, handleSelectChildren, onRefresh }) => {
     if (res.status === 200) {
       toast.success("Xóa danh mục thành công");
       onRefresh();
-      if (category.isParent) {handleSelectChildren(null)}
-
+      if (category.isParent) {
+        handleSelectChildren(null);
+      }
     } else {
       toast.error("Xóa danh mục thất bại");
     }
@@ -84,7 +85,7 @@ const MenuActions = ({ category, handleSelectChildren, onRefresh }) => {
               </DropdownMenuItem>
             </>
           )}
-          {category.isParent && category.children.length === 0 && (
+          {((category.isParent && category.children.length === 0) || !category.isParent) && (
             <DropdownMenuItem onClick={handleDelete}>Xóa</DropdownMenuItem>
           )}
         </DropdownMenuContent>
