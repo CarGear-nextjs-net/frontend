@@ -44,3 +44,21 @@ export const deleteOrderApi = async (orderId) => {
     throw e;
   }
 };
+
+export const fetchOrdersByCustomerStatus = async (customerId, status) => {
+  const res = await axios.get(`${API_BASE_URL}/api/ordermanager/orders/by-customer-status?customerId=${customerId}&status=${status}`);
+  return res;
+};
+
+export const fetchOrderDetail = async (orderId) => {
+  const res = await axios.get(`${API_BASE_URL}/api/ordermanager/orders/${orderId}`);
+  return res;
+};
+
+export const updateOrderStatusUser = async (orderId, status) => {
+  const res = await axios.put(`${API_BASE_URL}/api/ordermanager/update-order-status`, {
+    orderId,
+    status,
+  });
+  return res;
+};

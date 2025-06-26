@@ -86,9 +86,9 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="z-[99999]">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuLabel>Tài khoản</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="cursor-pointer">Profile</DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer">Hồ sơ</DropdownMenuItem>
                     {userStore.roleId === 1 && (
                       <DropdownMenuItem
                         onClick={() => {
@@ -96,16 +96,16 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
                         }}
                         className="cursor-pointer"
                       >
-                        Manager
+                        Quản lý
                       </DropdownMenuItem>
                     )}
-                    <DropdownMenuItem className="cursor-pointer">Settings</DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer">Cài đặt</DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onClick={handleLogout}
                       className="text-red-600 cursor-pointer"
                     >
-                      Logout
+                      Đăng xuất
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
