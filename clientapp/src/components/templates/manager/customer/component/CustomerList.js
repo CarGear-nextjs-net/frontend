@@ -3,7 +3,6 @@
 import DialogConfirmDelete from "@/components/templates/Common/DialogConfirmDelete";
 import { PaginationComponent } from "@/components/templates/Common/Pagination";
 import { deleteContentApi } from "@/lib/apis/contents-api";
-import { Settings, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
