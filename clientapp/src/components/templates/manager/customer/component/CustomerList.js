@@ -47,11 +47,11 @@ export default function CustomerList({ customers = [], page, setPage, totalPages
             {customers.map((customer, index) => (
               <tr key={customer.id} className="border-t hover:bg-gray-50">
                 <td className="p-3">{index + 1}</td>
-                <td className="p-3 font-medium">{customer.name}</td>
+                <td className="p-3 font-medium">{customer.customerName}</td>
                 <td className="p-3">{customer.email}</td>
                 <td className="p-3">{customer.phone}</td>
                 <td className="p-3">{customer.address}</td>
-                <td className="p-3 flex items-center gap-2">
+                {/* <td className="p-3 flex items-center gap-2">
                   <Settings className="w-4 h-4 cursor-pointer" onClick={() => {
                       router.push(`/manager/customer/${customer.id}/edit`)
                     }}/>
@@ -62,7 +62,7 @@ export default function CustomerList({ customers = [], page, setPage, totalPages
                       setOpenModalDelete(true);
                     }}
                   />
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>

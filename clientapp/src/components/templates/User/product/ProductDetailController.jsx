@@ -1,6 +1,5 @@
 "use client";
 
-import ProductRelate from "@/components/product/ProductRelates";
 import DropdownCategory from "@/components/templates/User/categories/DropdownCategory";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchCategories } from "@/lib/api";
@@ -9,6 +8,7 @@ import RichTextViewer from "@/utils/RichTextViewer";
 import { Check, ChevronLeft, ChevronRight, Minus, Plus, ShoppingBag, Star, X } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import RelatedProducts from "./ProductRelates";
 
 /**
  * ProductDetail Component
@@ -102,6 +102,10 @@ export default function ProductDetailController({ data }) {
       isCategoryRed.current = true;
     }
   });
+
+  const handleAddToCart = () => {
+    console.log("Add to cart");
+  };
 
   return (
     <div className="container-fluid px-4 mx-auto ">
@@ -264,6 +268,7 @@ export default function ProductDetailController({ data }) {
                 <button
                   className="w-full px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md flex items-center justify-center transition-colors"
                   aria-label="Add to cart"
+                  onClick={() => handleAddToCart()}
                 >
                   <ShoppingBag className="w-5 h-5 mr-2" />
                   Thêm vào giỏ hàng
@@ -272,130 +277,102 @@ export default function ProductDetailController({ data }) {
             </div>
           </div>
 
-          {/* Product Details Tabs */}
           <div className="mb-8">
-            <Tabs defaultValue="description" className="mt-6 flex-grow">
-              <TabsList className="w-full h-auto border-b rounded-none bg-transparent border-gray-200 p-0 justify-start overflow-x-auto">
-                <TabsTrigger
-                  value="description"
-                  className="py-2 md:py-3 px-3 md:px-4 font-medium text-xs md:text-sm whitespace-nowrap rounded-none border-0 border-b-2 border-transparent data-[state=active]:border-red-600 data-[state=active]:text-red-600 data-[state=active]:shadow-none text-gray-500 hover:text-gray-700"
-                >
-                  Mô tả sản phẩm
-                </TabsTrigger>
-                <TabsTrigger
-                  value="attributes"
-                  className="py-2 md:py-3 px-3 md:px-4 font-medium text-xs md:text-sm whitespace-nowrap rounded-none border-0 border-b-2 border-transparent data-[state=active]:border-red-600 data-[state=active]:text-red-600 data-[state=active]:shadow-none text-gray-500 hover:text-gray-700"
-                >
-                  Thông số kỹ thuật
-                </TabsTrigger>
-                <TabsTrigger
-                  value="reviews"
-                  className="py-2 md:py-3 px-3 md:px-4 font-medium text-xs md:text-sm whitespace-nowrap rounded-none border-0 border-b-2 border-transparent data-[state=active]:border-red-600 data-[state=active]:text-red-600 data-[state=active]:shadow-none text-gray-500 hover:text-gray-700"
-                >
-                  Đánh giá ({product.review})
-                </TabsTrigger>
-              </TabsList>
-
-              <div className="py-4 max-h-[400px] md:max-h-none overflow-y-auto">
-                <TabsContent value="description" className="m-0 p-0">
-                  <RichTextViewer content={product.description} limit={false} />
-                </TabsContent>
-
-                <TabsContent value="attributes" className="m-0 p-0">
-                  <div className="p-2">
-                    <ul className="divide-y divide-gray-200">
-                      {product.attributes.map(({ name, value }, index) => (
-                        <li key={index} className="flex justify-between items-center py-3">
-                          <span className="font-medium text-gray-500">{name}</span>
-                          <span className="text-gray-900">{value}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="reviews" className="m-0 p-0">
-                  <div className="p-2">
-                    <div className="grid grid-cols-1 gap-4 mb-4">
-                      {/* Review Summary */}
-                      <div className="flex items-center space-x-4 border-b border-gray-200 pb-4">
-                        <div className="text-center">
-                          <h2 className="text-3xl font-bold">{product.rating}</h2>
-                          <div className="flex my-1">
-                            {[...Array(5)].map((_, i) => (
-                              <Star
-                                key={i}
-                                className={`w-4 h-4 ${
-                                  i < Math.floor(product.rating)
-                                    ? "text-yellow-400 fill-yellow-400"
-                                    : "text-gray-300"
-                                }`}
-                              />
-                            ))}
-                          </div>
-                          <p className="text-gray-500 text-sm">{product.review} đánh giá</p>
-                        </div>
+            <div className="text-2xl font-bold mb-4 w-full border-b border-gray-200">Thông tin sản phẩm</div>
+            <div className=" max-h-[400px] md:max-h-none overflow-y-auto">
+              <div className="text-xl font-bold mb-2 w-full pb-2">Mô tả sản phẩm</div>
+              <RichTextViewer content={product.description} limit={false} />
+              <div className="text-xl font-bold mb-2 w-full pb-2">Thông số kỹ thuật</div>
+              <div className="px-2">
+                <ul className="divide-y divide-gray-200">
+                  {product.attributes.map(({ name, value }, index) => (
+                    <li key={index} className="flex justify-between items-center py-3">
+                      <span className="font-medium text-gray-500 w-1/4">{name}</span>
+                      <span className="text-gray-900 w-3/4">{value}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="text-xl font-bold mb-2 w-full pb-2">Đánh giá</div>
+              <div className="p-2">
+                <div className="grid grid-cols-1 gap-2 mb-4">
+                  {/* Review Summary */}
+                  <div className="flex items-center space-x-4 border-b border-gray-200 pb-4">
+                    <div className="text-center">
+                      <h2 className="text-3xl font-bold">{product.rate}</h2>
+                      <div className="flex my-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`w-4 h-4 ${
+                              i < Math.floor(product.rate)
+                                ? "text-yellow-400 fill-yellow-400"
+                                : "text-gray-300"
+                            }`}
+                          />
+                        ))}
                       </div>
-
-                      {/* Review List */}
-                      <div>
-                        <h3 className="text-base font-semibold mb-3">Đánh giá của khách hàng</h3>
-
-                        {product.reviews && product.reviews.length > 0 ? (
-                          <div className="space-y-4">
-                            {product.reviews.map((review, index) => (
-                              <div
-                                key={index}
-                                className={`${
-                                  index < product.reviews.length - 1
-                                    ? "border-b border-gray-200 pb-4"
-                                    : ""
-                                }`}
-                              >
-                                <div className="flex justify-between mb-1">
-                                  <h4 className="font-semibold text-sm">{review.name}</h4>
-                                  <span className="text-gray-500 text-xs">{review.date}</span>
-                                </div>
-                                <div className="flex mb-1">
-                                  {[...Array(5)].map((_, i) => (
-                                    <Star
-                                      key={i}
-                                      className={`w-3 h-3 ${
-                                        i < review.rating
-                                          ? "text-yellow-400 fill-yellow-400"
-                                          : "text-gray-300"
-                                      }`}
-                                    />
-                                  ))}
-                                </div>
-                                <p className="text-gray-700 text-sm">{review.comment}</p>
-                              </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <p className="text-gray-500 text-sm">
-                            Chưa có đánh giá nào cho sản phẩm này.
-                          </p>
-                        )}
-
-                        {product.reviews && product.reviews.length > 0 && (
-                          <button className="mt-4 px-3 py-1 text-sm border border-red-600 text-red-600 rounded-md hover:bg-red-50 transition-colors">
-                            Xem tất cả đánh giá
-                          </button>
-                        )}
-                      </div>
+                      <p className="text-gray-500 text-sm">{product.review} đánh giá</p>
                     </div>
                   </div>
-                </TabsContent>
+
+                  {/* Review List */}
+                  <div>
+                    <h3 className="text-base font-semibold mb-3">Đánh giá của khách hàng</h3>
+
+                    {product.reviews && product.reviews.length > 0 ? (
+                      <div className="space-y-4">
+                        {product.reviews.map((review, index) => (
+                          <div
+                            key={index}
+                            className={`${
+                              index < product.reviews.length - 1
+                                ? "border-b border-gray-200 pb-4"
+                                : ""
+                            }`}
+                          >
+                            <div className="flex justify-between mb-1">
+                              <h4 className="font-semibold text-sm">{review.name}</h4>
+                              <span className="text-gray-500 text-xs">{review.date}</span>
+                            </div>
+                            <div className="flex mb-1">
+                              {[...Array(5)].map((_, i) => (
+                                <Star
+                                  key={i}
+                                  className={`w-3 h-3 ${
+                                    i < review.rating
+                                      ? "text-yellow-400 fill-yellow-400"
+                                      : "text-gray-300"
+                                  }`}
+                                />
+                              ))}
+                            </div>
+                            <p className="text-gray-700 text-sm">{review.comment}</p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-gray-500 text-sm">
+                        Chưa có đánh giá nào cho sản phẩm này.
+                      </p>
+                    )}
+
+                    {product.reviews && product.reviews.length > 0 && (
+                      <button className="mt-4 px-3 py-1 text-sm border border-red-600 text-red-600 rounded-md hover:bg-red-50 transition-colors">
+                        Xem tất cả đánh giá
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
-            </Tabs>
+            </div>
           </div>
 
           {/* Related Products - Full width on mobile */}
 
           <div className="mb-8">
             {productRelates.length > 0 && (
-              <ProductRelate products={productRelates} title={"CÓ THỂ BẠN THÍCH..."} />
+              <RelatedProducts products={productRelates} title={"CÓ THỂ BẠN THÍCH..."} />
             )}
           </div>
 

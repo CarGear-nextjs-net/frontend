@@ -2,12 +2,14 @@
 import DesktopHeader from "@/components/templates/Layout/header/DesktopHeader";
 import MobileHeader from "@/components/templates/Layout/header/MobileHeader";
 import useMediaQuery from "@/hooks/useMediaQuery";
+import { useUserProfileStore } from "@/stores";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 export default function Header({ data }) {
   const categories = data.categories;
   const headerRef = useRef(null);
+  const { userStore } = useUserProfileStore();
   const [headerHeight, setHeaderHeight] = useState(0);
   const [isSticky, setIsSticky] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -31,6 +33,12 @@ export default function Header({ data }) {
       setHeaderHeight(height);
     }
   }, []);
+
+  useEffect(() => {
+    if (userStore?.customerId) {
+      fetch(`/api/cart/sync?userID=${userStore.customerId}`);
+    }
+  }, [userStore]);
 
   const handleScroll = () => {
     if (!isStickyEnabled) return; // Không xử lý scroll nếu không áp dụng

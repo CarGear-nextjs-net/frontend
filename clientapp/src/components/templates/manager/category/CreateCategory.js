@@ -1,32 +1,39 @@
 'use client'
 import {Dialog, DialogContent, DialogTitle} from "@/components/ui/dialog";
+import { createCategoryApi } from "@/lib/apis/categories-api";
 import {useState} from "react";
+import { toast } from "sonner";
 
 export default function CreateCategory({ categoryParent = null, open, setOpen, onCreated  }) {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [parentId, setParentId] = useState(categoryParent?.id || "");
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        const categoryData = {
-            name,
-            description,
-            parentId: categoryParent ? parentId : null,
-        };
-
-        console.log("Category Submitted:", categoryData);
-
-        if (onCreated) onCreated(categoryData);
-
+    const handleClose = () => {
         setName("");
         setDescription("");
         setParentId(categoryParent?.id || "");
         setOpen(false);
+    }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const categoryData = {
+            categoryName: name,
+            description,
+            parentId: categoryParent ? parentId : null,
+        };
+
+      const res =  await createCategoryApi(categoryData)
+      if(res.categoryId){
+        toast.success("Tạo danh mục thành công");
+        onCreated();
+        handleClose();
+      }else{
+        toast.error("Tạo danh mục thất bại");
+      }
     };
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog open={open} onOpenChange={handleClose}>
             {/* Không cần DialogTrigger nữa */}
             <DialogContent className="w-full max-w-[1000px] min-w-[600px] p-0 border-none bg-white z-[1000]">
             <DialogTitle className="text-xl font-bold mb-4">Tạo danh mục mới</DialogTitle>

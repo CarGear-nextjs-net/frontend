@@ -1,7 +1,7 @@
-import axios from "axios";
 import API_BASE_URL from "@/utils/config";
-import qs from "qs";
 import { PAGESIZE } from "@/utils/constants";
+import axios from "axios";
+import qs from "qs";
 export const fetchCategories = async () => {
   try {
     const response = await axios.get(`${API_BASE_URL}/api/categories`);
@@ -69,14 +69,10 @@ export const fetchFilterProduct = async ({
   };
 
   try {
-    const response = await axios.get(
-      `${API_BASE_URL}/api/ProductListPage/filter`,
-      {
-        params,
-        paramsSerializer: (params) =>
-          qs.stringify(params, { arrayFormat: "repeat" }),
-      }
-    );
+    const response = await axios.get(`${API_BASE_URL}/api/ProductListPage/filter`, {
+      params,
+      paramsSerializer: (params) => qs.stringify(params, { arrayFormat: "repeat" }),
+    });
     return {
       products: response.data.products,
       totalPages: response.data.totalPages,
@@ -88,10 +84,7 @@ export const fetchFilterProduct = async ({
 
 export const fetchDataForFilter = async () => {
   try {
-    const response = await axios.get(
-      `${API_BASE_URL}/api/ProductListPage/get-data-for-filter`,
-      {}
-    );
+    const response = await axios.get(`${API_BASE_URL}/api/ProductListPage/get-data-for-filter`, {});
     return {
       groups: response.data.groups,
       brands: response.data.brands,
@@ -134,11 +127,7 @@ export const checkLogin = async () => {
   }
 };
 
-export const fetchProductManager = async (
-  page = 1,
-  pageSize = 10,
-  category = 0
-) => {
+export const fetchProductManager = async (page = 1, pageSize = 10, category = 0) => {
   try {
     const res = await axios.get(`${API_BASE_URL}/api/productmanager/products`, {
       params: {
@@ -167,15 +156,11 @@ export const fetchProductManager = async (
 
 export const createProduct = async (data) => {
   try {
-    const response = await axios.post(
-      `${API_BASE_URL}/api/productmanager/create-product`,
-      data,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const response = await axios.post(`${API_BASE_URL}/api/productmanager/create-product`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     if (response.status === 200) {
       return {
         status: 200,
@@ -193,9 +178,7 @@ export const createProduct = async (data) => {
 };
 export const apiDetailProductById = async (id) => {
   try {
-    const res = await axios.get(
-      `${API_BASE_URL}/api/productmanager/products/${id}`
-    );
+    const res = await axios.get(`${API_BASE_URL}/api/productmanager/products/${id}`);
     return {
       product: res.data.product,
     };
@@ -225,15 +208,11 @@ export const fetchDemoData = async (name = "") => {
 };
 export const updateInformationProduct = async (data) => {
   try {
-    const res = await axios.put(
-      `${API_BASE_URL}/api/ProductManager/update-information`,
-      data,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const res = await axios.put(`${API_BASE_URL}/api/ProductManager/update-information`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     if (res.status === 200) {
       return {
         status: 200,
@@ -258,15 +237,11 @@ export const updateInformationProduct = async (data) => {
 };
 export const updateProductImage = async (data) => {
   try {
-    const res = await axios.put(
-      `${API_BASE_URL}/api/productmanager/update-image`,
-      data,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const res = await axios.put(`${API_BASE_URL}/api/productmanager/update-image`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     if (res.status === 200) {
       return {
         status: true,
@@ -283,15 +258,11 @@ export const updateProductImage = async (data) => {
 };
 export const saveProductImage = async (data) => {
   try {
-    const res = await axios.post(
-      `${API_BASE_URL}/api/productmanager/create-image`,
-      data,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const res = await axios.post(`${API_BASE_URL}/api/productmanager/create-image`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     if (res.status === 200) {
       return {
         status: true,
@@ -308,9 +279,7 @@ export const saveProductImage = async (data) => {
 };
 export const deleteProductImage = async (id) => {
   try {
-    const res = await axios.delete(
-      `${API_BASE_URL}/api/productmanager/delete-image/${id}`
-    );
+    const res = await axios.delete(`${API_BASE_URL}/api/productmanager/delete-image/${id}`);
     if (res.status === 200) {
       return {
         status: true,

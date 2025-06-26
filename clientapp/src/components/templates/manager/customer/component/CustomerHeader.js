@@ -18,28 +18,28 @@ export default function CustomerHeader({
         <input
           type="text"
           placeholder="Tìm kiếm khách hàng..."
-          value={name}
+          defaultValue={name}
           className="border px-3 py-2 rounded-md w-full md:w-64"
           onChange={debounce((e) => {setName(e.target.value)},500)}
         />
         <input
           type="text"
           placeholder="Tìm kiếm email..."
-          value={email}
+          defaultValue={email}
           className="border px-3 py-2 rounded-md w-full md:w-64"
           onChange={debounce((e) => {setEmail(e.target.value)},500)}
         />
         <input
           type="text"
           placeholder="Tìm kiếm số điện thoại..."
-          value={phone}
+          defaultValue={phone}
           className="border px-3 py-2 rounded-md w-full md:w-64"
           onChange={debounce((e) => {setPhone(e.target.value)},500)}
         />
         <input
           type="text"
           placeholder="Tìm kiếm địa chỉ..."
-          value={address}
+          defaultValue={address}
           className="border px-3 py-2 rounded-md w-full md:w-64"
           onChange={debounce((e) => {setAddress(e.target.value)},500)}
         />

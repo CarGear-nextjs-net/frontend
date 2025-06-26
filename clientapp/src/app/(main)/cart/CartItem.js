@@ -11,15 +11,15 @@ export function CartItem({ item, updateQuantity, removeItem }) {
         <div className="py-4 flex flex-col sm:flex-row gap-4">
             <div className="flex-shrink-0">
                 <Image
-                    src={item.image || "/placeholder.svg"}
-                    alt={item.name}
+                    src={item.imageUrl || "/placeholder.svg"}
+                    alt={item.productName}
                     width={80}
                     height={80}
                     className="rounded-md object-cover"
                 />
             </div>
             <div className="flex-grow">
-                <h3 className="font-medium">{item.name}</h3>
+                <h3 className="font-medium">{item.productName}</h3>
                 <p className="text-muted-foreground text-sm mb-2">Đơn giá: {formatPrice(item.price)}</p>
                 <div className="flex items-center justify-between">
                     <div className="flex items-center">
@@ -27,7 +27,7 @@ export function CartItem({ item, updateQuantity, removeItem }) {
                             variant="outline"
                             size="icon"
                             className="h-8 w-8 rounded-full"
-                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            onClick={() => updateQuantity(item.productId, item.quantity - 1)}
                         >
                             <Minus className="h-3 w-3" />
                             <span className="sr-only">Giảm số lượng</span>
@@ -37,13 +37,13 @@ export function CartItem({ item, updateQuantity, removeItem }) {
                             variant="outline"
                             size="icon"
                             className="h-8 w-8 rounded-full"
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            onClick={() => updateQuantity(item.productId, item.quantity + 1)}
                         >
                             <Plus className="h-3 w-3" />
                             <span className="sr-only">Tăng số lượng</span>
                         </Button>
                     </div>
-                    <Button variant="ghost" size="icon" onClick={() => removeItem(item.id)}>
+                    <Button variant="ghost" size="icon" onClick={() => removeItem(item.productId)}>
                         <Trash2 className="h-4 w-4" />
                         <span className="sr-only">Xóa sản phẩm</span>
                     </Button>

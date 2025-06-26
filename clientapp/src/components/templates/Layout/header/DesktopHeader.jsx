@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useUserProfileStore } from "@/stores";
+import { useEffect, useState } from "react";
 
 export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
   const router = useRouter();
@@ -113,8 +114,17 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
               )}
             </div>
             <div className="flex items-center cursor-pointer">
-              <ShoppingCart className="h-5 w-5 mr-1" />
-              <span>Giỏ hàng</span>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <div className="flex items-center cursor-pointer">
+                    <ShoppingCart className="h-5 w-5 mr-1" />
+                    <span>Giỏ hàng</span>
+                  </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="min-w-[320px] z-[99999]">
+                  <CartDropdown userID={userStore?.customerId} />
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         </div>
@@ -138,5 +148,45 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
         </div>
       </nav>
     </header>
+  );
+}
+
+function CartDropdown({ userID }) {
+  const [cart, setCart] = useState([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (!userID) return;
+
+    setLoading(true);
+    fetch(`/api/cart?userID=${userID}`)
+      .then((res) => {
+        return res.json()
+      })
+      .then((data) => setCart(data.cart || []))
+      .finally(() => setLoading(false));
+  }, [userID]);
+
+  if (!userID) return <div className="p-4 text-sm">Vui lòng đăng nhập để xem giỏ hàng.</div>;
+  if (loading) return <div className="p-4 text-sm">Đang tải giỏ hàng...</div>;
+  if (!cart|| cart?.[0]?.orderItems?.length === 0 || !cart?.[0]?.orderItems) return <div className="p-4 text-sm">Giỏ hàng trống.</div>;
+
+  return (
+    <div className="p-2 max-h-80 overflow-y-auto">
+      {cart?.[0]?.orderItems.map((item) => (
+        <div key={item.productId} className="flex items-center gap-2 py-2 border-b last:border-b-0">
+          <img src={item.imageUrl || "/placeholder.svg"} alt={item.productName} className="w-10 h-10 rounded object-cover" />
+          <div className="flex-1">
+            <div className="font-medium text-sm">{item.productName}</div>
+            <div className="text-xs text-gray-500">SL: {item.quantity} x {item.price.toLocaleString()}đ</div>
+          </div>
+          <div className="font-semibold text-sm">{(item.price * item.quantity).toLocaleString()}đ</div>
+        </div>
+      ))}
+      <div className="pt-2">
+        <Link href="/cart">
+          <Button className="w-full">Xem giỏ hàng</Button>
+        </Link>
+      </div>
+    </div>
   );
 }

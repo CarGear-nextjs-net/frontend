@@ -9,14 +9,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { deleteCategoryApi } from "@/lib/apis/categories-api";
 import { Settings } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
-export default function CategoryList({
-  categories = [],
-  handleSelectChildren,
-  showCreateCategory,
-}) {
+export default function CategoryList({ categories = [], handleSelectChildren, onRefresh }) {
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full border border-gray-200 shadow-md  overflow-hidden">
@@ -41,6 +39,7 @@ export default function CategoryList({
                   key={cate.id}
                   category={cate}
                   handleSelectChildren={handleSelectChildren}
+                  onRefresh={onRefresh}
                 />
               </td>
             </tr>
@@ -50,8 +49,19 @@ export default function CategoryList({
     </div>
   );
 }
-const MenuActions = ({ category, handleSelectChildren }) => {
+const MenuActions = ({ category, handleSelectChildren, onRefresh }) => {
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
+  const handleDelete = async () => {
+    const res = await deleteCategoryApi(category.id);
+    if (res.status === 200) {
+      toast.success("Xóa danh mục thành công");
+      onRefresh();
+      if (category.isParent) {handleSelectChildren(null)}
+
+    } else {
+      toast.error("Xóa danh mục thất bại");
+    }
+  };
   return (
     <>
       <DropdownMenu>
@@ -66,13 +76,16 @@ const MenuActions = ({ category, handleSelectChildren }) => {
           <DropdownMenuItem>Cập nhật</DropdownMenuItem>
           {category.isParent === true && (
             <>
-              <DropdownMenuItem onClick={() => handleSelectChildren(category.id)}>
+              <DropdownMenuItem onClick={() => handleSelectChildren(category)}>
                 Hiển thị danh mục con
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setOpenCreateDialog(true)}>
                 Tạo danh mục con
               </DropdownMenuItem>
             </>
+          )}
+          {category.isParent && category.children.length === 0 && (
+            <DropdownMenuItem onClick={handleDelete}>Xóa</DropdownMenuItem>
           )}
         </DropdownMenuContent>
       </DropdownMenu>
@@ -82,6 +95,7 @@ const MenuActions = ({ category, handleSelectChildren }) => {
         open={openCreateDialog}
         setOpen={setOpenCreateDialog}
         categoryParent={category}
+        onCreated={onRefresh}
       />
     </>
   );

@@ -17,15 +17,20 @@ export default function CustomerController() {
     const loadData = async () => {
       
       const res = await fetchUsersManager({
-        roleId:1
+        page: page,
+        pageSize: PAGESIZE,
+        customerName: name,
+        email: email,
+        phone: phone,
+        address: address,
       });
-      if (res.data) {
-        setCustomers(res.data);
-        setTotalPages(res.totalPages);
+      if (res.status === 200) {
+        setCustomers(res.data.customers);
+        setTotalPages(res.data.totalPages);
       }
     };
     loadData();
-  }, []);
+  }, [page, name, email, phone, address]);
 
   return (
     <div className="p-4">
