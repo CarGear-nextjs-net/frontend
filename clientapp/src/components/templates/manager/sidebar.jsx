@@ -127,7 +127,7 @@ export default function Sidebar({ user }) {
 const navItems = [
     {
         title: "Dashboard",
-        href: "/manager/dashboard",
+        href: "/manager",
         icon: <LayoutDashboard size={20} />
     },
     {

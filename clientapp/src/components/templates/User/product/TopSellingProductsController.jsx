@@ -7,6 +7,7 @@ import { formatPrice } from "@/utils/format";
 import { Award, ChevronRight, Eye, ShoppingCart, Star, TrendingUp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function TopSellingProductsController(props) {
@@ -15,6 +16,7 @@ export default function TopSellingProductsController(props) {
   const { userStore } = useUserProfileStore();
   const { setProducts, setOpen: setOpenOrder } = useOrder();
   const [hoveredProduct, setHoveredProduct] = useState(null);
+  const router = useRouter();
   return (
     <div className={`py-12 px-4 bg-gray-50 `}>
       <div className="container mx-auto ">
@@ -27,7 +29,7 @@ export default function TopSellingProductsController(props) {
             </h2>
           </div>
           <Link
-            href="/san-pham-ban-chay"
+            href="#"
             className="hidden md:flex items-center text-red-600 hover:text-red-700 font-medium"
           >
             Xem tất cả <ChevronRight className="h-4 w-4 ml-1" />
@@ -45,7 +47,7 @@ export default function TopSellingProductsController(props) {
               <Award className="h-5 w-5 mr-1" />
               <span>TOP 1</span>
             </div>
-            <div className="absolute top-4 right-4 z-10 bg-red-500 text-white font-medium py-1 px-3 rounded-full text-sm">
+            {!!products?.[0]?.originalPrice && <div className="absolute top-4 right-4 z-10 bg-red-500 text-white font-medium py-1 px-3 rounded-full text-sm">
               -
               {Math.round(
                 ((products?.[0]?.originalPrice - products?.[0]?.price) /
@@ -53,9 +55,9 @@ export default function TopSellingProductsController(props) {
                   100
               )}
               %
-            </div>
+            </div>}
             <div className="flex flex-col md:flex-row h-full">
-              <div className="relative w-full md:w-1/2 h-64 md:h-auto group">
+              <div className="relative w-full md:w-1/2 h-64 md:h-auto group" >
                 <Image
                   src={products?.[0]?.image || "/placeholder.svg"}
                   alt={products?.[0]?.name || "product"}
@@ -76,7 +78,7 @@ export default function TopSellingProductsController(props) {
 
               <div className="w-full md:w-1/2 p-6 flex flex-col justify-between">
                 <div>
-                  <Link href={`${products?.[0]?.slug}`}>
+                  <Link href={`/${products?.[0]?.slug}`}>
                     <h3 className="text-xl font-bold text-gray-800 mb-2">{products?.[0]?.name}</h3>
                   </Link>
                   <div className="flex items-center mb-3">
@@ -89,7 +91,7 @@ export default function TopSellingProductsController(props) {
                       ))}
                     </div>
                     <span className="text-sm text-gray-600">
-                      {products?.[0]?.rating} ({products?.[0]?.reviewCount} đánh giá)
+                      {products?.[0]?.rate} ({products?.[0]?.review} đánh giá)
                     </span>
                   </div>
                   <div className="flex items-center mb-4">
@@ -104,9 +106,9 @@ export default function TopSellingProductsController(props) {
                     <span className="text-2xl font-bold text-red-600 mr-2">
                       {formatPrice(products?.[0]?.price)}
                     </span>
-                    <span className="text-sm text-gray-500 line-through">
+                    {!!products?.[0]?.originalPrice && <span className="text-sm text-gray-500 line-through">
                       {formatPrice(products?.[0]?.originalPrice)}
-                    </span>
+                    </span>}
                   </div>
                   <button
                     className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center cursor-pointer"
@@ -139,13 +141,13 @@ export default function TopSellingProductsController(props) {
                 <div className="absolute top-3 left-3 z-10 bg-red-600 text-white font-bold py-1 px-3 rounded-full shadow-md flex items-center">
                   <span>TOP {product.rank}</span>
                 </div>
-                <div className="absolute top-3 right-3 z-10 bg-red-500 text-white font-medium py-1 px-2 rounded-full text-xs">
+                {!!product?.originalPrice && <div className="absolute top-3 right-3 z-10 bg-red-500 text-white font-medium py-1 px-2 rounded-full text-xs">
                   -
                   {Math.round(
-                    ((product.originalPrice - product.price) / product.originalPrice) * 100
+                  ((product?.originalPrice - product?.price) / product?.originalPrice) * 100
                   )}
                   %
-                </div>
+                </div>}
                 <div className="relative h-48 group cursor-pointer overflow-hidden">
                   {/* Ảnh */}
                   <Image
@@ -177,21 +179,28 @@ export default function TopSellingProductsController(props) {
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`h-3 w-3 ${i < Math.floor(product.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`}
+                          className={`h-3 w-3 ${i < Math.floor(product.rate) ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`}
                         />
                       ))}
                     </div>
-                    <span className="text-xs text-gray-600">{product.rating}</span>
+                    <span className="text-xs text-gray-600">{product.rate}</span>
                   </div>
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-lg font-bold text-red-600">
                       {formatPrice(product.price)}
                     </span>
-                    <span className="text-xs text-gray-500 line-through">
+                    {!!product?.originalPrice && <span className="text-xs text-gray-500 line-through">
                       {formatPrice(product.originalPrice)}
-                    </span>
+                    </span>}
                   </div>
-                  <button className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm flex items-center justify-center">
+                  <button className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm flex items-center justify-center cursor-pointer" onClick={() => {
+                      if (userStore?.id) {
+                        setProducts(product);
+                        setOpenOrder(true);
+                      } else {
+                        setOpen(true);
+                      }
+                    }}>
                     <ShoppingCart className="h-4 w-4 mr-1" />
                     Thêm vào giỏ
                   </button>
@@ -213,13 +222,13 @@ export default function TopSellingProductsController(props) {
               <div className="absolute top-3 left-3 z-10 bg-red-600 text-white font-bold py-1 px-3 rounded-full shadow-md flex items-center">
                 <span>TOP {product.rank}</span>
               </div>
-              <div className="absolute top-3 right-3 z-10 bg-red-500 text-white font-medium py-1 px-2 rounded-full text-xs">
+              {!!product?.originalPrice && <div className="absolute top-3 right-3 z-10 bg-red-500 text-white font-medium py-1 px-2 rounded-full text-xs">
                 -
                 {Math.round(
                   ((product.originalPrice - product.price) / product.originalPrice) * 100
                 )}
                 %
-              </div>
+              </div>} 
               <div className="relative h-48 group cursor-pointer overflow-hidden">
                 {/* Ảnh */}
                 <Image
@@ -252,21 +261,28 @@ export default function TopSellingProductsController(props) {
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
-                        className={`h-3 w-3 ${i < Math.floor(product.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`}
+                        className={`h-3 w-3 ${i < Math.floor(product.rate) ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`}
                       />
                     ))}
                   </div>
-                  <span className="text-xs text-gray-600">{product.rating}</span>
+                  <span className="text-xs text-gray-600">{product.rate}</span>
                 </div>
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-lg font-bold text-red-600">
                     {formatPrice(product.price)}
                   </span>
-                  <span className="text-xs text-gray-500 line-through">
+                  {!!product?.originalPrice && <span className="text-xs text-gray-500 line-through">
                     {formatPrice(product.originalPrice)}
-                  </span>
+                  </span>}
                 </div>
-                <button className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm flex items-center justify-center">
+                <button className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-3 rounded-lg transition-colors text-sm flex items-center justify-center cursor-pointer" onClick={() => {
+                      if (userStore?.id) {
+                        setProducts(product);
+                        setOpenOrder(true);
+                      } else {
+                        setOpen(true);
+                      }
+                    }}>
                   <ShoppingCart className="h-4 w-4 mr-1" />
                   Thêm vào giỏ
                 </button>
