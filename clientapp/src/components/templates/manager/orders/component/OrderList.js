@@ -110,35 +110,18 @@ export default function OrderList({ orders = [], page, setPage, totalPages }) {
                 </td>
                 <td className="p-3">{new Date(order.orderDate).toLocaleDateString("vi-VN")}</td>
                 <td className="p-3">
-                  <select
-                    className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(order.status)} border-0`}
-                    value={order.status}
-                    disabled
-                  >
-                    <option value={0}>Chờ xác nhận</option>
-                    <option value={1}>Đã xác nhận</option>
-                    <option value={2}>Đang giao hàng</option>
-                    <option value={3}>Đã giao hàng</option>
-                    <option value={4}>Đã hủy</option>
-                  </select>
+                {order.status}
                 </td>
-                <td className="p-3 flex items-center gap-2">
+                {order.status != 'Chờ xử lý' && <td className="p-3 flex items-center gap-2">
                   <Eye
                     className="w-4 h-4 cursor-pointer text-blue-600"
                     onClick={() => router.push(`/manager/orders/${order.orderId}`)}
                   />
-                  <Settings
+                  {order.status == 'Đã thanh toán' &&<Settings
                     className="w-4 h-4 cursor-pointer text-green-600"
                     onClick={() => router.push(`/manager/orders/${order.orderId}/edit`)}
-                  />
-                  <Trash2
-                    className="w-4 h-4 cursor-pointer text-red-600"
-                    onClick={() => {
-                      setIdSelected(order.orderId);
-                      setOpenModalDelete(true);
-                    }}
-                  />
-                </td>
+                  />}
+                </td>}
               </tr>
             ))}
           </tbody>

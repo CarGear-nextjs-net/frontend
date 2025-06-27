@@ -9,6 +9,12 @@ import { Check, ChevronLeft, ChevronRight, Minus, Plus, ShoppingBag, Star, X } f
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import RelatedProducts from "./ProductRelates";
+import { addToCartApi } from "@/lib/apis/cart-api";
+import { useUserProfileStore } from "@/stores";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import { useOrder } from "@/context/OrderContext";
 
 /**
  * ProductDetail Component
@@ -35,7 +41,10 @@ export default function ProductDetailController({ data }) {
   const [showModal, setShowModal] = useState(false);
   const thumbnailContainerRef = useRef(null);
   const isCategoryRed = useRef(null);
-
+  const { setOpen } = useAuth();
+  const { setProducts, setOpen: setOpenOrder } = useOrder();
+  const { userStore } = useUserProfileStore();
+  const router = useRouter();
   // ==========================================
   // Event Handlers
   // ==========================================
@@ -53,9 +62,7 @@ export default function ProductDetailController({ data }) {
    * Increases the product quantity (maximum: product.quantity)
    */
   const increaseQuantity = () => {
-    if (quantity < product.quantity) {
-      setQuantity(quantity + 1);
-    }
+    setQuantity(quantity + 1);
   };
 
   /**
@@ -103,9 +110,26 @@ export default function ProductDetailController({ data }) {
     }
   });
 
-  const handleAddToCart = () => {
-    console.log("Add to cart");
-  };
+  async function handleAddToCart() {
+    const res = await addToCartApi(
+      [
+        {
+          productId: product?.id,
+          quantity: quantity,
+          price: product?.price,
+          productName: product?.name,
+          productPrice: product?.price * quantity,
+        },
+      ],
+      userStore?.customerId
+    );
+    if (res.status === 200) {
+      await fetch(`/api/cart/sync?userID=${userStore?.customerId}`);
+      toast.success("Thêm sản phẩm vào giỏ hàng thành công");
+    } else {
+      toast.error("Thêm sản phẩm vào giỏ hàng thất bại");
+    }
+  }
 
   return (
     <div className="container-fluid px-4 mx-auto ">
@@ -235,7 +259,7 @@ export default function ProductDetailController({ data }) {
                 <h3 className="font-semibold mb-2">Số lượng:</h3>
                 <div className="flex items-center">
                   <button
-                    className="border border-gray-300 rounded-l-md px-3 py-2 hover:bg-gray-100 h-10"
+                    className="border cursor-pointer border-gray-300 rounded-l-md px-3 py-2 hover:bg-gray-100 h-10"
                     onClick={decreaseQuantity}
                     aria-label="Decrease quantity"
                   >
@@ -245,8 +269,8 @@ export default function ProductDetailController({ data }) {
                   <input
                     type="number"
                     min="1"
-                    readOnly={true}
-                    max={product.stock}
+                    // readOnly={true}
+                    // max={product.stock}
                     value={quantity}
                     onChange={(e) => setQuantity(Number.parseInt(e.target.value))}
                     className="w-16 h-10 border-t border-b border-gray-300 text-center focus:outline-none"
@@ -254,7 +278,7 @@ export default function ProductDetailController({ data }) {
                   />
 
                   <button
-                    className="border border-gray-300 rounded-r-md px-3 py-2 hover:bg-gray-100 h-10"
+                    className="border cursor-pointer border-gray-300 rounded-r-md px-3 py-2 hover:bg-gray-100 h-10"
                     onClick={increaseQuantity}
                     aria-label="Increase quantity"
                   >
@@ -266,7 +290,7 @@ export default function ProductDetailController({ data }) {
               {/* Add to Cart Button */}
               <div className="mb-4 md:mb-6">
                 <button
-                  className="w-full px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md flex items-center justify-center transition-colors"
+                  className="w-full cursor-pointer px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md flex items-center justify-center transition-colors"
                   aria-label="Add to cart"
                   onClick={() => handleAddToCart()}
                 >
@@ -278,7 +302,9 @@ export default function ProductDetailController({ data }) {
           </div>
 
           <div className="mb-8">
-            <div className="text-2xl font-bold mb-4 w-full border-b border-gray-200">Thông tin sản phẩm</div>
+            <div className="text-2xl font-bold mb-4 w-full border-b border-gray-200">
+              Thông tin sản phẩm
+            </div>
             <div className=" max-h-[400px] md:max-h-none overflow-y-auto">
               <div className="text-xl font-bold mb-2 w-full pb-2">Mô tả sản phẩm</div>
               <RichTextViewer content={product.description} limit={false} />
@@ -394,7 +420,7 @@ export default function ProductDetailController({ data }) {
                       />
                     </div>
                     <div className="flex flex-col justify-between flex-1">
-                      <h4 className="font-medium text-sm line-clamp-2">{item.name}</h4>
+                      <h4 className="font-medium text-sm line-clamp-2 cursor-pointer hover:text-red-600" onClick={() => router.push(`/${item.slug}`)}>{item.name}</h4>
                       <div>
                         <div className="flex items-center">
                           <span className="text-red-600 font-semibold text-sm">
@@ -456,7 +482,7 @@ export default function ProductDetailController({ data }) {
                       />
                     </div>
                     <div className="flex flex-col justify-between">
-                      <h4 className="font-medium text-sm line-clamp-2">{item.name}</h4>
+                      <h4 className="font-medium text-sm line-clamp-2 cursor-pointer hover:text-red-600" onClick={() => router.push(`/${item.slug}`)}>{item.name}</h4>
                       <div className="flex items-center">
                         <span className="text-red-600 font-semibold">
                           {formatPrice(item.price)}
@@ -467,7 +493,14 @@ export default function ProductDetailController({ data }) {
                           </span>
                         )}
                       </div>
-                      <button className="text-sm text-red-600 hover:text-red-700 flex items-center mt-2">
+                      <button className="text-sm cursor-pointer text-red-600 hover:text-red-700 flex items-center mt-2" onClick={() => {
+                      if (userStore?.id) {
+                        setProducts(item);
+                        setOpenOrder(true);
+                      } else {
+                        setOpen(true);
+                      }
+                    }}>
                         <ShoppingBag className="w-3 h-3 mr-1" />
                         Thêm vào giỏ
                       </button>

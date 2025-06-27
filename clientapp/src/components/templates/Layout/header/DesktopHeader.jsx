@@ -26,13 +26,13 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
       // Xóa user profile từ store (sẽ tự động xóa localStorage)
       reset();
       // Xóa accessToken nếu có
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         localStorage.removeItem("accessToken");
       }
       // Redirect đến trang logout
       router.push("/auth/logout");
     } catch (error) {
-      console.error('Error during logout:', error);
+      console.error("Error during logout:", error);
     }
   };
 
@@ -88,7 +88,12 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
                   <DropdownMenuContent align="end" className="z-[99999]">
                     <DropdownMenuLabel>Tài khoản</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="cursor-pointer">Hồ sơ</DropdownMenuItem>
+                    <DropdownMenuItem
+                      className="cursor-pointer"
+                      onClick={() => router.push("/orders")}
+                    >
+                      Đơn hàng
+                    </DropdownMenuItem>
                     {userStore.roleId === 1 && (
                       <DropdownMenuItem
                         onClick={() => {
@@ -160,7 +165,7 @@ function CartDropdown({ userID }) {
     setLoading(true);
     fetch(`/api/cart?userID=${userID}`)
       .then((res) => {
-        return res.json()
+        return res.json();
       })
       .then((data) => setCart(data.cart || []))
       .finally(() => setLoading(false));
@@ -168,18 +173,27 @@ function CartDropdown({ userID }) {
 
   if (!userID) return <div className="p-4 text-sm">Vui lòng đăng nhập để xem giỏ hàng.</div>;
   if (loading) return <div className="p-4 text-sm">Đang tải giỏ hàng...</div>;
-  if (!cart|| cart?.[0]?.orderItems?.length === 0 || !cart?.[0]?.orderItems) return <div className="p-4 text-sm">Giỏ hàng trống.</div>;
+  if (!cart || cart?.[0]?.orderItems?.length === 0 || !cart?.[0]?.orderItems)
+    return <div className="p-4 text-sm">Giỏ hàng trống.</div>;
 
   return (
     <div className="p-2 max-h-80 overflow-y-auto">
       {cart?.[0]?.orderItems.map((item) => (
         <div key={item.productId} className="flex items-center gap-2 py-2 border-b last:border-b-0">
-          <img src={item.imageUrl || "/placeholder.svg"} alt={item.productName} className="w-10 h-10 rounded object-cover" />
+          <img
+            src={item.imageUrl || "/placeholder.svg"}
+            alt={item.productName}
+            className="w-10 h-10 rounded object-cover"
+          />
           <div className="flex-1">
             <div className="font-medium text-sm">{item.productName}</div>
-            <div className="text-xs text-gray-500">SL: {item.quantity} x {item.price.toLocaleString()}đ</div>
+            <div className="text-xs text-gray-500">
+              SL: {item.quantity} x {item.price.toLocaleString()}đ
+            </div>
           </div>
-          <div className="font-semibold text-sm">{(item.price * item.quantity).toLocaleString()}đ</div>
+          <div className="font-semibold text-sm">
+            {(item.price * item.quantity).toLocaleString()}đ
+          </div>
         </div>
       ))}
       <div className="pt-2">

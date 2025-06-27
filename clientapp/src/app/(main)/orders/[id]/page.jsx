@@ -6,12 +6,11 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const ORDER_STATUSES = [
   { id: 0, label: "Chờ xác nhận" },
-  { id: 1, label: "Đã xác nhận" },
+  { id: 1, label: "Đã thanh toán" },
   { id: 2, label: "Đang giao hàng" },
-  { id: 3, label: "Đã giao hàng" },
+  { id: 3, label: "Đã nhận hàng" },
   { id: 4, label: "Đã hủy" },
 ];
-
 function formatPrice(price) {
   return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(price);
 }

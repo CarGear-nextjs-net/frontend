@@ -3,31 +3,36 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+
 import { Bookmark, Calendar, ChevronRight, Clock, Search, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { PaginationComponent } from "../../Common/Pagination";
+import { fetchContentsManager } from "@/lib/api";
+import { debounce } from "lodash";
 
 export default function BlogList(props) {
-  const blogs = props.blogs || [];
+  const [blogs, setBlogs] = useState([]);
+  // const [categories, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const blogsPerPage = 6;
-  const featuredBlog = blogs[0];
+  const [totalPages, setTotalPages] = useState(0);
+  const featuredBlog =useMemo(() => blogs[0], [blogs]);
   // Get unique categories
-  const categories = props.categories || [];
-
-  // Pagination
-  const totalPages = Math.ceil(blogs.length / blogsPerPage);
+  useEffect(() => {
+    async function fetchData() {
+    const res = await fetchContentsManager({
+      page: currentPage,
+      pageSize: 6,
+      title: searchTerm,
+    });
+      setBlogs(res?.data || []);
+      setTotalPages(res?.totalPages || 0);
+    }
+    fetchData();
+  }, [currentPage, searchTerm]);
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -53,7 +58,7 @@ export default function BlogList(props) {
               placeholder="Tìm kiếm bài viết..."
               className="pl-10 pr-4 py-2 w-full"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {setSearchTerm(e.target.value)}}
             />
           </div>
           <div className="flex gap-2"></div>
@@ -68,7 +73,7 @@ export default function BlogList(props) {
           >
             Tất cả
           </Button>
-          {categories.map(({ id, name }) => (
+          {/* {categories.map(({ id, name }) => (
             <Button
               key={id}
               variant={selectedCategory === id ? "default" : "outline"}
@@ -77,7 +82,7 @@ export default function BlogList(props) {
             >
               {name}
             </Button>
-          ))}
+          ))} */}
         </div>
       </div>
 
@@ -90,7 +95,7 @@ export default function BlogList(props) {
             <div className="relative h-[400px] w-full">
               <Image
                 src={featuredBlog?.image || "/placeholder.svg?height=400&width=1200"}
-                alt={featuredBlog?.title}
+                alt={featuredBlog?.title || "Bài viết"}
                 fill
                 className="object-cover"
               />
@@ -114,7 +119,7 @@ export default function BlogList(props) {
                     <span>{featuredBlog?.author || "Admin"}</span>
                   </div>
                 </div>
-                <Link href={`/bai-viet/${featuredBlog?.slug}`}>
+                <Link href={`/news/${featuredBlog?.slug}`}>
                   <h2 className="text-2xl md:text-3xl font-bold hover:text-red-400 transition-colors mb-3">
                     {featuredBlog?.title}
                   </h2>
@@ -122,7 +127,7 @@ export default function BlogList(props) {
                 <p className="text-gray-200 mb-4 line-clamp-2 md:line-clamp-3">
                   {featuredBlog?.excerpt}
                 </p>
-                <Link href={`/bai-viet/${featuredBlog?.slug}`}>
+                <Link href={`/news/${featuredBlog?.slug}`}>
                   <Button className="bg-red-600 hover:bg-red-700 text-white">
                     Đọc bài viết <ChevronRight className="h-4 w-4 ml-1" />
                   </Button>
@@ -146,7 +151,7 @@ export default function BlogList(props) {
                 <div className="relative h-48 w-full overflow-hidden">
                   <Image
                     src={blog?.image || "/placeholder.svg?height=192&width=384"}
-                    alt={blog?.title}
+                    alt={blog?.title || "Bài viết"  }
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
@@ -169,7 +174,7 @@ export default function BlogList(props) {
                       <span>{blog?.readTime}</span>
                     </div>
                   </div>
-                  <Link href={`/bai-viet/${blog.slug}`}>
+                  <Link href={`/news/${blog.slug}`}>
                     <h2 className="text-xl font-bold text-gray-900 hover:text-red-600 transition-colors line-clamp-2 mb-2 h-14">
                       {blog?.title}
                     </h2>
@@ -185,7 +190,7 @@ export default function BlogList(props) {
                   </div>
                 </CardContent>
                 <CardFooter className="p-5 pt-0 mt-auto">
-                  <Link href={`/bai-viet/${blog?.slug}`} className="w-full">
+                  <Link href={`/news/${blog?.slug}`} className="w-full">
                     <Button
                       variant="outline"
                       className="w-full text-red-600 border-red-600 hover:bg-red-50 hover:text-red-700 group-hover:bg-red-600 group-hover:text-white transition-all duration-300"
@@ -222,46 +227,11 @@ export default function BlogList(props) {
       {/* Pagination */}
       {blogs.length > 0 && totalPages > 1 && (
         <div className="flex justify-center mt-8">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (currentPage > 1) paginate(currentPage - 1);
-                  }}
-                  className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
-                />
-              </PaginationItem>
-
-              {[...Array(totalPages)].map((_, i) => (
-                <PaginationItem key={i}>
-                  <PaginationLink
-                    href="#"
-                    isActive={currentPage === i + 1}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      paginate(i + 1);
-                    }}
-                  >
-                    {i + 1}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
-
-              <PaginationItem>
-                <PaginationNext
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (currentPage < totalPages) paginate(currentPage + 1);
-                  }}
-                  className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+          <PaginationComponent
+            totalPages={totalPages}
+            currentPage={currentPage}
+            onPageChange={paginate}
+          />
         </div>
       )}
     </div>

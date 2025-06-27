@@ -9,9 +9,9 @@ import { toast } from "sonner";
 
 const ORDER_STATUSES = [
   { id: 0, label: "Chờ xác nhận" },
-  { id: 1, label: "Đã xác nhận" },
+  { id: 1, label: "Đã thanh toán" },
   { id: 2, label: "Đang giao hàng" },
-  { id: 3, label: "Đã giao hàng" },
+  { id: 3, label: "Đã nhận hàng" },
   { id: 4, label: "Đã hủy" },
 ];
 

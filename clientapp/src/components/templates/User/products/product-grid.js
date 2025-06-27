@@ -6,8 +6,14 @@ import { ShoppingCart, Heart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { formatPrice} from "@/utils/format";
+import { useAuth } from "@/context/AuthContext"
+import { useUserProfileStore } from "@/stores"
+import { useOrder } from "@/context/OrderContext"
 
 export default function ProductGrid({ products }) {
+    const { setOpen } = useAuth();
+    const { userStore } = useUserProfileStore();
+    const { setProducts, setOpen: setOpenOrder } = useOrder();
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {products.map((product) => (
@@ -16,7 +22,7 @@ export default function ProductGrid({ products }) {
                     className="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
                 >
                     <div className="relative">
-                        <Link href={`/products/${product.slug}`} className="block">
+                        <Link href={`/${product.slug}`} className="block">
                             <div className="relative h-48 overflow-hidden">
                                 <Image
                                     src={product.image || "/placeholder.svg?height=192&width=256"}
@@ -39,7 +45,7 @@ export default function ProductGrid({ products }) {
                     </div>
 
                     <div className="p-4">
-                        <Link href={`/products/${product.slug}`} className="block">
+                        <Link href={`/${product.slug}`} className="block">
                             <h3 className="font-medium text-sm mb-1 line-clamp-2 h-10 group-hover:text-red-600 transition-colors">
                                 {product.name}
                             </h3>
@@ -58,7 +64,14 @@ export default function ProductGrid({ products }) {
                             </div>
                         )}
 
-                        <Button size="sm" className="w-full bg-red-600 hover:bg-red-700">
+                        <Button size="sm" className="w-full bg-red-600 hover:bg-red-700"  onClick={() => {
+                      if (userStore?.id) {
+                        setProducts(products?.[0]);
+                        setOpenOrder(true);
+                      } else {
+                        setOpen(true);
+                      }
+                    }}>
                             <ShoppingCart className="h-4 w-4 mr-2" />
                             Thêm vào giỏ
                         </Button>

@@ -7,7 +7,7 @@ import { useUserProfileStore } from "@/stores";
 import { formatPrice } from "@/utils/format";
 import { ShoppingCart, Star } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Input } from "../ui/input";
 import { addToCartApi } from "@/lib/apis/cart-api";
@@ -43,6 +43,11 @@ export default function OrderModal() {
       addToCart();
     }
   };
+  useEffect(() => {
+    if (open) {
+      setQuantity(1);
+    }
+  }, [open]);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className=" p-0 border-none bg-transparent z-[1000]">

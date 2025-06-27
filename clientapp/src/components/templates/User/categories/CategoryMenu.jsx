@@ -3,12 +3,13 @@
 import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export default function CategoryMenu({ categories = [] }) {
     const [visible, setVisible] = useState(false)
     const [activeIndex, setActiveIndex] = useState(0)
     const timeoutRef = useRef(null)
-
+    const router = useRouter()
     const showMenu = () => {
         clearTimeout(timeoutRef.current)
         setVisible(true)
@@ -62,7 +63,7 @@ export default function CategoryMenu({ categories = [] }) {
                     <div className="flex-1 bg-white p-4 max-h-96 overflow-y-auto">
                         <div className="grid grid-cols-4 gap-4">
                             {categories[activeIndex]?.children?.map(({ id, name, icon }) => (
-                                <div key={id} className="text-center hover:text-red-600 text-sm cursor-pointer group">
+                                <div key={id} className="text-center hover:text-red-600 text-sm cursor-pointer group" onClick={() => router.push(`/products?category=${id}`)}>
                                     {icon && (
                                         <div className="w-14 h-14 mx-auto mb-1 overflow-hidden rounded-full group-hover:border-red-600 group-hover:border-2 transition-all duration-200">
                                             <img src={icon || "/placeholder.svg"} alt={name} className="w-full h-full object-contain" />

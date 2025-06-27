@@ -50,10 +50,10 @@ export default function CheckoutPage() {
     try {
         await updateOrderStatusUser(orderId, 1);
         setOrderId(null);
-        toast.success("Cập nhật trạng thái thành công!");
+        toast.success("Đặt hàng thành công!");
         setSuccess(true);
       } catch {
-        toast.error("Cập nhật trạng thái thất bại!");
+        toast.error("Đặt hàng thất bại!");
       }
   };
 

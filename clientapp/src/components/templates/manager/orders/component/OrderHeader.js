@@ -22,7 +22,6 @@ export default function OrderHeader({
         STT: index + 1,
         "Mã đơn hàng": `#${order.orderId}`,
         "Khách hàng": order.customerName,
-        Email: order.email,
         "Tổng tiền": new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(
           order.totalAmount
         ),
@@ -61,20 +60,21 @@ export default function OrderHeader({
   };
 
   const getStatusText = (status) => {
-    switch (status) {
-      case 0:
-        return "Chờ xác nhận";
-      case 1:
-        return "Đã xác nhận";
-      case 2:
-        return "Đang giao hàng";
-      case 3:
-        return "Đã giao hàng";
-      case 4:
-        return "Đã hủy";
-      default:
-        return "Không xác định";
-    }
+    return status
+    // switch (status) {
+    //   case 0:
+    //     return "Chờ xác nhận";
+    //   case 1:
+    //     return "Đã xác nhận";
+    //   case 2:
+    //     return "Đang giao hàng";
+    //   case 3:
+    //     return "Đã giao hàng";
+    //   case 4:
+    //     return "Đã hủy";
+    //   default:
+    //     return "Không xác định";
+    // }
   };
 
   return (
