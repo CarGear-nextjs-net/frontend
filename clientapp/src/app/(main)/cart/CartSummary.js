@@ -26,7 +26,7 @@ export function CartSummary({ subtotal }) {
                         <span>Tổng cộng</span>
                         <span>{formatPrice(total)}</span>
                     </div>
-                    <Button className="w-full">Tiến hành thanh toán</Button>
+                    <Button className="w-full" onClick={() => router.push("/checkout")}>Tiến hành thanh toán</Button>
                     <Button variant="outline" className="w-full" onClick={() => router.push("/")}>
                         Tiếp tục mua sắm
                     </Button>

@@ -1,5 +1,5 @@
 import BlogList from "@/components/templates/User/blog/BlogList";
-import { fetchBlogCategories, fetchBlogs } from "@/lib/api";
+import { fetchBlogCategories, fetchContentsManager } from "@/lib/api";
 
 export const metadata = {
   title: "Danh Sách Bài Viết | Blog",
@@ -7,11 +7,10 @@ export const metadata = {
 };
 
 export default async function BlogPage() {
-  const posts = await fetchBlogs();
-  const categories = await fetchBlogCategories();
+  
   return (
     <div className="w-full">
-      <BlogList blogs={posts} categories={categories} />
+      <BlogList />
     </div>
   );
 }

@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { ShoppingBag } from 'lucide-react'
 import Link from "next/link"
 import { useUserProfileStore } from "@/stores"
+import { toast } from "sonner"
+import { deleteProductFromCart } from "@/lib/apis/cart-api"
 
 
 export function ShoppingCart() {
@@ -14,7 +16,7 @@ export function ShoppingCart() {
     const [loading, setLoading] = useState(false);
     const { userStore } = useUserProfileStore();
     const [listItems, setListItems] = useState([])
-
+    const [refetch, setRefetch] = useState(false)
 useEffect(() => {
     setListItems(cartItems?.[0]?.orderItems || [])
 }, [cartItems])
@@ -29,7 +31,7 @@ useEffect(() => {
           })
           .then((data) => setCartItems(data.cart || []))
           .finally(() => setLoading(false));
-      }, [userStore?.customerId]);
+      }, [userStore?.customerId, refetch]);
 
     const updateQuantity = (id, newQuantity) => {
         if (newQuantity < 1) return
@@ -40,8 +42,15 @@ useEffect(() => {
         )
     }
 
-    const removeItem = (id) => {
-        setListItems((prev) => prev.filter((item) => item.productId !== id))
+    const removeItem = async (id) => {
+        const res = await deleteProductFromCart(cartItems[0].orderId, id)
+        if (res.status === 200) {
+            toast.success("Xóa sản phẩm khỏi giỏ hàng thành công")
+            await fetch(`/api/cart/sync?userID=${userStore?.customerId}`);
+            setRefetch(!refetch)
+        } else {
+            toast.error("Xóa sản phẩm khỏi giỏ hàng thất bại")
+        }
     }
 
     const totalItems = listItems?.reduce((sum, item) => sum + item.quantity, 0)

@@ -1,7 +1,9 @@
-export default function OrdersPage(){
-    return (
-        <div className="w-full bg-white h-screen">
-            orders
-        </div>
-    )
+import OrderController from "@/components/templates/manager/orders";
+
+export default function OrdersPage() {
+  return (
+    <div className="w-full bg-white min-h-screen">
+      <OrderController />
+    </div>
+  );
 }

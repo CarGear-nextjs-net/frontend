@@ -1,90 +1,115 @@
 "use client";
 
-import DialogConfirmDelete from "@/components/templates/Common/DialogConfirmDelete";
-import { PaginationComponent } from "@/components/templates/Common/Pagination";
-import { deleteContentApi } from "@/lib/apis/contents-api";
-import { Settings, Trash2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { debounce } from "lodash";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export default function OrderHeader({ orders = [], page, setPage, totalPages }) {
-  const [idSelected, setIdSelected] = useState(null);
-  const [openModalDelete, setOpenModalDelete] = useState(false);
-  const router = useRouter()
-  const handleDelete = async () => {
-    if (!idSelected) {
-      toast.error("Vui lòng chọn bài viết để xóa");
-      return;
-    }
+export default function OrderHeader({
+  search,
+  statusFilter,
+  setSearch,
+  setStatusFilter,
+  orders = [],
+}) {
+  const [isExporting, setIsExporting] = useState(false);
+
+  const exportReport = async () => {
+    setIsExporting(true);
     try {
-      const res = await deleteContentApi({ id: idSelected });
-      if (res.status === 200) {
-        toast.success("Xóa bài viết thành công");
-        setIdSelected(null);
-        setOpenModalDelete(false);
-        setPage(1);
-      }
-    } catch (e) {
-      toast.error("Xóa bài viết thất bại");
+      // Tạo dữ liệu báo cáo
+      const reportData = orders.map((order, index) => ({
+        STT: index + 1,
+        "Mã đơn hàng": `#${order.orderId}`,
+        "Khách hàng": order.customerName,
+        "Tổng tiền": new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(
+          order.totalAmount
+        ),
+        "Ngày đặt": new Date(order.orderDate).toLocaleDateString("vi-VN"),
+        "Trạng thái": getStatusText(order.status),
+      }));
+
+      // Tạo CSV content
+      const headers = Object.keys(reportData[0] || {});
+      const csvContent = [
+        headers.join(","),
+        ...reportData.map((row) => headers.map((header) => `"${row[header]}"`).join(",")),
+      ].join("\n");
+
+      // Tạo và download file
+      const blob = new Blob(["\ufeff" + csvContent], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute(
+        "download",
+        `bao-cao-don-hang-${new Date().toISOString().split("T")[0]}.csv`
+      );
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      toast.success("Xuất báo cáo thành công!");
+    } catch (error) {
+      console.error("Export error:", error);
+      toast.error("Xuất báo cáo thất bại!");
+    } finally {
+      setIsExporting(false);
     }
   };
+
+  const getStatusText = (status) => {
+    return status
+    // switch (status) {
+    //   case 0:
+    //     return "Chờ xác nhận";
+    //   case 1:
+    //     return "Đã xác nhận";
+    //   case 2:
+    //     return "Đang giao hàng";
+    //   case 3:
+    //     return "Đã giao hàng";
+    //   case 4:
+    //     return "Đã hủy";
+    //   default:
+    //     return "Không xác định";
+    // }
+  };
+
   return (
-    <>
-      <div className="overflow-x-auto">
-        <table className="min-w-full border border-gray-200 shadow-md overflow-hidden">
-          <thead className="bg-gray-100 text-gray-700 text-left">
-            <tr>
-              <th className="p-3">#</th>
-              <th className="p-3">Tên bài viết</th>
-              <th className="p-3">Mô tả</th>
-              <th className="p-3">Danh mục</th>
-              <th className="p-3">Lượt xem</th>
-              <th className="p-3">Trạng thái</th>
-              <th className="p-3"></th>
-            </tr>
-          </thead>
-          <tbody className="text-sm text-gray-800">
-            {contents.map((content, index) => (
-              <tr key={content.articleId} className="border-t hover:bg-gray-50">
-                <td className="p-3">{index + 1}</td>
-                <td className="p-3 font-medium">{content.title}</td>
-                <td className="p-3">{content.summary}₫</td>
-                <td className="p-3">{categories.find((category) => category.id === content.categoryId)?.name}</td>
-                <td className="p-3">{content.views}</td>
-                <td className="p-3">{content.isPublic ? "Công khai" : "Riêng tư"}</td>
-                <td className="p-3 flex items-center gap-2">
-                  <Settings className="w-4 h-4 cursor-pointer" onClick={() => {
-                      router.push(`/manager/content/${content.articleId}/edit`)
-                    }}/>
-                  <Trash2
-                    className="w-4 h-4 cursor-pointer"
-                    onClick={() => {
-                      setIdSelected(content.articleId);
-                      setOpenModalDelete(true);
-                    }}
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {contents.length === 0 && (
-          <div className="flex justify-center items-center h-32">
-            <p className="text-gray-500 items-center">Không có dữ liệu</p>
-          </div>
-        )}
+    <div className="flex flex-col md:flex-row justify-between items-center gap-2 mb-4">
+      <div className="flex gap-2 w-full md:w-auto">
+        <input
+          type="text"
+          placeholder="Tìm kiếm đơn hàng..."
+          className="border px-3 py-2 rounded-md w-full md:w-64"
+          onChange={debounce((e) => {
+            setSearch(e.target.value);
+          }, 500)}
+        />
+        <select
+          className="border px-3 py-2 rounded-md"
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+        >
+          <option value="">Tất cả trạng thái</option>
+          <option value="0">Chờ xác nhận</option>
+          <option value="1">Đã xác nhận</option>
+          <option value="2">Đang giao hàng</option>
+          <option value="3">Đã giao hàng</option>
+          <option value="4">Đã hủy</option>
+        </select>
       </div>
-      <PaginationComponent page={page} setPage={setPage} totalPages={totalPages} />
-      <DialogConfirmDelete
-        open={openModalDelete}
-        setOpen={setOpenModalDelete}
-        onConfirm={handleDelete}
-        onCancel={() => {
-          setIdSelected(null);
-          setOpenModalDelete(false);
-        }}
-      />
-    </>
+      <div className="flex gap-2">
+        <Button
+          className="bg-blue-600 text-white hover:bg-blue-700"
+          onClick={exportReport}
+          disabled={isExporting || orders.length === 0}
+        >
+          {isExporting ? "⏳ Đang xuất..." : "📊 Xuất báo cáo"}
+        </Button>
+      </div>
+    </div>
   );
 }

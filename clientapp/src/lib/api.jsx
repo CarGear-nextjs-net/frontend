@@ -318,3 +318,14 @@ export const fetchContentsManager = async (params) => {
     };
   }
 };
+
+export const getProducts = async (searchParams) => {
+  const res = await axios.post(`${API_BASE_URL}/api/products/search`, {
+    ...searchParams,
+  }, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return res.data;
+};
