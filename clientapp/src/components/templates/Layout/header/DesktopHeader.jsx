@@ -36,27 +36,49 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
     }
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const searchTerm = e.target.value;
+    router.push(`/products?search=${searchTerm}`);
+  };
+
   return (
     <header className={`w-full `}>
+      <div className="flex justify-end bg-white text-black sticky"><div className="flex items-center">
+              <Phone className="h-5 w-5 mr-1" />
+              <span>0963015160</span>
+            </div></div>
       {/* Main navigation  */}
       <div className="bg-red-600 text-white py-3 px-4 border-t border-red-500 sticky">
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
           <div
-            className="flex items-center mb-3 md:mb-0  cursor-pointer"
+            className="flex items-center mb-3 md:mb-0 cursor-pointer"
             onClick={() => router.push("/")}
           >
             <div className="bg-white rounded-full h-10 w-10 flex items-center justify-center mr-2">
               <img
-                src="/logo.png"
+                src="/logo-cargear.jpg"
                 alt="Logo"
                 className="object-contain text-xs rounded-3xl text-gray-600"
               />
             </div>
             <span className="text-yellow-300 text-xl font-bold">CarGear</span>
           </div>
-          <CategoryMenu categories={categories} />
+          {/* <CategoryMenu categories={categories} /> */}
+          {visitedUrls &&
+            visitedUrls.map(({ title, url }, index) => (
+              <Link
+                key={index}
+                href={url}
+                className={`px-2 py-2 whitespace-nowrap font-semibold rounded-md hover:bg-gray-100 hover:text-black ${
+                  pathname === url ? "text-black border-black underline bg-gray-100" : "text-white"
+                }`}
+              >
+                {title}
+              </Link>
+            ))}
           {/* Search bar */}
-          <div className="relative flex-1 max-w-xl mx-4 w-full mb-3 md:mb-0">
+          <form className="relative flex-1 max-w-xs mx-4 w-[200px] mb-3 md:mb-0" onSubmit={handleSearch}>
             <input
               type="text"
               placeholder="Bạn tìm gì..."
@@ -64,18 +86,16 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
             />
             <Button
               variant={"outline-none"}
+              type="submit"
               className="absolute right-2 top-1/2 transform -translate-y-1/2"
             >
               <Search className="h-5 w-5 text-gray-500" />
             </Button>
-          </div>
+          </form>
 
           {/* Contact and account */}
           <div className="flex items-center space-x-4">
-            <div className="flex items-center">
-              <Phone className="h-5 w-5 mr-1" />
-              <span>0974841508</span>
-            </div>
+            
             <div className="flex items-center">
               {userStore.id ? (
                 <DropdownMenu>
@@ -136,7 +156,7 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
       </div>
 
       {/* Secondary navigation */}
-      <nav className="bg-white text-black shadow-md overflow-x-auto">
+      {/* <nav className="bg-white text-black shadow-md overflow-x-auto">
         <div className="container mx-auto flex justify-center items-center">
           {visitedUrls &&
             visitedUrls.map(({ title, url }, index) => (
@@ -151,7 +171,7 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
               </Link>
             ))}
         </div>
-      </nav>
+      </nav> */}
     </header>
   );
 }

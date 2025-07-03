@@ -17,10 +17,9 @@ export default function Header({ data }) {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const pathname = usePathname();
   const visitedUrls = [
-    { title: "Trang chủ", url: "/" },
     { title: "Giới thiệu", url: "/about" },
     { title: "Tin tức", url: "/blogs" },
-    { title: "Sản phẩm", url: "/products" },
+    { title: "Chính sách", url: "/policies" },
   ];
 
   // Các trang cần bật sticky
