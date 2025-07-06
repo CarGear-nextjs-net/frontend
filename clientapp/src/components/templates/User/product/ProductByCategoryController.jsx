@@ -70,7 +70,7 @@ export default function ProductByCategoryController({ title = "Category", produc
     }, [])
 
     return (
-        <div className="container mx-auto py-6">
+        <div className="w-[1275px] mx-auto py-6">
             <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center justify-between">
                     <div className="w-1 h-8 bg-red-600 mr-3"></div>

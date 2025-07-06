@@ -71,8 +71,8 @@ export default function Header({ data }) {
   return (
     <div
       ref={headerRef}
-      className={`w-full transition-all duration-300 ease-in-out z-[9999]
-                ${isSticky ? "fixed left-0 right-0 shadow-md" : "relative"} 
+      className={`fixed w-full transition-all duration-300 ease-in-out z-[9999]
+               
                 ${isVisible ? "top-0" : "-translate-y-full"}`}
     >
       {!isMobile ? (

@@ -2,7 +2,7 @@
 import AuthModal from "@/components/organisms/AuthModal";
 import CategoryMenu from "@/components/templates/User/categories/CategoryMenu";
 import { Button } from "@/components/ui/button.jsx";
-import { Phone, Search, ShoppingCart, User2Icon } from "lucide-react";
+import { Facebook, Instagram, Mail, MapPin, Phone, Search, ShoppingCart, User2Icon, Youtube } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -44,10 +44,29 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
 
   return (
     <header className={`w-full `}>
-      <div className="flex justify-end bg-white text-black sticky"><div className="flex items-center">
-              <Phone className="h-5 w-5 mr-1" />
-              <span>0963015160</span>
-            </div></div>
+      <div className="flex justify-between bg-white text-black py-1 items-center px-5">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center text-sm">
+            <Mail className="h-4 w-4 mr-1" />
+            <span>lienhe@gmail.com</span>
+          </div>
+          <div className="w-[1px] h-4 bg-gray-300"></div>
+          <div className="flex items-center text-sm">
+            <Phone className="h-4 w-4 mr-1" />
+            <span>0963015160</span>
+          </div>
+          <div className="w-[1px] h-4 bg-gray-300"></div>
+          <div className="flex items-center text-sm">
+            <MapPin className="h-4 w-4 mr-1" />
+            <span>123 Đường ABC, Quận XYZ, TP. HN</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 text-gray-500">
+          <Facebook className="h-4 w-4 cursor-pointer" />
+          <Instagram className="h-4 w-4 cursor-pointer" />
+          <Youtube className="h-4 w-4 cursor-pointer" />
+        </div>
+      </div>
       {/* Main navigation  */}
       <div className="bg-red-600 text-white py-3 px-4 border-t border-red-500 sticky">
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
@@ -78,7 +97,10 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
               </Link>
             ))}
           {/* Search bar */}
-          <form className="relative flex-1 max-w-xs mx-4 w-[200px] mb-3 md:mb-0" onSubmit={handleSearch}>
+          <form
+            className="relative flex-1 max-w-xs mx-4 w-[200px] mb-3 md:mb-0"
+            onSubmit={handleSearch}
+          >
             <input
               type="text"
               placeholder="Bạn tìm gì..."
@@ -95,7 +117,6 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
 
           {/* Contact and account */}
           <div className="flex items-center space-x-4">
-            
             <div className="flex items-center">
               {userStore.id ? (
                 <DropdownMenu>

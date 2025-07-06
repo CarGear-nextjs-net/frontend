@@ -14,7 +14,7 @@ export function AuthTabs({ setOpen }) {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-lg mx-auto">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold text-center">
           {activeTab === "login" ? "Đăng nhập" : "Đăng ký"}

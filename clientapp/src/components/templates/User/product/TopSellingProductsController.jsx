@@ -11,29 +11,30 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function TopSellingProductsController(props) {
-  const products = props.products;
+  const products = props.products || [];
   const { setOpen } = useAuth();
   const { userStore } = useUserProfileStore();
   const { setProducts, setOpen: setOpenOrder } = useOrder();
   const [hoveredProduct, setHoveredProduct] = useState(null);
   const router = useRouter();
   return (
-    <div className={`py-12 px-4 bg-gray-50 `}>
-      <div className="container mx-auto ">
+    products.length > 0 && (
+    <div className={`w-[1275px] mx-auto py-6 px-4 bg-gray-50 `}>
+      <div className="container  ">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center">
             <div className="w-1 h-8 bg-red-600 mr-3"></div>
             <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
-              TOP {products.length} SẢN PHẨM BÁN CHẠY
+              TOP {products.length} sản phẩm đang được giảm giá nhiều nhất
             </h2>
           </div>
-          <Link
+          {/* <Link
             href="#"
             className="hidden md:flex items-center text-red-600 hover:text-red-700 font-medium"
           >
             Xem tất cả <ChevronRight className="h-4 w-4 ml-1" />
-          </Link>
+          </Link> */}
         </div>
 
         {/* Featured Product (Rank 1) */}
@@ -302,5 +303,6 @@ export default function TopSellingProductsController(props) {
         </div>
       </div>
     </div>
+    )
   );
 }
