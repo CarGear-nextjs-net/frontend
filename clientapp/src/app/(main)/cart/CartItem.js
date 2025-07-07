@@ -20,7 +20,7 @@ export function CartItem({ item, updateQuantity, removeItem }) {
             </div>
             <div className="flex-grow">
                 <h3 className="font-medium">{item.productName}</h3>
-                <p className="text-muted-foreground text-sm mb-2">Đơn giá: {formatPrice(item.price)}</p>
+                <p className="text-muted-foreground text-sm mb-2">Đơn giá: {formatPrice(item.unitPrice)}</p>
                 <div className="flex items-center justify-between">
                     <div className="flex items-center">
                         <Button
@@ -49,7 +49,7 @@ export function CartItem({ item, updateQuantity, removeItem }) {
                     </Button>
                 </div>
             </div>
-            <div className="text-right font-medium">{formatPrice(item.price * item.quantity)}</div>
+            <div className="text-right font-medium">{formatPrice(item.totalPrice)}</div>
         </div>
     )
 }

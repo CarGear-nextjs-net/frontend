@@ -4,7 +4,7 @@ import CategoryMenu from "@/components/templates/User/categories/CategoryMenu";
 import { Button } from "@/components/ui/button.jsx";
 import { Facebook, Instagram, Mail, MapPin, Phone, Search, ShoppingCart, User2Icon, Youtube } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { redirect, usePathname, useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useUserProfileStore } from "@/stores";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import Image from "next/image";
 
 export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
   const router = useRouter();
@@ -30,9 +32,12 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
         localStorage.removeItem("accessToken");
       }
       // Redirect đến trang logout
-      router.push("/auth/logout");
+      await axios.delete('/api/session');
+      
     } catch (error) {
       console.error("Error during logout:", error);
+    } finally {
+      redirect("/");
     }
   };
 
@@ -214,26 +219,28 @@ function CartDropdown({ userID }) {
 
   if (!userID) return <div className="p-4 text-sm">Vui lòng đăng nhập để xem giỏ hàng.</div>;
   if (loading) return <div className="p-4 text-sm">Đang tải giỏ hàng...</div>;
-  if (!cart || cart?.[0]?.orderItems?.length === 0 || !cart?.[0]?.orderItems)
+  if (!cart || cart?.items?.length === 0)
     return <div className="p-4 text-sm">Giỏ hàng trống.</div>;
 
   return (
     <div className="p-2 max-h-80 overflow-y-auto">
-      {cart?.[0]?.orderItems.map((item) => (
+      {cart?.items?.map((item) => (
         <div key={item.productId} className="flex items-center gap-2 py-2 border-b last:border-b-0">
-          <img
-            src={item.imageUrl || "/placeholder.svg"}
+          <Image
+            src={`/api/images/${item.url}` || "/placeholder.svg"}
             alt={item.productName}
+            width={40}
+            height={40}
             className="w-10 h-10 rounded object-cover"
           />
           <div className="flex-1">
             <div className="font-medium text-sm">{item.productName}</div>
             <div className="text-xs text-gray-500">
-              SL: {item.quantity} x {item.price.toLocaleString()}đ
+              SL: {item.quantity} x {item.unitPrice.toLocaleString()}đ
             </div>
           </div>
           <div className="font-semibold text-sm">
-            {(item.price * item.quantity).toLocaleString()}đ
+            {item.totalPrice.toLocaleString()}đ
           </div>
         </div>
       ))}

@@ -30,7 +30,7 @@ export function AuthTabs({ setOpen }) {
             <TabsTrigger value="register">Đăng ký</TabsTrigger>
           </TabsList>
           <TabsContent value="login">
-            <LoginForm setOpen={setOpen} />
+            <LoginForm/>
           </TabsContent>
           <TabsContent value="register">
             <RegisterForm setActiveTab={setActiveTab} />

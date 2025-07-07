@@ -148,7 +148,7 @@ export default function ProductDetailController({ data }) {
                   onClick={handleImageClick}
                 >
                   <Image
-                    src={selectedImage.url || "/placeholder.svg"}
+                    src={`/api/images/${selectedImage.url}` || "/placeholder.svg"}
                     alt={product.name}
                     fill
                     className="object-contain"
@@ -187,7 +187,7 @@ export default function ProductDetailController({ data }) {
                     >
                       <div className="relative w-full h-full">
                         <Image
-                          src={url || "/placeholder.svg?height=70&width=70"}
+                          src={`/api/images/${url}` || "/placeholder.svg?height=70&width=70"}
                           alt={`Thumbnail ${index + 1}`}
                           fill
                           className="object-cover rounded"
@@ -552,7 +552,7 @@ export default function ProductDetailController({ data }) {
             </button>
             <div className="bg-white p-2 rounded">
               <Image
-                src={selectedImage.url || "/placeholder.svg"}
+                src={`/api/images/${selectedImage.url}` || "/placeholder.svg"}
                 alt={product.name}
                 width={800}
                 height={800}

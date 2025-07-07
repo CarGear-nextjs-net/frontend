@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useUserProfileStore } from "@/stores";
+import { useBackPathStore } from "@/stores/useBackPathStore";
 import API_BASE_URL from "@/utils/config";
 import axios from "axios";
 import { AlertCircle, Lock, Mail } from "lucide-react";
@@ -13,12 +14,13 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export function LoginForm({ setOpen }) {
+export function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const { setUserStore } = useUserProfileStore();
+  const { backPath } = useBackPathStore();
   const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,12 +37,12 @@ export function LoginForm({ setOpen }) {
         email,
         password,
       };
-      const res = await axios.post(`${API_BASE_URL}/api/auth/login`, body);
-      if (res.data?.userId) {
+      const res = await axios.post(`${API_BASE_URL}/api/auth/login-customer`, body);
+      if (res.data?.customerId) {
         const userData = {
           email: res.data?.email,
-          id: res.data?.userId,
-          username: res.data?.username,
+          id: res.data?.customerId,
+          username: res.data?.customerName,
           roleId: res.data?.roleId,
           customerId: res.data?.customerId,
         };
@@ -50,9 +52,14 @@ export function LoginForm({ setOpen }) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             token: res.data?.token,
-            userRole: res.data?.roleId || "2",
+            userRole: "2",
           }),
         });
+        if (backPath) {
+          router.push(backPath);
+        } else {
+          router.push("/");
+        }
         toast.success("Đăng nhập thành công");
       } else {
         setError("Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.");

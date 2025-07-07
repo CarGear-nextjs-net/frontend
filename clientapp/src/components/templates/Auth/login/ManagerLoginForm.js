@@ -36,21 +36,15 @@ export function ManagerLoginForm() {
         email,
         password,
       };
-      const res = await axios.post(`${API_BASE_URL}/api/auth/login`, body);
+      const res = await axios.post(`${API_BASE_URL}/api/auth/login-user`, body);
       
       if (res.data?.userId) {
-        // Kiểm tra role để đảm bảo chỉ manager mới có thể đăng nhập
-        if (res.data?.roleId !== "1") {
-          setError("Bạn không có quyền truy cập vào trang quản lý");
-          return;
-        }
-
         const userData = {
           email: res.data?.email,
           id: res.data?.userId,
           username: res.data?.username,
           roleId: res.data?.roleId,
-          customerId: res.data?.customerId,
+          userId: res.data?.userId,
         };
         setUserStore(userData);
         
@@ -59,7 +53,7 @@ export function ManagerLoginForm() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             token: res.data?.token,
-            userRole: res.data?.roleId || "1",
+            userRole: '1',
           }),
         });
         
