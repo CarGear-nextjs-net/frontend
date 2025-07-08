@@ -27,7 +27,7 @@ export default function CreateCategory({ categoryParent = null, open, setOpen, o
     const formData = new FormData();
     formData.append("categoryName", name);
     formData.append("description", description);
-    formData.append("parentId", categoryParent ? parentId : null);
+    formData.append("parentId", categoryParent ? parentId : 0);
     formData.append("icon", image);
 
     const res = await createCategoryApi(formData);

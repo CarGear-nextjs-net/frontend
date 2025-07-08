@@ -24,7 +24,7 @@ export default function ProductCard({ product ,className="",width=300}) {
             <div className="relative h-36 cursor-pointer">
                 <Link href={`/product/${product.slug}`}>
                     <Image
-                        src={product.image || "/placeholder.svg"}
+                        src={product.images.length > 0 ? `/api/images/${product.images[0].url}` : "/placeholder.svg"}
                         alt={product.name}
                         fill
                         className="object-cover transition-transform hover:scale-105"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { Filter, SlidersHorizontal, ChevronDown, X, Search } from "lucide-react";
 
@@ -22,7 +22,9 @@ import { Badge } from "@/components/ui/badge";
 import ProductGrid from "./product-grid";
 import { formatPrice } from "@/utils/format";
 import { PaginationComponent } from "../../Common/Pagination";
-import { getProducts } from "@/lib/api";
+import { fetchCategories, getProducts } from "@/lib/api";
+import CategoryFilter from "./CategoryFilter";
+import { flattenCategories } from "@/utils/functions";
 
 export default function ProductListingPage() {
   // Router và URL params
@@ -49,6 +51,13 @@ export default function ProductListingPage() {
   const maxPriceValue = 10000000;
   const productsPerPage = 12;
 
+  useEffect(() => {
+    const fetchCategoriesAPI = async () => {
+      const res = await fetchCategories();
+      setCategories(res);
+    };
+    fetchCategoriesAPI();
+  }, []);
   // Cập nhật URL khi các bộ lọc thay đổi
   useEffect(() => {
     const params = new URLSearchParams();
@@ -166,7 +175,8 @@ export default function ProductListingPage() {
   // Tìm tên danh mục từ ID
   const getCategoryName = (id) => {
     // Tìm trong danh mục cha
-    const parentCategory = categories.find((cat) => cat.id === id);
+    const parentCategory = flattenCategories(categories).find((cat) => cat.id == id);
+    
     if (parentCategory) return parentCategory.name;
 
     // Tìm trong danh mục con
@@ -178,6 +188,10 @@ export default function ProductListingPage() {
     }
     return "Danh mục không xác định";
   };
+
+  const nameCategory = useMemo(() => {
+    return getCategoryName(selectedCategory);
+  }, [selectedCategory, categories]);
 
   // Tìm tên thương hiệu từ ID
   const getBrandName = (id) => {
@@ -271,11 +285,11 @@ export default function ProductListingPage() {
                 <div className="mb-6">
                   <h4 className="font-medium mb-2">Danh mục sản phẩm</h4>
                   <div className="pl-2">
-                    {/* <CategoryFilter
-                                            categories={categories}
-                                            selectedCategory={selectedCategory}
-                                            onChange={handleCategoryChange}
-                                        /> */}
+                    <CategoryFilter
+                      categories={categories}
+                      selectedCategory={selectedCategory}
+                      onChange={handleCategoryChange}
+                    />
                   </div>
                 </div>
 
@@ -333,7 +347,7 @@ export default function ProductListingPage() {
 
           {selectedCategory && (
             <Badge variant="outline" className="flex items-center gap-1 bg-red-50">
-              Danh mục: {getCategoryName(selectedCategory)}
+              Danh mục: {nameCategory}
               <Button
                 variant="ghost"
                 size="icon"
@@ -420,11 +434,11 @@ export default function ProductListingPage() {
                   <ChevronDown className="h-4 w-4" />
                 </h4>
                 <div className="pl-2">
-                  {/* <CategoryFilter
-                                        categories={categories}
-                                        selectedCategory={selectedCategory}
-                                        onChange={handleCategoryChange}
-                                    /> */}
+                  <CategoryFilter
+                    categories={categories}
+                    selectedCategory={selectedCategory}
+                    onChange={handleCategoryChange}
+                  />
                 </div>
               </div>
 

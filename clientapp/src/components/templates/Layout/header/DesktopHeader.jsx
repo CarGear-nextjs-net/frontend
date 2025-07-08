@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useUserProfileStore } from "@/stores";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 
@@ -22,6 +22,9 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
   const router = useRouter();
   const pathname = usePathname();
   const { userStore, reset } = useUserProfileStore();
+  const inputRef = useRef(null);
+  
+  const [isVisible, setIsVisible] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -43,9 +46,24 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    const searchTerm = e.target.value;
+    const searchTerm = inputRef.current.value;
     router.push(`/products?search=${searchTerm}`);
   };
+
+
+  // Kiểm tra vị trí cuộn
+  useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.scrollY > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener("scroll", toggleVisibility);
+    return () => window.removeEventListener("scroll", toggleVisibility);
+  }, []);
 
   return (
     <header className={`w-full `}>
@@ -88,7 +106,7 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
             </div>
             <span className="text-yellow-300 text-xl font-bold">CarGear</span>
           </div>
-          {/* <CategoryMenu categories={categories} /> */}
+          {isVisible && <CategoryMenu categories={categories} />}
           {visitedUrls &&
             visitedUrls.map(({ title, url }, index) => (
               <Link
@@ -110,6 +128,7 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
               type="text"
               placeholder="Bạn tìm gì..."
               className="w-full py-2 px-4 rounded-full text-black bg-white"
+              ref={inputRef}
             />
             <Button
               variant={"outline-none"}

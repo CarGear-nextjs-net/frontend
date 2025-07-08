@@ -40,7 +40,7 @@ export default function BannerController({ blogs = [] }) {
                         }`}
                     >
                         {/* Image */}
-                        <Image src={`/api/images/${blog.image}`} fill alt={blog.title} className="object-cover w-full h-full" />
+                        <Image src={`/api/images/${blog.image}`} fill alt={blog.title} className="object-cover w-full h-full border shadow-md" />
 
                         {/* <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8 bg-gradient-to-t from-black/70 to-transparent text-white z-10">
                             <div className="container mx-auto">

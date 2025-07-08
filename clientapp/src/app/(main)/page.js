@@ -82,7 +82,6 @@ export default async function Home() {
         </div>
 
         <Policies />
-
         <TopSellingProductsController products={data.topSaleProducts} />
         {categoryWithProducts.map(({ id, name, products }) => (
           <ProductByCategoryController key={id} title={name} products={products} />

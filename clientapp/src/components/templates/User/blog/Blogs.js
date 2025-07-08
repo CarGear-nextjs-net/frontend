@@ -71,10 +71,10 @@ export default function Blogs({ title = "Tin tức", blogs = [] }) {
 
   return (
     blogs.length > 0 && (
-      <div className="w-[1275px] mx-auto py-4 bg-gray-50 px-2 shadow-md rounded-md mt-2">
+      <div className="w-[1275px] mx-auto py-4 bg-gray-100 px-2 mt-2">
         <div className="mb-4">
           <h2 className="text-xl font-bold mb-2">{title}</h2>
-          <div className="h-px bg-gray-200 w-full"></div>
+          <div className="h-px bg-gray-400 w-full"></div>
         </div>
 
         <div
