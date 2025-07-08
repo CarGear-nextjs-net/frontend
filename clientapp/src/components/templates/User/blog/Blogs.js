@@ -71,8 +71,8 @@ export default function Blogs({ title = "Tin tức", blogs = [] }) {
 
   return (
     blogs.length > 0 && (
-      <div className="w-[1275px] mx-auto py-6 px-2">
-        <div className="mb-6">
+      <div className="w-[1275px] mx-auto py-4 bg-gray-50 px-2 shadow-md rounded-md mt-2">
+        <div className="mb-4">
           <h2 className="text-xl font-bold mb-2">{title}</h2>
           <div className="h-px bg-gray-200 w-full"></div>
         </div>
@@ -82,15 +82,17 @@ export default function Blogs({ title = "Tin tức", blogs = [] }) {
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
         >
-          <button
-            onClick={() => scroll("left")}
-            className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-transparent text-dark flex items-center justify-center transition-opacity duration-300 ${
-              !canScrollLeft ? "cursor-not-allowed" : ""
-            } ${isHovering ? "opacity-100" : "opacity-0"}`}
-            disabled={!canScrollLeft}
-          >
-            <ChevronLeft className={`w-6 h-6 ${!canScrollLeft ? "opacity-50" : ""}`} />
-          </button>
+          {blogs.length > 4 && (
+            <button
+              onClick={() => scroll("left")}
+              className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-transparent text-dark flex items-center justify-center transition-opacity duration-300 ${
+                !canScrollLeft ? "cursor-not-allowed" : "cursor-pointer"
+              } ${isHovering ? "opacity-100" : "opacity-0"}`}
+              disabled={!canScrollLeft}
+            >
+              <ChevronLeft className={`w-6 h-6 ${!canScrollLeft ? "opacity-50" : ""}`} />
+            </button>
+          )}
 
           <div
             ref={containerRef}
@@ -101,12 +103,12 @@ export default function Blogs({ title = "Tin tức", blogs = [] }) {
               <div
                 key={index}
                 style={{ width: `${itemWidth}px` }}
-                className="flex-shrink-0 border border-gray-200 rounded-md overflow-hidden bg-white"
+                className="flex-shrink-0 border border-gray-200 rounded-md overflow-hidden bg-white shadow-md"
               >
                 <Link href={`/news/${slug}`} className="block">
-                  <div className="relative h-[200px] w-full bg-gray-100">
+                  <div className="relative h-[200px] w-full bg-gray-300">
                     <Image
-                      src={image || "/placeholder.svg"}
+                      src={`/api/images/${image}` || "/placeholder.svg"}
                       alt={title || "new"}
                       fill
                       className="object-cover"
@@ -122,15 +124,17 @@ export default function Blogs({ title = "Tin tức", blogs = [] }) {
             ))}
           </div>
 
-          <button
-            onClick={() => scroll("right")}
-            className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full text-dark bg-transparent flex items-center justify-center  transition-opacity duration-300 ${
-              !canScrollRight ? "cursor-not-allowed" : ""
-            } ${isHovering ? "opacity-100" : "opacity-0"}`}
-            disabled={!canScrollRight}
-          >
-            <ChevronRight className={`w-6 h-6 ${!canScrollRight ? "opacity-50" : ""}`} />
-          </button>
+          {blogs.length > 4 && (
+            <button
+              onClick={() => scroll("right")}
+              className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full text-dark bg-transparent flex items-center justify-center  transition-opacity duration-300 ${
+                !canScrollRight ? "cursor-not-allowed" : "cursor-pointer"
+              } ${isHovering ? "opacity-100" : "opacity-0"}`}
+              disabled={!canScrollRight}
+            >
+              <ChevronRight className={`w-6 h-6 ${!canScrollRight ? "opacity-50" : ""}`} />
+            </button>
+          )}
         </div>
       </div>
     )

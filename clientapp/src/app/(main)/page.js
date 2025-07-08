@@ -45,6 +45,26 @@ export default async function Home() {
         isActive: true,
         isFeatured: true,
       },
+      {
+        articleId: 4,
+        title: "Tin tức 1",
+        description: "Mô tả tin tức 1",
+        image: "C:/Users/nguye/Desktop/Project/backend/database-image/banner/banner3.jpg",
+        createdAt: "2021-01-01",
+        updatedAt: "2021-01-01",
+        isActive: true,
+        isFeatured: true,
+      },
+      {
+        articleId: 5,
+        title: "Tin tức 1",
+        description: "Mô tả tin tức 1",
+        image: "C:/Users/nguye/Desktop/Project/backend/database-image/banner/banner3.jpg",
+        createdAt: "2021-01-01",
+        updatedAt: "2021-01-01",
+        isActive: true,
+        isFeatured: true,
+      },
     ];
     return (
       <div className="container-fliud bg-white">
@@ -67,7 +87,7 @@ export default async function Home() {
         {categoryWithProducts.map(({ id, name, products }) => (
           <ProductByCategoryController key={id} title={name} products={products} />
         ))}
-        <Blogs blogs={data.blogInBanner} />
+        <Blogs blogs={blogs} />
       </div>
     );
   } catch (error) {

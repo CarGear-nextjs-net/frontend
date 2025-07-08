@@ -16,7 +16,6 @@ export default function OrderModal() {
   const { products, open, setOpen } = useOrder();
   const [quantity, setQuantity] = useState(1);
   const { userStore } = useUserProfileStore();
-  console.log("🚀 ~ OrderModal ~ userStore:", userStore)
   const router = useRouter();
   async function addToCart() {
     const res = await addToCartApi(

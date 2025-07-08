@@ -53,7 +53,7 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
         <div className="flex items-center gap-2">
           <div className="flex items-center text-sm">
             <Mail className="h-4 w-4 mr-1" />
-            <span>lienhe@gmail.com</span>
+            <span>support@dtctech.vn</span>
           </div>
           <div className="w-[1px] h-4 bg-gray-300"></div>
           <div className="flex items-center text-sm">
@@ -63,13 +63,13 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
           <div className="w-[1px] h-4 bg-gray-300"></div>
           <div className="flex items-center text-sm">
             <MapPin className="h-4 w-4 mr-1" />
-            <span>123 Đường ABC, Quận XYZ, TP. HN</span>
+            <span>Số 14, Pháo Đài Láng, Đống Đa, HN</span>
           </div>
         </div>
         <div className="flex items-center gap-2 text-gray-500">
-          <Facebook className="h-4 w-4 cursor-pointer" />
-          <Instagram className="h-4 w-4 cursor-pointer" />
-          <Youtube className="h-4 w-4 cursor-pointer" />
+          <Facebook className="h-4 w-4 cursor-pointer" title='Theo dõi Facebook'/>
+          <Instagram className="h-4 w-4 cursor-pointer" title='Theo dõi Instagram'/>
+          <Youtube className="h-4 w-4 cursor-pointer" title='Theo dõi Youtube'/>
         </div>
       </div>
       {/* Main navigation  */}
