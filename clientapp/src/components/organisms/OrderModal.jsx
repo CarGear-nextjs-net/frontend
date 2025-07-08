@@ -23,9 +23,6 @@ export default function OrderModal() {
         {
           productId: products?.id,
           quantity: quantity,
-          price: products?.price,
-          productName: products?.name,
-          productPrice: products?.price * quantity,
         },
       ],
       userStore?.customerId

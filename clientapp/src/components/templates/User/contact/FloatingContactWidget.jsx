@@ -2,10 +2,10 @@
 
 import { useState } from "react"
 import { MessageCircle, Phone, ChevronDown } from "lucide-react"
-import ScrollToTopButton from "@/components/organisms/ScrollToTop"
+import ScrollToTopButton from "@/components/organisms/ScrollToTopButton"
 
 export default function FloatingContactWidget() {
-    const [isCollapsed, setIsCollapsed] = useState(false)
+    const [isCollapsed, setIsCollapsed] = useState(true)
 
     const contactOptions = [
         {
@@ -39,7 +39,18 @@ export default function FloatingContactWidget() {
                 <ScrollToTopButton />
             </div>
 
-            {!isCollapsed &&
+           
+
+            <button
+                onMouseEnter={() => setIsCollapsed(false)}
+                onMouseLeave={() => setIsCollapsed(true)}
+                aria-label={isCollapsed ? "Expand contact options" : "Collapse contact options"}
+                className={`w-12 min-h-12 h-fit flex flex-col items-center gap-2 justify-center rounded-full transition-all duration-200 ${
+                    isCollapsed ? "bg-green-500 text-white" : "bg-white text-green-500"
+                }`}
+            >
+                
+                 {!isCollapsed &&
                 contactOptions.map((option) => (
                     <a
                         key={option.id}
@@ -53,14 +64,6 @@ export default function FloatingContactWidget() {
                         {option.icon}
                     </a>
                 ))}
-
-            <button
-                onClick={() => setIsCollapsed(!isCollapsed)}
-                aria-label={isCollapsed ? "Expand contact options" : "Collapse contact options"}
-                className={`w-12 h-12 flex items-center justify-center rounded-full shadow-md border-0 transition-all duration-200 ${
-                    isCollapsed ? "bg-green-500 text-white" : "bg-white text-green-500"
-                }`}
-            >
                 {isCollapsed ? <Phone size={16} /> : <ChevronDown size={16} />}
             </button>
         </div>

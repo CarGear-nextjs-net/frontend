@@ -14,7 +14,11 @@ export const getAllCategoryApi = async () => {
   };
 
   export const createCategoryApi = async (body) => {
-    const res = await axios.post(`${API_BASE_URL}/api/CategoryManager/create`, body);
+    const res = await axios.post(`${API_BASE_URL}/api/CategoryManager/create`, body, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return res.data;
   };
 

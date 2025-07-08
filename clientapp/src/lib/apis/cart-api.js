@@ -10,9 +10,14 @@ export const addToCartApi = async (items, userId) => {
   return response;
 };
 
-export const getCart = async () => {
-  const response = await axios.get(`${API_BASE_URL}/api/cart`);
-  return response.data;
+export const getCart = async (customerId) => {
+  const response = await axios.get(`${API_BASE_URL}/api/cart/cart/${customerId}`);
+  return response;
+};
+
+export const updateCartAPI = async (data) => {
+  const response = await axios.put(`${API_BASE_URL}/api/cart/update-cart`, data);
+  return response;
 };
 
 export const deleteProductFromCart = async (orderId, productId) => {

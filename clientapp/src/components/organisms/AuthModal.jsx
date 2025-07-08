@@ -17,7 +17,7 @@ export default function AuthModal() {
                     <span>Đăng nhập</span>
                 </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-md p-0 border-none bg-transparent z-[1000]">
+            <DialogContent className="p-0 border-none bg-transparent z-[1000]">
                 <DialogTitle className="hidden">Auth Modal</DialogTitle>
                 <AuthTabs setOpen={setOpen}/>
             </DialogContent>

@@ -29,9 +29,9 @@ export default function BannerController({ blogs = [] }) {
     if (featuredBlogs.length === 0) return null
 
     return (
-        <div className="container-fliud mx-auto">
+        <div className="w-[1000px] relative z-10 pt-[36px] h-full">
             {/* Carousel container */}
-            <div className=" relative w-full aspect-[2/1] md:aspect-[4/1]">
+            <div className="relative w-full h-full">
                 {featuredBlogs.map((blog, index) => (
                     <div
                         key={blog.articleId}
@@ -40,15 +40,14 @@ export default function BannerController({ blogs = [] }) {
                         }`}
                     >
                         {/* Image */}
-                        <Image src={blog.image || "/placeholder.svg"} fill alt={blog.title} className="object-cover w-full h-full" />
+                        <Image src={`/api/images/${blog.image}`} fill alt={blog.title} className="object-cover w-full h-full border shadow-md" />
 
-                        {/* Caption */}
-                        <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8 bg-gradient-to-t from-black/70 to-transparent text-white">
+                        {/* <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8 bg-gradient-to-t from-black/70 to-transparent text-white z-10">
                             <div className="container mx-auto">
                                 <h1 className="text-2xl md:text-4xl font-bold mb-2">{blog.title}</h1>
                                 <p className="text-base md:text-xl">{blog.summary}</p>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 ))}
             </div>

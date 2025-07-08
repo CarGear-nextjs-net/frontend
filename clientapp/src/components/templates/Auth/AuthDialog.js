@@ -15,10 +15,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { redirect } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
+import { useBackPathStore } from "@/stores/useBackPathStore";
 export default function AuthDialog() {
   const { open, setOpen } = useAuth();
-
+  const { setBackPath } = useBackPathStore();
+  const pathname = usePathname();
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className=" p-0 border-none bg-transparent z-[1000]">
@@ -37,6 +39,7 @@ export default function AuthDialog() {
               type="button"
               onClick={() => {
                 setOpen(false);
+                setBackPath(pathname);
                 redirect("/login");
               }}
             >

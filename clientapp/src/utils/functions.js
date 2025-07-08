@@ -23,3 +23,14 @@ export function generateSlug(name) {
   .replace(/[^a-z0-9-]/g, "") 
   .replace(/-+/g, "-"); 
 }
+
+export function flattenCategories(categories) {
+  let flat = [];
+  categories.forEach(cat => {
+    flat.push(cat);
+    if (cat.children && cat.children.length > 0) {
+      flat = flat.concat(flattenCategories(cat.children));
+    }
+  });
+  return flat;
+}

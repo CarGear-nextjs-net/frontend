@@ -4,6 +4,7 @@ import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu } from "lucide-react"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 
 export default function CategoryMenu({ categories = [] }) {
     const [visible, setVisible] = useState(false)
@@ -66,7 +67,7 @@ export default function CategoryMenu({ categories = [] }) {
                                 <div key={id} className="text-center hover:text-red-600 text-sm cursor-pointer group" onClick={() => router.push(`/products?category=${id}`)}>
                                     {icon && (
                                         <div className="w-14 h-14 mx-auto mb-1 overflow-hidden rounded-full group-hover:border-red-600 group-hover:border-2 transition-all duration-200">
-                                            <img src={icon || "/placeholder.svg"} alt={name} className="w-full h-full object-contain" />
+                                            <Image src={icon ? `/api/images/${icon}` : "/placeholder.svg"} alt={name} width={56} height={56} className="w-full h-full object-contain" />
                                         </div>
                                     )}
                                     <span className="group-hover:font-medium">{name}</span>

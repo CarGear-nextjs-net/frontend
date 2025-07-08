@@ -6,7 +6,7 @@ import { createCategoryApi } from "@/lib/apis/categories-api";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
-export default function CreateCategory({ categoryParent = null, open, setOpen, onCreated }) {
+export default function UpdateCategory({ categoryParent = null, open, setOpen, onCreated }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
@@ -27,7 +27,7 @@ export default function CreateCategory({ categoryParent = null, open, setOpen, o
     const formData = new FormData();
     formData.append("categoryName", name);
     formData.append("description", description);
-    formData.append("parentId", categoryParent ? parentId : 0);
+    formData.append("parentId", categoryParent ? parentId : null);
     formData.append("icon", image);
 
     const res = await createCategoryApi(formData);
