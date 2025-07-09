@@ -71,9 +71,13 @@ export default function Blogs({ title = "Tin tức", blogs = [] }) {
 
   return (
     blogs.length > 0 && (
-      <div className="w-[1275px] mx-auto py-4 bg-gray-100 px-2 mt-2">
+      <div className="w-[1275px] mx-auto py-2 bg-white rounded-md px-2 mt-4">
         <div className="mb-4">
-          <h2 className="text-xl font-bold mb-2">{title}</h2>
+          <div className="flex justify-between items-center">
+            <h2 className="text-xl font-bold mb-2">{title}</h2>
+            <Link href={`/blogs`} className="text-sm text-red-600 hover:text-red-700 font-medium hover:underline flex gap-2 items-center">Xem thêm <ChevronRight className="w-2 h-2" />   </Link>
+          </div>
+
           <div className="h-px bg-gray-400 w-full"></div>
         </div>
 

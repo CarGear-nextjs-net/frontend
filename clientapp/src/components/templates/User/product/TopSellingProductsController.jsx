@@ -19,7 +19,7 @@ export default function TopSellingProductsController(props) {
   const router = useRouter();
   return (
     products.length > 0 && (
-      <div className={`w-[1275px] mx-auto py-6 px-4 bg-gray-50 `}>
+      <div className={`w-[1275px] mx-auto py-6 px-4 bg-white shadow-md rounded-md `}>
         <div className="container  ">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">

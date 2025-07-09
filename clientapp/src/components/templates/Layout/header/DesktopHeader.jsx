@@ -23,6 +23,7 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
   const pathname = usePathname();
   const { userStore, reset } = useUserProfileStore();
   const inputRef = useRef(null);
+  const [cartCount, setCartCount] = useState(0);
   
   const [isVisible, setIsVisible] = useState(false);
 
@@ -64,6 +65,16 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
     window.addEventListener("scroll", toggleVisibility);
     return () => window.removeEventListener("scroll", toggleVisibility);
   }, []);
+
+  useEffect(() => {
+    if (!userStore?.customerId) return;
+
+    fetch(`/api/cart?userID=${userStore?.customerId}`)
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => setCartCount(data.cart?.items?.reduce((acc, item) => acc + item.quantity, 0)))
+  }, [userStore?.customerId]);
 
   return (
     <header className={`w-full `}>
@@ -188,7 +199,7 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
                 <DropdownMenuTrigger asChild>
                   <div className="flex items-center cursor-pointer">
                     <ShoppingCart className="h-5 w-5 mr-1" />
-                    <span>Giỏ hàng</span>
+                    <span className="flex items-center gap-1"> {cartCount > 0 && <span className="w-4 h-4 bg-white text-red-600 rounded-md flex items-center justify-center text-xs">({cartCount})</span>}Giỏ hàng </span>
                   </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="min-w-[320px] z-[99999]">

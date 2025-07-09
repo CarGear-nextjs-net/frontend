@@ -33,7 +33,7 @@ export default function MainLayout({ children }) {
         <div>
           <ScrollToTop />
           <Header data={data} />
-          <main className="mt-[100px]">{children}</main>
+          <main className="mt-[76px]">{children}</main>
           <Footer />
           <FloatingContactWidget />
           <AuthDialog />
