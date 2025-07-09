@@ -9,14 +9,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea"
 import Image from "next/image"
 import { formatPriceWithoutSymbol, formatPriceToRawNumber } from "@/utils/format"
-import {createProduct, fetchDemoData} from "@/lib/api"
+import {createProduct, fetchCategories, fetchDemoData} from "@/lib/api"
 import { Switch } from "@/components/ui/switch"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 
-export default function CreateProductController({ categories, brands, sku }) {
+export default function CreateProductController({ sku }) {
     const router = useRouter()
     const [productImage, setProductImage] = useState("/placeholder.svg?height=200&width=150")
+    const [categories, setCategories] = useState([])
+    const [brands, setBrands] = useState([])
     const [file, setFile] = useState(null)
     const [errors, setErrors] = useState({})
     const [autoSeo, setAutoSeo] = useState(true)
@@ -139,6 +141,14 @@ export default function CreateProductController({ categories, brands, sku }) {
             }))
         }
     }, [product.name, product.description, autoSeo])
+
+    useEffect(() => {
+        const fetchCategoriesAPI = async () => {
+            const res = await fetchCategories()
+            setCategories(res.categories)
+        }
+        fetchCategoriesAPI()
+    }, [])  
 
     return (
         <div className="container mx-auto p-4">
