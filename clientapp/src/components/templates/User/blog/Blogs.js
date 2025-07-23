@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Blogs({ title = "Tin tức", blogs = [] }) {
   const containerRef = useRef(null);
@@ -75,7 +75,12 @@ export default function Blogs({ title = "Tin tức", blogs = [] }) {
         <div className="mb-4">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-bold mb-2">{title}</h2>
-            <Link href={`/blogs`} className="text-sm text-red-600 hover:text-red-700 font-medium hover:underline flex gap-2 items-center">Xem thêm <ChevronRight className="w-2 h-2" />   </Link>
+            <Link
+              href={`/blogs`}
+              className="text-sm text-red-600 hover:text-red-700 font-medium hover:underline flex gap-2 items-center"
+            >
+              Xem thêm <ChevronRight className="w-2 h-2" />{" "}
+            </Link>
           </div>
 
           <div className="h-px bg-gray-400 w-full"></div>

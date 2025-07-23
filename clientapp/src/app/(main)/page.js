@@ -1,11 +1,11 @@
 import NavigationMenuComponent from "@/components/molecules/NavigationMenuComponent";
+import Policies from "@/components/organisms/Policies";
 import BannerController from "@/components/templates/User/banner/BannerController";
 import Blogs from "@/components/templates/User/blog/Blogs";
 import ReadingProgressBar from "@/components/templates/User/news/reading-progress-bar";
 import ProductByCategoryController from "@/components/templates/User/product/ProductByCategoryController";
 import TopSellingProductsController from "@/components/templates/User/product/TopSellingProductsController";
 import { fetchCategories, fetchHomeData } from "@/lib/api";
-import Policies from "@/components/organisms/Policies";
 import { AlignJustify } from "lucide-react";
 import { redirect } from "next/navigation";
 
@@ -76,7 +76,10 @@ export default async function Home() {
               <h2 className="text-xl font-bold">Danh mục sản phẩm</h2>
             </div>
 
-            <NavigationMenuComponent menu={menuCategory} className="max-w-full h-[500px] border items-start bg-white shadow-md rounded-md" />
+            <NavigationMenuComponent
+              menu={menuCategory}
+              className="max-w-full h-[500px] border items-start bg-white shadow-md rounded-md"
+            />
           </div>
           <BannerController blogs={blogs} />
         </div>
@@ -86,7 +89,7 @@ export default async function Home() {
         {categoryWithProducts.map(({ id, name, products }) => (
           <ProductByCategoryController key={id} title={name} products={products} />
         ))}
-        <Blogs blogs={blogs} />
+        <Blogs blogs={data.blogInBanner || []} />
       </div>
     );
   } catch (error) {
