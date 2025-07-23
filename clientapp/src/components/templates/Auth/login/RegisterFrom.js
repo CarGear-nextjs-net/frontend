@@ -44,10 +44,9 @@ export function RegisterForm({ setActiveTab }) {
         password,
         address,
         phone,
-        roleId: 2,
       };
-      const res = await axios.post(`${API_BASE_URL}/api/auth/register`, body);
-      if (res.data?.userId) {
+      const res = await axios.post(`${API_BASE_URL}/api/auth/register/customer`, body);
+      if (res.status === 200) {
         setActiveTab("login");
         toast.success("Đăng ký thành công");
       } else {

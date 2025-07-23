@@ -70,7 +70,7 @@ export default function ProductByCategoryController({ title = "Category", produc
     }, [])
 
     return (
-        <div className="w-[1275px] mx-auto py-6">
+        <div className="w-[1275px] mx-auto py-6 px-4 bg-white shadow-md rounded-md mt-6">
             <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center justify-between">
                     <div className="w-1 h-8 bg-red-600 mr-3"></div>
@@ -114,8 +114,6 @@ export default function ProductByCategoryController({ title = "Category", produc
                     <ChevronRight className={`w-6 h-6 ${!canScrollRight ? "opacity-50" : ""}`} />
                 </button>
             </div>
-            <div className="h-px bg-gray-200 w-full"></div>
-
         </div>
     )
 }

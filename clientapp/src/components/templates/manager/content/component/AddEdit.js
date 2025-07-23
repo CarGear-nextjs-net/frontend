@@ -4,21 +4,21 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import InputControl from "@/components/molecules/InputControl";
+import SelectControl from "@/components/molecules/SelectControl";
+import TextareaControl from "@/components/molecules/TextareaControl";
 import Editor from "@/components/templates/Common/Editor";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { Controller, useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
-import { useEffect, useRef, useState } from "react";
-import { toast } from "sonner";
-import {  useParams, useRouter } from "next/navigation";
-import { createContentApi, getDetailContentApi, updateContentApi } from "@/lib/apis/contents-api";
-import InputControl from "@/components/molecules/InputControl";
-import TextareaControl from "@/components/molecules/TextareaControl";
+import { Switch } from "@/components/ui/switch";
 import { getCategoryApi } from "@/lib/apis/categories-api";
+import { createContentApi, getDetailContentApi, updateContentApi } from "@/lib/apis/contents-api";
 import { useUserProfileStore } from "@/stores";
-import SelectControl from "@/components/molecules/SelectControl";
 import { generateSlug } from "@/utils/functions";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export default function AddEditContent() {
   const { id } = useParams();
@@ -49,7 +49,8 @@ export default function AddEditContent() {
     formData.append("slug", data.slug);
     formData.append("summary", data.summary);
     formData.append("content", data.content);
-    formData.append("isPublic", data.isPublic);
+    formData.append("isFeatured", true);
+    formData.append("isPublic", true);
     formData.append("image", image);
     formData.append("AuthorId", userStore.id);
     formData.append("categoryId", data.categoryId);
@@ -60,7 +61,7 @@ export default function AddEditContent() {
         router.push("/manager/content");
       } else {
         toast.error(res.message);
-      } 
+      }
     } else {
       const res = await createContentApi({ data: formData });
       if (res.status === 200) {
@@ -70,11 +71,9 @@ export default function AddEditContent() {
         toast.error(res.message);
       }
     }
-   
   };
 
   const name = form.watch("title");
-
 
   useEffect(() => {
     async function getDetailContent(id) {
@@ -152,10 +151,12 @@ export default function AddEditContent() {
                   rules={{ required: "Danh mục là bắt buộc" }}
                   name="categoryId"
                   label="Danh mục:"
-                  options={categories?.map((item) => ({
-                    value: `${item.id}`,
-                    label: item.name,
-                  })) || []}
+                  options={
+                    categories?.map((item) => ({
+                      value: `${item.id}`,
+                      label: item.name,
+                    })) || []
+                  }
                 />
                 <TextareaControl
                   control={form.control}

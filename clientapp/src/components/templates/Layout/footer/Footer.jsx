@@ -20,38 +20,38 @@ export function Footer() {
 
       {/* Main Footer */}
       <footer className="bg-gray-900 text-gray-100">
-        <div className=" conaitner bg-gray-100 my-8 py-6 px-4 mx-auto ">
+        <div className="bg-blue-200 py-6 px-4 mx-auto ">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mx-auto gap-6 max-w-7xl text-center">
             <div className="flex flex-col items-center">
               <div className="bg-blue-500 rounded-full p-3 mb-3">
                 <Clock className="h-6 w-6 text-white" />
               </div>
-              <h3 className="font-semibold text-gray-800">Giao hàng nhanh</h3>
-              <p className="text-sm text-gray-500">Nhận hàng trong 24h</p>
+              <h3 className="font-semibold text-black">Giao hàng nhanh</h3>
+              <p className="text-sm text-black">Nhận hàng trong 24h</p>
             </div>
 
             <div className="flex flex-col items-center">
               <div className="bg-blue-500 rounded-full p-3 mb-3">
                 <Heart className="h-6 w-6 text-white" />
               </div>
-              <h3 className="font-semibold text-gray-800">Bảo hành 12 tháng</h3>
-              <p className="text-sm text-gray-500">Đổi trả miễn phí</p>
+              <h3 className="font-semibold text-black">Bảo hành 12 tháng</h3>
+              <p className="text-sm text-black">Đổi trả miễn phí</p>
             </div>
 
             <div className="flex flex-col items-center">
               <div className="bg-blue-500 rounded-full p-3 mb-3">
                 <CheckCircle className="h-6 w-6 text-white" />
               </div>
-              <h3 className="font-semibold text-gray-800">Chất lượng đảm bảo</h3>
-              <p className="text-sm text-gray-500">Đạt chuẩn an toàn</p>
+              <h3 className="font-semibold text-black">Chất lượng đảm bảo</h3>
+              <p className="text-sm text-black">Đạt chuẩn an toàn</p>
             </div>
 
             <div className="flex flex-col items-center">
               <div className="bg-blue-500 rounded-full p-3 mb-3">
                 <Mail className="h-6 w-6 text-white" />
               </div>
-              <h3 className="font-semibold text-gray-800">Hỗ trợ 24/7</h3>
-              <p className="text-sm text-gray-500">Luôn sẵn sàng giúp đỡ</p>
+              <h3 className="font-semibold text-black">Hỗ trợ 24/7</h3>
+              <p className="text-sm text-black">Luôn sẵn sàng giúp đỡ</p>
             </div>
           </div>
         </div>
