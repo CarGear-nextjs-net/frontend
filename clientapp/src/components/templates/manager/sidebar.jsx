@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import {
+  BarChart3,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
@@ -184,11 +185,11 @@ const navItems = [
     href: "/manager/customers",
     icon: <Users size={20} />,
   },
-  // {
-  //     title: "Reports",
-  //     href: "/manager/reports",
-  //     icon: <BarChart3 size={20} />,
-  // },
+  {
+    title: "Brands",
+    href: "/manager/brands",
+    icon: <BarChart3 size={20} />,
+  },
   {
     title: "Content",
     href: "/manager/content",

@@ -11,7 +11,7 @@ import Editor from "@/components/templates/Common/Editor";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
-import { getCategoryApi } from "@/lib/apis/categories-api";
+import { getAllCategoryApi } from "@/lib/apis/categories-api";
 import { createContentApi, getDetailContentApi, updateContentApi } from "@/lib/apis/contents-api";
 import { useUserProfileStore } from "@/stores";
 import { generateSlug } from "@/utils/functions";
@@ -25,7 +25,7 @@ export default function AddEditContent() {
   const [preview, setPreview] = useState(null);
   const [content, setContent] = useState(null);
   const router = useRouter();
-  const [categories, setCategories] = useState(null);
+  const [categories, setCategories] = useState([]);
   const { userStore } = useUserProfileStore();
   const [image, setImage] = useState(null);
   const fileInputRef = useRef(null);
@@ -103,7 +103,8 @@ export default function AddEditContent() {
   useEffect(() => {
     async function getCategory() {
       try {
-        const res = await getCategoryApi();
+        const res = await getAllCategoryApi();
+        console.log("🚀 ~ getCategory ~ res:", res);
         setCategories(res);
       } catch (error) {
         console.log(error);
