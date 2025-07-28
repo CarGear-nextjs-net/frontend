@@ -17,14 +17,14 @@ export default function BrandFilter({ brands = [], selectedBrands = [], onChange
             <div className="space-y-2">
               {brands.map((parent) => (
                 <button
-                  key={parent.id}
+                  key={parent.brandId}
                   type="button"
                   onClick={() => {
-                    onChange(parent.id);
+                    onChange(parent.brandId);
                   }}
-                  className={`w-full flex justify-between items-center cursor-pointer text-left px-3 py-1 rounded hover:bg-red-50 ${selectedBrands.includes(parent.id) ? "bg-red-100 font-semibold text-red-600" : ""}`}
+                  className={`w-full flex justify-between items-center cursor-pointer text-left px-3 py-1 rounded hover:bg-red-50 ${selectedBrands.includes(parent.brandId) ? "bg-red-100 font-semibold text-red-600" : ""}`}
                 >
-                  {parent.name}
+                  {parent.brandName}
                 </button>
               ))}
             </div>

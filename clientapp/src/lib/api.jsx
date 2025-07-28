@@ -36,12 +36,14 @@ export const fetchHomeData = async () => {
 export const fetchProductBySlug = async (slug) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/api/products/${slug}`);
+    console.log("🚀 ~ fetchProductBySlug ~ response:", response);
     return {
       product: response.data.product,
       productRelates: response.data.productRelates,
       recommendedProducts: response.data.recommendedProducts,
     };
   } catch (error) {
+    console.log("🚀 ~ fetchProductBySlug ~ error:", error);
     return {
       product: null,
       productRelates: [],
