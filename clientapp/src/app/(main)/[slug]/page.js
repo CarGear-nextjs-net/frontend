@@ -30,8 +30,10 @@ export async function generateMetadata({ params }) {
 // ✅ Component chính
 export default async function ProductPage({ params }) {
   const { slug } = await params;
+  console.log("🚀 ~ ProductPage ~ slug:", slug);
   try {
     const data = await fetchProductBySlug(slug);
+    console.log("🚀 ~ ProductPage ~ data:", data);
     if (!data.product) {
       return <NotFound />;
     }
@@ -42,6 +44,7 @@ export default async function ProductPage({ params }) {
       </div>
     );
   } catch (err) {
+    console.log("🚀 ~ ProductPage ~ err:", err);
     return <NotFound />;
   }
 }
