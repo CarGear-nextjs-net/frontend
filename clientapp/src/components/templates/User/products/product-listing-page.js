@@ -1,13 +1,12 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { Filter, SlidersHorizontal, ChevronDown, X, Search } from "lucide-react";
+import { ChevronDown, Filter, Search, SlidersHorizontal, X } from "lucide-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   Select,
   SelectContent,
@@ -16,15 +15,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Slider } from "@/components/ui/slider";
-import { Badge } from "@/components/ui/badge";
 
-import ProductGrid from "./product-grid";
-import { formatPrice } from "@/utils/format";
-import { PaginationComponent } from "../../Common/Pagination";
 import { fetchCategories, getProducts } from "@/lib/api";
-import CategoryFilter from "./CategoryFilter";
+import { fetchListOption } from "@/lib/apis/brand-api";
+import { formatPrice } from "@/utils/format";
 import { flattenCategories } from "@/utils/functions";
+import { PaginationComponent } from "../../Common/Pagination";
+import BrandFilter from "./BrandFilter";
+import CategoryFilter from "./CategoryFilter";
+import ProductGrid from "./product-grid";
 
 export default function ProductListingPage() {
   // Router và URL params
@@ -32,12 +34,18 @@ export default function ProductListingPage() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [page, setPage] = useState(1);
+
   // State cho các bộ lọc
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || undefined);
-  const [selectedBrands, setSelectedBrands] = useState(searchParams.get("brands") || []);
+  const [selectedCategory, setSelectedCategory] = useState(
+    searchParams.get("category") || undefined
+  );
+  const [selectedBrands, setSelectedBrands] = useState(searchParams.getAll("brands") || []);
   const [sortOption, setSortOption] = useState(searchParams.get("sort") || "default");
   const [currentPage, setCurrentPage] = useState(searchParams.get("page") || 1);
-  const [priceRange, setPriceRange] = useState([searchParams.get("minPrice") || 0, searchParams.get("maxPrice") || 10000000]);
+  const [priceRange, setPriceRange] = useState([
+    searchParams.get("minPrice") || 0,
+    searchParams.get("maxPrice") || 10000000,
+  ]);
   const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
   const [tempSearchQuery, setTempSearchQuery] = useState("");
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
@@ -45,6 +53,7 @@ export default function ProductListingPage() {
   const [products, setProducts] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
   const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
 
   // Giá trị mặc định cho slider
   const minPriceValue = 0;
@@ -57,6 +66,14 @@ export default function ProductListingPage() {
       setCategories(res);
     };
     fetchCategoriesAPI();
+  }, []);
+
+  useEffect(() => {
+    const fetchBrandsAPI = async () => {
+      const res = await fetchListOption();
+      setBrands(res.data);
+    };
+    fetchBrandsAPI();
   }, []);
   // Cập nhật URL khi các bộ lọc thay đổi
   useEffect(() => {
@@ -87,14 +104,13 @@ export default function ProductListingPage() {
   ]);
 
   useEffect(() => {
-    
     const fetchProducts = async () => {
-        const body = {  
-            minPrice: parseInt(priceRange[0]),
-            maxPrice: parseInt(priceRange[1]),
-            ...(searchParams.get('category') && { categoryId: parseInt(searchParams.get('category')) }),
-            ...(searchParams.get('search') && { keyword: searchParams.get('search') }),
-        }
+      const body = {
+        minPrice: parseInt(priceRange[0]),
+        maxPrice: parseInt(priceRange[1]),
+        ...(searchParams.get("category") && { categoryId: parseInt(searchParams.get("category")) }),
+        ...(searchParams.get("search") && { keyword: searchParams.get("search") }),
+      };
       const res = await getProducts(body);
       setProducts(res);
       setTotalProducts(res.length);
@@ -176,7 +192,7 @@ export default function ProductListingPage() {
   const getCategoryName = (id) => {
     // Tìm trong danh mục cha
     const parentCategory = flattenCategories(categories).find((cat) => cat.id == id);
-    
+
     if (parentCategory) return parentCategory.name;
 
     // Tìm trong danh mục con
@@ -428,32 +444,19 @@ export default function ProductListingPage() {
               </div>
 
               {/* Bộ lọc danh mục */}
-              <div className="mb-6">
-                <h4 className="font-medium mb-2 flex items-center justify-between">
-                  Danh mục sản phẩm
-                  <ChevronDown className="h-4 w-4" />
-                </h4>
-                <div className="pl-2">
-                  <CategoryFilter
-                    categories={categories}
-                    selectedCategory={selectedCategory}
-                    onChange={handleCategoryChange}
-                  />
-                </div>
-              </div>
+              <CategoryFilter
+                categories={categories}
+                selectedCategory={selectedCategory}
+                onChange={handleCategoryChange}
+              />
 
               <Separator className="my-4" />
 
-              {/* Bộ lọc thương hiệu */}
-              <div className="mb-6">
-                <h4 className="font-medium mb-2 flex items-center justify-between">
-                  Thương hiệu
-                  <ChevronDown className="h-4 w-4" />
-                </h4>
-                <div className="pl-2">
-                  {/* <BrandFilter brands={brands} selectedBrands={selectedBrands} onChange={handleBrandChange} /> */}
-                </div>
-              </div>
+              <BrandFilter
+                brands={brands}
+                selectedBrands={selectedBrands}
+                onChange={handleBrandChange}
+              />
 
               <Separator className="my-4" />
 

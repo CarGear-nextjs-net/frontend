@@ -104,8 +104,7 @@ export default function AddEditContent() {
     async function getCategory() {
       try {
         const res = await getAllCategoryApi();
-        console.log("🚀 ~ getCategory ~ res:", res);
-        setCategories(res);
+        setCategories(res.data);
       } catch (error) {
         console.log(error);
       }
@@ -153,7 +152,7 @@ export default function AddEditContent() {
                   name="categoryId"
                   label="Danh mục:"
                   options={
-                    categories?.map((item) => ({
+                    categories.map((item) => ({
                       value: `${item.id}`,
                       label: item.name,
                     })) || []
@@ -181,11 +180,10 @@ export default function AddEditContent() {
                             Chọn ảnh
                           </Button>
                           <Input
-                            {...field}
-                            ref={fileInputRef}
                             type="file"
                             hidden
                             accept="image/*"
+                            ref={fileInputRef}
                             onChange={(e) => {
                               const file = e.target.files?.[0];
                               if (file) {

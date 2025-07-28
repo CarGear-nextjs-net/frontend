@@ -1,8 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { ChevronRight } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -11,11 +13,9 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "../ui/navigation-menu";
-import { ChevronRight } from "lucide-react";
-import Image from "next/image";
 
 const NavigationMenuComponent = ({ menu, className = "" }) => {
-  const router = useRouter()
+  const router = useRouter();
   return (
     <NavigationMenu className={cn("relative flex gap-4 h-full [&_div]:w-full z-50", className)}>
       <NavigationMenuList className="justify-start items-start flex flex-col max-h-[500px] overflow-y-auto overflow-x-hidden">
@@ -24,11 +24,11 @@ const NavigationMenuComponent = ({ menu, className = "" }) => {
             {item.children && item.children.length > 0 ? (
               <>
                 <NavigationMenuTrigger
-                onClick={(e) => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  router.push(`/products?category=${item.id}`)
-                }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    router.push(`/products?category=${item.id}`);
+                  }}
                   className={cn(
                     " hover:!text-red-500 cursor-pointer data-[state=open]:!text-red-500 !rounded-none w-full",
                     "justify-between items-center"
@@ -47,8 +47,16 @@ const NavigationMenuComponent = ({ menu, className = "" }) => {
                             href={`/products?category=${child.id}`}
                             className="relative group flex flex-col items-center justify-center block px-3 py-2 hover:bg-white hover:!text-red-500 hover:underline text-center !rounded-none line-clamp-1"
                           >
-                            <Image src={child.icon? `/api/images/${child.icon}` : "/placeholder.svg"} alt={child.name} width={40} height={40} className='aspect-[1/1] w-[56px] rounded-full border-2 border-gray-200' />
-                            <span className="line-clamp-1 text-current text-sm mt-2">{child.name}</span>
+                            <Image
+                              src={child.icon ? `/api/images/${child.icon}` : "/placeholder.svg"}
+                              alt={child.name}
+                              width={40}
+                              height={40}
+                              className="aspect-[1/1] w-[56px] rounded-full border-2 border-gray-200"
+                            />
+                            <span className="line-clamp-1 text-current text-sm mt-2">
+                              {child.name}
+                            </span>
                           </Link>
                         </NavigationMenuLink>
                       </li>
@@ -62,7 +70,7 @@ const NavigationMenuComponent = ({ menu, className = "" }) => {
                   href={`/products?category=${item.id}`}
                   className={cn(
                     "px-3 py-2 !rounded-none hover:!text-red-500 transition flex justify-center items-center w-full",
- "justify-start"
+                    "justify-start"
                   )}
                 >
                   <span className="line-clamp-1 text-current"> {item.name}</span>

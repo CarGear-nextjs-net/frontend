@@ -4,13 +4,12 @@ export function middleware(request) {
   // Lấy token và role từ cookie
   const token = request.cookies.get("session_token")?.value;
   const userRole = request.cookies.get("user_role")?.value;
-  
-    
+
   // Lấy đường dẫn hiện tại
   const { pathname } = request.nextUrl;
 
   // Nếu đã đăng nhập (có token) và đang ở trang login, chuyển về trang chủ
-  if (token && pathname === "/login") {
+  if (token && (pathname === "/login" || pathname === "auth/login")) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 

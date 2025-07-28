@@ -30,5 +30,4 @@ const Input = React.forwardRef(({ className, type, variant, ...props }, ref) => 
   );
 });
 
-
 export { Input, InputDefault };

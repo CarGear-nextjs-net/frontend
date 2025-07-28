@@ -2,9 +2,6 @@
 import AuthModal from "@/components/organisms/AuthModal";
 import CategoryMenu from "@/components/templates/User/categories/CategoryMenu";
 import { Button } from "@/components/ui/button.jsx";
-import { Facebook, Instagram, Mail, MapPin, Phone, Search, ShoppingCart, User2Icon, Youtube } from "lucide-react";
-import Link from "next/link";
-import { redirect, usePathname, useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,9 +11,22 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useUserProfileStore } from "@/stores";
-import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import {
+  Facebook,
+  Instagram,
+  Mail,
+  MapPin,
+  Phone,
+  Search,
+  ShoppingCart,
+  User2Icon,
+  Youtube,
+} from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { redirect, usePathname, useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
   const router = useRouter();
@@ -24,7 +34,7 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
   const { userStore, reset } = useUserProfileStore();
   const inputRef = useRef(null);
   const [cartCount, setCartCount] = useState(0);
-  
+
   const [isVisible, setIsVisible] = useState(false);
 
   const handleLogout = async () => {
@@ -36,8 +46,7 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
         localStorage.removeItem("accessToken");
       }
       // Redirect đến trang logout
-      await axios.delete('/api/session');
-      
+      await axios.delete("/api/session");
     } catch (error) {
       console.error("Error during logout:", error);
     } finally {
@@ -50,7 +59,6 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
     const searchTerm = inputRef.current.value;
     router.push(`/products?search=${searchTerm}`);
   };
-
 
   // Kiểm tra vị trí cuộn
   useEffect(() => {
@@ -73,7 +81,9 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
       .then((res) => {
         return res.json();
       })
-      .then((data) => setCartCount(data.cart?.items?.reduce((acc, item) => acc + item.quantity, 0)))
+      .then((data) =>
+        setCartCount(data.cart?.items?.reduce((acc, item) => acc + item.quantity, 0))
+      );
   }, [userStore?.customerId]);
 
   return (
@@ -96,9 +106,9 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
           </div>
         </div>
         <div className="flex items-center gap-2 text-gray-500">
-          <Facebook className="h-4 w-4 cursor-pointer" title='Theo dõi Facebook'/>
-          <Instagram className="h-4 w-4 cursor-pointer" title='Theo dõi Instagram'/>
-          <Youtube className="h-4 w-4 cursor-pointer" title='Theo dõi Youtube'/>
+          <Facebook className="h-4 w-4 cursor-pointer" title="Theo dõi Facebook" />
+          <Instagram className="h-4 w-4 cursor-pointer" title="Theo dõi Instagram" />
+          <Youtube className="h-4 w-4 cursor-pointer" title="Theo dõi Youtube" />
         </div>
       </div>
       {/* Main navigation  */}
@@ -124,7 +134,7 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
                 key={index}
                 href={url}
                 className={`px-2 py-2 whitespace-nowrap font-semibold rounded-md hover:bg-gray-100 hover:text-black ${
-                  pathname === url ? "text-black border-black underline bg-gray-100" : "text-white"
+                  pathname === url ? "text-black border-black bg-gray-100" : "text-white"
                 }`}
               >
                 {title}
@@ -132,7 +142,7 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
             ))}
           {/* Search bar */}
           <form
-            className="relative flex-1 max-w-xs mx-4 w-[200px] mb-3 md:mb-0"
+            className="relative flex-1 max-w-xs mx-4 w-[200px]  mb-3 md:mb-0"
             onSubmit={handleSearch}
           >
             <input
@@ -199,7 +209,15 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
                 <DropdownMenuTrigger asChild>
                   <div className="flex items-center cursor-pointer">
                     <ShoppingCart className="h-5 w-5 mr-1" />
-                    <span className="flex items-center gap-1"> {cartCount > 0 && <span className="w-4 h-4 bg-white text-red-600 rounded-md flex items-center justify-center text-xs">({cartCount})</span>}Giỏ hàng </span>
+                    <span className="flex items-center gap-1">
+                      {" "}
+                      {cartCount > 0 && (
+                        <span className="w-4 h-4 bg-white text-red-600 rounded-md flex items-center justify-center text-xs">
+                          ({cartCount})
+                        </span>
+                      )}
+                      Giỏ hàng{" "}
+                    </span>
                   </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="min-w-[320px] z-[99999]">
@@ -249,8 +267,7 @@ function CartDropdown({ userID }) {
 
   if (!userID) return <div className="p-4 text-sm">Vui lòng đăng nhập để xem giỏ hàng.</div>;
   if (loading) return <div className="p-4 text-sm">Đang tải giỏ hàng...</div>;
-  if (!cart || cart?.items?.length === 0)
-    return <div className="p-4 text-sm">Giỏ hàng trống.</div>;
+  if (!cart || cart?.items?.length === 0) return <div className="p-4 text-sm">Giỏ hàng trống.</div>;
 
   return (
     <div className="p-2 max-h-80 overflow-y-auto">
@@ -269,9 +286,7 @@ function CartDropdown({ userID }) {
               SL: {item.quantity} x {item.unitPrice.toLocaleString()}đ
             </div>
           </div>
-          <div className="font-semibold text-sm">
-            {item.totalPrice.toLocaleString()}đ
-          </div>
+          <div className="font-semibold text-sm">{item.totalPrice.toLocaleString()}đ</div>
         </div>
       ))}
       <div className="pt-2">

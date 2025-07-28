@@ -176,9 +176,34 @@ async function getRecommendedArticles() {
     },
   ];
 }
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  try {
+    const article = await getArticle(slug);
+
+    if (!article) {
+      notFound();
+    }
+    return {
+      title: article.title,
+      description: article.subtitle,
+      openGraph: {
+        title: article.title,
+        description: article.subtitle,
+        images: article.image,
+        type: "website",
+      },
+    };
+  } catch {
+    return {
+      title: "Không tìm thấy bài viết",
+    };
+  }
+}
 
 export default async function ArticlePage({ params }) {
-  const article = await getArticle(params.slug);
+  const { slug } = await params;
+  const article = await getArticle(slug);
 
   if (!article) {
     notFound();

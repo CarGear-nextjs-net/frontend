@@ -1,17 +1,17 @@
 "use client";
 
-import Link from "next/link";
+import Maps from "@/components/organisms/Maps";
 import {
-  Clock,
-  Heart,
   CheckCircle,
-  Mail,
+  Clock,
   Facebook,
-  Twitter,
+  Heart,
   Instagram,
   Linkedin,
+  Mail,
+  Twitter,
 } from "lucide-react";
-import Maps from "@/components/organisms/Maps";
+import Link from "next/link";
 
 export function Footer() {
   return (
@@ -56,8 +56,8 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="container mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="mx-auto px-4 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
             {/* Brand Section */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">CarGear</h3>
@@ -161,9 +161,10 @@ export function Footer() {
                   Đăng ký
                 </button>
               </div>
-              <div>
-                <Maps />
-              </div>
+            </div>
+
+            <div className="space-y-4">
+              <Maps />
             </div>
           </div>
 
