@@ -1,4 +1,4 @@
-import { MenuCategory } from "@/components/organisms/MenuCategory";
+﻿import { MenuCategory } from "@/components/organisms/MenuCategory";
 import Policies from "@/components/organisms/Policies";
 import BannerController from "@/components/templates/User/banner/BannerController";
 import Blogs from "@/components/templates/User/blog/Blogs";
@@ -18,7 +18,7 @@ export default async function Home() {
         articleId: 1,
         title: "Tin tức 1",
         description: "Mô tả tin tức 1",
-        image: "C:/Users/nguye/Desktop/Project/backend/database-image/banner/banner1.jpg",
+        image: "C:/sites/dtcshop.vn/publish1/db_image/banner/banner1.jpg",
         createdAt: "2021-01-01",
         updatedAt: "2021-01-01",
         isActive: true,
@@ -28,7 +28,7 @@ export default async function Home() {
         articleId: 2,
         title: "Tin tức 1",
         description: "Mô tả tin tức 1",
-        image: "C:/Users/nguye/Desktop/Project/backend/database-image/banner/banner2.jpg",
+        image: "C:/sites/dtcshop.vn/publish1/db_image/banner/banner2.jpg",
         createdAt: "2021-01-01",
         updatedAt: "2021-01-01",
         isActive: true,
@@ -38,7 +38,7 @@ export default async function Home() {
         articleId: 3,
         title: "Tin tức 1",
         description: "Mô tả tin tức 1",
-        image: "C:/Users/nguye/Desktop/Project/backend/database-image/banner/banner3.jpg",
+        image: "C:/sites/dtcshop.vn/publish1/db_image/banner/banner3.jpg",
         createdAt: "2021-01-01",
         updatedAt: "2021-01-01",
         isActive: true,
@@ -48,7 +48,7 @@ export default async function Home() {
         articleId: 4,
         title: "Tin tức 1",
         description: "Mô tả tin tức 1",
-        image: "C:/Users/nguye/Desktop/Project/backend/database-image/banner/banner3.jpg",
+        image: "C:/sites/dtcshop.vn/publish1/db_image/banner/banner3.jpg",
         createdAt: "2021-01-01",
         updatedAt: "2021-01-01",
         isActive: true,
@@ -58,7 +58,7 @@ export default async function Home() {
         articleId: 5,
         title: "Tin tức 1",
         description: "Mô tả tin tức 1",
-        image: "C:/Users/nguye/Desktop/Project/backend/database-image/banner/banner3.jpg",
+        image: "C:/sites/dtcshop.vn/publish1/db_image/banner/banner3.jpg",
         createdAt: "2021-01-01",
         updatedAt: "2021-01-01",
         isActive: true,
