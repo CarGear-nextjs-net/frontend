@@ -153,8 +153,8 @@ export default function AddEditContent() {
                   label="Danh mục:"
                   options={
                     categories.map((item) => ({
-                      value: `${item.id}`,
-                      label: item.name,
+                      value: `${item.categoryId}`,
+                      label: item.categoryName,
                     })) || []
                   }
                 />
