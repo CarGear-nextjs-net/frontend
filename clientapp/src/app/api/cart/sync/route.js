@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+﻿import { NextResponse } from 'next/server';
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -6,7 +6,7 @@ export async function GET(request) {
   if (!userID) return NextResponse.json({ error: 'Missing userID' }, { status: 400 });
 
   // Gọi về BE gốc
-  const beRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/cart/cart/${userID}`);
+  const beRes = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cart/cart/${userID}`);
   let data = { cart: [] };
   if (beRes.ok) {
     const text = await beRes.text();
