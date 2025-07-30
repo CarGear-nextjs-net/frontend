@@ -14,7 +14,7 @@ import { Switch } from "@/components/ui/switch";
 import { getAllCategoryApi } from "@/lib/apis/categories-api";
 import { createContentApi, getDetailContentApi, updateContentApi } from "@/lib/apis/contents-api";
 import { useUserProfileStore } from "@/stores";
-import { generateSlug } from "@/utils/functions";
+import { convertToPreviewableUrl, generateSlug } from "@/utils/functions";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -196,7 +196,7 @@ export default function AddEditContent() {
                           {preview && (
                             <div className="relative mt-2 w-32 h-32 border rounded overflow-hidden">
                               <img
-                                src={preview}
+                                src={!!id && !image ? convertToPreviewableUrl(preview) : preview}
                                 alt="Preview"
                                 className="object-cover w-full h-full"
                               />

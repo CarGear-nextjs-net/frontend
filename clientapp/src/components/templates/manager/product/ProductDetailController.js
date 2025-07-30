@@ -233,11 +233,11 @@ export default function ProductDetailController({ product, categories, brands })
   };
 
   // Effect: Reset product image when file is null
-  useEffect(() => {
-    if (file === null) {
-      setProductImage(product.image);
-    }
-  }, [file, product.image]);
+  // useEffect(() => {
+  //   if (file === null) {
+  //     setProductImage(product.image);
+  //   }
+  // }, [file, product.image]);
 
   // Effect: Update slug when product name changes
   useEffect(() => {
@@ -447,7 +447,11 @@ export default function ProductDetailController({ product, categories, brands })
               {/* Image Preview */}
               <div className="relative mx-auto w-32 h-40 border rounded overflow-hidden bg-gray-50">
                 <Image
-                  src={productImage || "/placeholder.svg"}
+                  src={
+                    !file && !!product
+                      ? `/api/images/${productImage}`
+                      : productImage || "/placeholder.svg"
+                  }
                   alt="Product preview"
                   fill
                   className="object-contain"

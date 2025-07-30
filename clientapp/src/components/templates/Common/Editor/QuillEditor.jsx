@@ -1,4 +1,5 @@
 "use client";
+import { convertFileUrlToApiUrl } from "@/utils/imageUtils";
 import Quill from "quill";
 import "quill/dist/quill.bubble.css";
 import "quill/dist/quill.snow.css";
@@ -66,7 +67,7 @@ const QuillEditor = forwardRef(
     },
     ref
   ) => {
-    const containerRef = useRef(null) ;
+    const containerRef = useRef(null);
     const defaultValueRef = useRef(defaultValue);
     const onTextChangeRef = useRef(onTextChange);
     const onSelectionChangeRef = useRef(onSelectionChange);
@@ -123,7 +124,6 @@ const QuillEditor = forwardRef(
               handlers: {
                 pdf: () => {},
                 videoUploader: () => {},
-                image: () => {},
                 redo() {
                   quill?.history.redo();
                 },
@@ -132,12 +132,20 @@ const QuillEditor = forwardRef(
                 },
               },
             },
+            image: {
+              // ImageUploader module configuration
+            },
             resize: {
               locale: {},
             },
             history: { delay: 500, maxStack: 500, userOnly: true },
           },
         });
+
+        // Initialize ImageUploader module
+        if (!readOnly) {
+          new ImageUploader(quill, {});
+        }
 
         quill.enable(!readOnly);
 
@@ -172,13 +180,53 @@ const QuillEditor = forwardRef(
           (event) => {
             const clipboardData = event.clipboardData;
             if (!clipboardData) return;
+
             const items = Array.from(clipboardData.items);
             for (const item of items) {
               if (item.type.startsWith("image/")) {
                 event.preventDefault();
                 event.stopPropagation();
+
+                // Handle pasted image file
+                const file = item.getAsFile();
+                if (file) {
+                  const reader = new FileReader();
+                  reader.onload = () => {
+                    const range = quill.getSelection();
+                    const index = range ? range.index : 0;
+                    quill.insertEmbed(index, "image", reader.result);
+                    quill.insertText(index + 1, "\n");
+                    quill.setSelection(index + 2);
+                  };
+                  reader.readAsDataURL(file);
+                }
+                return;
               }
               break;
+            }
+
+            // Handle pasted text that might be a file path
+            const pastedText = clipboardData.getData("text");
+            if (
+              pastedText &&
+              (pastedText.startsWith("C:") ||
+                pastedText.startsWith("D:") ||
+                pastedText.startsWith("/"))
+            ) {
+              event.preventDefault();
+              event.stopPropagation();
+
+              // Check if it's an image file
+              const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp"];
+              const isImageFile = imageExtensions.some((ext) =>
+                pastedText.toLowerCase().endsWith(ext)
+              );
+
+              if (isImageFile) {
+                // For now, just show a message that file path pasting is not supported
+                console.log("File path pasting detected:", pastedText);
+                // You can implement file path handling here if needed
+              }
             }
           },
           { capture: true }
@@ -265,6 +313,9 @@ const QuillEditor = forwardRef(
           let widthImg = parseInt(node.getAttribute("width")) || 0;
           let heightImg = parseInt(node.getAttribute("height")) || 0;
 
+          // Convert file URLs to API URLs
+          const processedSrc = convertFileUrlToApiUrl(imgSrc);
+
           if (widthImg > window.innerWidth - 30) {
             const ratio = widthImg / heightImg;
             widthImg = window.innerWidth - 30;
@@ -273,7 +324,7 @@ const QuillEditor = forwardRef(
 
           delta.ops = [
             {
-              insert: { image: imgSrc },
+              insert: { image: processedSrc },
               attributes: {
                 style: `${widthImg == 0 ? "" : `width:${widthImg}px;`} ${heightImg == 0 ? "" : `height:${heightImg}px;`}`,
                 alt: imgAlt,

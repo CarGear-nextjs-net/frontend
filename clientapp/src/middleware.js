@@ -9,7 +9,7 @@ export function middleware(request) {
   const { pathname } = request.nextUrl;
 
   // Nếu đã đăng nhập (có token) và đang ở trang login, chuyển về trang chủ
-  if (token && (pathname === "/login" || pathname === "auth/login")) {
+  if (token && (pathname === "/login" || pathname === "/auth/login")) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 

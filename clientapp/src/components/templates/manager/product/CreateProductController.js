@@ -343,7 +343,7 @@ export default function CreateProductController({ sku }) {
               {/* Hình ảnh xem trước */}
               <div className="relative mx-auto w-32 h-40 border rounded overflow-hidden bg-gray-50">
                 <Image
-                  src={productImage || "/placeholder.svg"}
+                  src={`/api/images/${productImage}` || "/placeholder.svg"}
                   alt="Product preview"
                   fill
                   className="object-contain"

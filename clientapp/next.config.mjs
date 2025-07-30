@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  devIndicators: false,
   // async rewrites() {
   //     return [
   //         {
@@ -15,6 +16,18 @@ const nextConfig = {
         hostname: "localhost",
         port: "5000",
         pathname: "/images/**",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "4000",
+        pathname: "/api/local-image/**",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "4000",
+        pathname: "/api/database-images/**",
       },
     ],
   },
