@@ -127,7 +127,7 @@ export default function DesktopHeader({ categories = [], visitedUrls = [] }) {
             </div>
             <span className="text-yellow-300 text-xl font-bold">CarGear</span>
           </div>
-          {isVisible && <CategoryMenu categories={categories} />}
+          {isVisible && pathname === "/" && <CategoryMenu categories={categories} />}
           {visitedUrls &&
             visitedUrls.map(({ title, url }, index) => (
               <Link

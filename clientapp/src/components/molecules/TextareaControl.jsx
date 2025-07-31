@@ -26,7 +26,6 @@ const TextareaControl = React.forwardRef(
   ) => {
     const classOverride = cn(
       "rounded-[0.375rem] py-[0.75rem] pl-4 border-solid bg-transparent border-[#D9D9D9] text-[#1F1F1F] placeholder:text-[#A8A8A8] placeholder:text-sm placeholder:text-[#858585]",
-      resize,
       className,
       disabled ? "bg-[#1018280D] border-[#C7C7C7] text-[#B8B8B8]" : ""
     );
