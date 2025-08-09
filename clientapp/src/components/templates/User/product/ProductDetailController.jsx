@@ -167,9 +167,9 @@ export default function ProductDetailController({ data }) {
   }
 
   return (
-    <div className="container-fluid px-4 mx-auto ">
+    <div className="container-fluid px-4 mx-auto">
       {/* Main content grid - Responsive layout */}
-      <div className="flex flex-col justify-center px-30">
+      <div className="flex flex-col justify-center px-64">
         <div className="col-span-1 lg:col-span-3">
           {/* Product images and info - Stack on mobile, side by side on tablet+ */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">

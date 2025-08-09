@@ -3,15 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useOrder } from "@/context/OrderContext";
+import { addToCartApi } from "@/lib/apis/cart-api";
 import { useUserProfileStore } from "@/stores";
 import { formatPrice } from "@/utils/format";
 import { ShoppingCart, Star } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Input } from "../ui/input";
-import { addToCartApi } from "@/lib/apis/cart-api";
-import { useRouter } from "next/navigation";
 export default function OrderModal() {
   const { products, open, setOpen } = useOrder();
   const [quantity, setQuantity] = useState(1);
@@ -58,7 +58,7 @@ export default function OrderModal() {
           <CardContent className="flex justify-center">
             <div className="w-1/4">
               <Image
-                src={products?.image || "/placeholder.png"}
+                src={`/api/images/${products?.images?.[0]?.url}` || "/placeholder.png"}
                 alt={products?.name || ""}
                 width={100}
                 height={100}
@@ -105,9 +105,11 @@ export default function OrderModal() {
                 <span className="text-xl font-bold text-red-600 mr-2">
                   {formatPrice(products?.price * quantity)}
                 </span>
-                {!!products?.originalPrice && <span className="text-sm text-gray-500 line-through">
-                  {formatPrice(products?.originalPrice * quantity)}
-                </span>}
+                {!!products?.originalPrice && (
+                  <span className="text-sm text-gray-500 line-through">
+                    {formatPrice(products?.originalPrice * quantity)}
+                  </span>
+                )}
               </div>
             </Button>
           </CardFooter>

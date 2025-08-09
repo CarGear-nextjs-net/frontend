@@ -14,7 +14,13 @@ import { Settings } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export default function CategoryList({ categories = [], handleSelectChildren, onRefresh }) {
+export default function CategoryList({
+  categories = [],
+  handleSelectChildren,
+  onRefresh,
+  setSelectedCategoryEdit,
+  setOpenUpdate,
+}) {
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full border border-gray-200 shadow-md  overflow-hidden">
@@ -39,7 +45,9 @@ export default function CategoryList({ categories = [], handleSelectChildren, on
                   key={cate.id}
                   category={cate}
                   handleSelectChildren={handleSelectChildren}
+                  setSelectedCategoryEdit={setSelectedCategoryEdit}
                   onRefresh={onRefresh}
+                  setOpenUpdate={setOpenUpdate}
                 />
               </td>
             </tr>
@@ -49,7 +57,13 @@ export default function CategoryList({ categories = [], handleSelectChildren, on
     </div>
   );
 }
-const MenuActions = ({ category, handleSelectChildren, onRefresh }) => {
+const MenuActions = ({
+  category,
+  handleSelectChildren,
+  onRefresh,
+  setOpenUpdate,
+  setSelectedCategoryEdit,
+}) => {
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const handleDelete = async () => {
     const res = await deleteCategoryApi(category.id);
@@ -74,7 +88,14 @@ const MenuActions = ({ category, handleSelectChildren, onRefresh }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Hành động</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Cập nhật</DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              setSelectedCategoryEdit(category);
+              setOpenUpdate(true);
+            }}
+          >
+            Cập nhật
+          </DropdownMenuItem>
           {category.isParent === true && (
             <>
               <DropdownMenuItem onClick={() => handleSelectChildren(category)}>

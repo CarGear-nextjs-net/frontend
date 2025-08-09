@@ -33,7 +33,7 @@ export default function CreateBrand({ open, setOpen, onCreated }) {
         toast.error("Tạo thương hiệu thất bại");
       }
     } catch (error) {
-      console.log("🚀 ~ handleSubmit ~ error:", error);
+      toast.error(error?.response?.data?.message || "Tạo thương hiệu thất bại");
     }
   };
   return (
@@ -80,7 +80,7 @@ export default function CreateBrand({ open, setOpen, onCreated }) {
                 {preview && (
                   <div className="relative mt-2 w-32 h-32 border rounded overflow-hidden">
                     <img src={preview} alt="Preview" className="object-cover w-full h-full" />
-                    <button
+                    {/* <button
                       type="button"
                       onClick={() => {
                         setPreview(null);
@@ -90,7 +90,7 @@ export default function CreateBrand({ open, setOpen, onCreated }) {
                       className="absolute top-0 right-0 bg-black bg-opacity-50 text-white px-2 py-1 text-xs"
                     >
                       ✕
-                    </button>
+                    </button> */}
                   </div>
                 )}
               </>

@@ -237,6 +237,28 @@ export const updateInformationProduct = async (data) => {
     };
   }
 };
+
+export const updateProductData = async (id, data) => {
+  try {
+    const res = await axios.put(`${API_BASE_URL}/api/productmanager/update-product/${id}`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    if (res.status === 200) {
+      return {
+        status: true,
+        message: "Update image successfully",
+      };
+    }
+  } catch (ex) {
+    return {
+      status: false,
+      message: "Update failed",
+      errors: ex.errors,
+    };
+  }
+};
 export const updateProductImage = async (data) => {
   try {
     const res = await axios.put(`${API_BASE_URL}/api/productmanager/update-image`, data, {

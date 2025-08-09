@@ -3,15 +3,17 @@ import CategoryList from "@/components/templates/manager/category/CategoryListPa
 import CreateCategory from "@/components/templates/manager/category/CreateCategory";
 import { Button } from "@/components/ui/button";
 import { fetchCategories } from "@/lib/api";
-import { createCategoryApi } from "@/lib/apis/categories-api";
 import { Plus } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import UpdateCategory from "./UpdateCategory";
 
 export default function CategoryController() {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategoryEdit, setSelectedCategoryEdit] = useState(null);
   const [refresh, setRefresh] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
+  const [openUpdate, setOpenUpdate] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,7 +28,6 @@ export default function CategoryController() {
     return category?.children || [];
   }, [selectedCategory, categories]);
 
-
   return (
     <div className="w-full bg-white p-2 rounded shadow">
       <div className="flex items-center justify-between border-b border-gray-200 p-2">
@@ -36,19 +37,44 @@ export default function CategoryController() {
             <Plus size={20} variant="outline" />
             Thêm danh mục
           </Button>
-          <CreateCategory open={openCreate} setOpen={setOpenCreate} categoryParent={null} onCreated={() => setRefresh(!refresh)}/>
+          <CreateCategory
+            open={openCreate}
+            setOpen={setOpenCreate}
+            categoryParent={null}
+            onCreated={() => setRefresh(!refresh)}
+          />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-6">
         <div>
           <h2 className="text-xl font-semibold mb-4">Danh mục cha</h2>
-          <CategoryList categories={categories} handleSelectChildren={(category) => setSelectedCategory(category)} onRefresh={() => setRefresh(!refresh)}/>
+          <CategoryList
+            categories={categories}
+            handleSelectChildren={(category) => setSelectedCategory(category)}
+            onRefresh={() => setRefresh(!refresh)}
+            setSelectedCategoryEdit={setSelectedCategoryEdit}
+            setOpenUpdate={setOpenUpdate}
+          />
         </div>
         <div>
-          <h2 className="text-xl font-semibold mb-4">Danh mục con {!!selectedCategory?.id ? `của ${selectedCategory?.name}` : ""}</h2>
-          <CategoryList categories={childrenCategories || []} onRefresh={() => setRefresh(!refresh)} />
+          <h2 className="text-xl font-semibold mb-4">
+            Danh mục con {!!selectedCategory?.id ? `của ${selectedCategory?.name}` : ""}
+          </h2>
+          <CategoryList
+            categories={childrenCategories || []}
+            onRefresh={() => setRefresh(!refresh)}
+            setSelectedCategoryEdit={setSelectedCategoryEdit}
+            setOpenUpdate={setOpenUpdate}
+          />
         </div>
       </div>
+      <UpdateCategory
+        open={openUpdate}
+        setOpen={setOpenUpdate}
+        onCreated={() => setRefresh(!refresh)}
+        setSelectedCategoryEdit={setSelectedCategoryEdit}
+        selectedCategoryEdit={selectedCategoryEdit}
+      />
     </div>
   );
 }

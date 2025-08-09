@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { createCategoryApi } from "@/lib/apis/categories-api";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
